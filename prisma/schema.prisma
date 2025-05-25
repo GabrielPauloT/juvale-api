@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model absence {
+  id                  Int       @id @default(autoincrement())
+  code_employee       Int
+  absence_date        DateTime  @db.Timestamp(6)
+  created_at          DateTime  @default(now()) @db.Timestamp(6)
+  last_modified       DateTime? @db.Timestamp(6)
+  certificate_absence Boolean
+  employee            employee  @relation(fields: [code_employee], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model company {
+  id            Int        @id @default(autoincrement())
+  name          String     @db.VarChar(255)
+  created_at    DateTime   @default(now()) @db.Timestamp(6)
+  last_modified DateTime?  @db.Timestamp(6)
+  employee      employee[]
+}
+
+model employee {
+  id              Int       @id @default(autoincrement())
+  code_company    Int
+  name            String    @db.VarChar(255)
+  job_description String    @db.VarChar(255)
+  salary          Decimal   @db.Decimal
+  created_at      DateTime  @default(now()) @db.Timestamp(6)
+  last_modified   DateTime? @db.Timestamp(6)
+  enabled         Boolean
+  absence         absence[]
+  company         company   @relation(fields: [code_company], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  ticket          ticket[]
+}
+
+model ticket {
+  id            Int       @id(map: "passage_pkey") @default(autoincrement())
+  code_employee Int
+  value         Decimal   @db.Decimal
+  created_at    DateTime  @default(now()) @db.Timestamp(6)
+  last_modified DateTime? @db.Timestamp(6)
+  employee      employee  @relation(fields: [code_employee], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "passage_code_employee_fkey")
+}
