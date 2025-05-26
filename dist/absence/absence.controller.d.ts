@@ -5,43 +5,79 @@ export declare class AbsenceController {
     private readonly absenceService;
     constructor(absenceService: AbsenceService);
     create(createAbsenceDto: CreateAbsenceDto): Promise<{
-        id: number;
-        created_at: Date;
-        last_modified: Date | null;
-        code_employee: number;
-        absence_date: Date;
-        certificate_absence: boolean;
+        data: import("generated/prisma").Prisma.Prisma__absenceClient<{
+            id: number;
+            created_at: Date;
+            last_modified: Date | null;
+            code_employee: string;
+            absence_date: Date;
+            certificate_absence: boolean;
+        }, never, import("generated/prisma/runtime/library").DefaultArgs, import("generated/prisma").Prisma.PrismaClientOptions>;
+        statusCode: import("@nestjs/common").HttpStatus;
+        message: string;
     }>;
-    findAll(page: string, perPage: string): import("generated/prisma").Prisma.PrismaPromise<{
-        id: number;
-        created_at: Date;
-        last_modified: Date | null;
-        code_employee: number;
-        absence_date: Date;
-        certificate_absence: boolean;
-    }[]>;
-    findOne(id: string): import("generated/prisma").Prisma.Prisma__absenceClient<{
-        id: number;
-        created_at: Date;
-        last_modified: Date | null;
-        code_employee: number;
-        absence_date: Date;
-        certificate_absence: boolean;
-    }, null, import("generated/prisma/runtime/library").DefaultArgs, import("generated/prisma").Prisma.PrismaClientOptions>;
+    findAll(page: string, perPage: string): Promise<{
+        data: {
+            id: number;
+            created_at: Date;
+            last_modified: Date | null;
+            code_employee: string;
+            absence_date: Date;
+            certificate_absence: boolean;
+        }[];
+        page: number;
+        perPage: number;
+        totalRecords: number;
+        totalPages: number;
+        statusCode: import("@nestjs/common").HttpStatus;
+        message: string;
+    }>;
+    findOne(id: string): Promise<{
+        statusCode: import("@nestjs/common").HttpStatus;
+        message: string;
+        data?: undefined;
+    } | {
+        data: {
+            id: number;
+            created_at: Date;
+            last_modified: Date | null;
+            code_employee: string;
+            absence_date: Date;
+            certificate_absence: boolean;
+        };
+        statusCode: import("@nestjs/common").HttpStatus;
+        message: string;
+    }>;
     update(id: string, updateAbsenceDto: UpdateAbsenceDto): Promise<{
-        id: number;
-        created_at: Date;
-        last_modified: Date | null;
-        code_employee: number;
-        absence_date: Date;
-        certificate_absence: boolean;
+        statusCode: import("@nestjs/common").HttpStatus;
+        message: string;
+        data?: undefined;
+    } | {
+        data: {
+            id: number;
+            created_at: Date;
+            last_modified: Date | null;
+            code_employee: string;
+            absence_date: Date;
+            certificate_absence: boolean;
+        };
+        statusCode: import("@nestjs/common").HttpStatus;
+        message: string;
     }>;
-    remove(id: string): import("generated/prisma").Prisma.Prisma__absenceClient<{
-        id: number;
-        created_at: Date;
-        last_modified: Date | null;
-        code_employee: number;
-        absence_date: Date;
-        certificate_absence: boolean;
-    }, never, import("generated/prisma/runtime/library").DefaultArgs, import("generated/prisma").Prisma.PrismaClientOptions>;
+    remove(id: string): Promise<{
+        statusCode: import("@nestjs/common").HttpStatus;
+        message: string;
+        data?: undefined;
+    } | {
+        statusCode: import("@nestjs/common").HttpStatus;
+        message: string;
+        data: {
+            id: number;
+            created_at: Date;
+            last_modified: Date | null;
+            code_employee: string;
+            absence_date: Date;
+            certificate_absence: boolean;
+        };
+    }>;
 }

@@ -1,4 +1,4 @@
 export declare class CreateTicketDto {
-    codeEmployee: number;
+    codeEmployee: string;
     value: number;
 }

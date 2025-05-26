@@ -12,36 +12,141 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CompanyService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
+const date_fns_1 = require("date-fns");
 let CompanyService = class CompanyService {
     constructor(prisma) {
         this.prisma = prisma;
     }
-    create(createCompanyDto) {
-        return this.prisma.company.create({
+    async create(createCompanyDto) {
+        const data = await this.prisma.company.create({
             data: createCompanyDto,
         });
+        return {
+            data,
+            statusCode: common_1.HttpStatus.CREATED,
+            message: 'Company created successfully',
+        };
     }
-    findAll(page, perPage) {
+    async findAll(page, perPage) {
         const skip = page ? (page - 1) * perPage : 0;
         const take = perPage || 10;
-        return this.prisma.company.findMany({
+        const data = await this.prisma.company.findMany({
             skip,
             take,
         });
+        const countCompany = await this.prisma.company.count();
+        return {
+            data,
+            page: page || 1,
+            perPage: perPage || 10,
+            totalRecords: countCompany,
+            totalPages: Math.ceil(countCompany / (perPage || 10)),
+            statusCode: common_1.HttpStatus.OK,
+            message: 'Companies retrieved successfully',
+        };
     }
-    findOne(id) {
-        return this.prisma.company.findUnique({
+    async findAllEmployeeCostByCompany(date) {
+        const companies = await this.prisma.company.findMany({
+            select: {
+                id: true,
+                name: true,
+                employee: {
+                    where: { enabled: true },
+                    select: {
+                        code_employee: true,
+                        name: true,
+                        salary: true,
+                        snack: {
+                            select: { value: true },
+                        },
+                        ticket: {
+                            select: { value: true },
+                        },
+                        absence: {
+                            select: {
+                                absence_date: true,
+                            },
+                        },
+                    },
+                },
+            },
+        });
+        const dateSelected = date ? new Date(date) : new Date();
+        const selectedMonth = dateSelected.getMonth();
+        const selectedYear = dateSelected.getFullYear();
+        const totalDiasNoMes = (0, date_fns_1.getDaysInMonth)(dateSelected);
+        const diasUteis = Array.from({ length: totalDiasNoMes }, (_, i) => {
+            const date = new Date(selectedYear, selectedMonth, i + 1);
+            return !(0, date_fns_1.isWeekend)(date);
+        }).filter(Boolean).length;
+        const result = companies.map((company) => {
+            let totalVT = 0;
+            let totalVR = 0;
+            const totalFuncionariosAtivos = company.employee.length;
+            company.employee.forEach((employee) => {
+                const valorDiarioVT = employee.ticket.reduce((sum, ticket) => sum + Number(ticket.value), 0);
+                const valorDiarioVR = employee.snack.reduce((sum, snack) => sum + Number(snack.value), 0);
+                const faltasNoMes = employee.absence.filter((absence) => {
+                    const dataFalta = new Date(absence.absence_date);
+                    return (dataFalta.getMonth() === selectedMonth &&
+                        dataFalta.getFullYear() === selectedYear);
+                }).length;
+                const valorVT = valorDiarioVT * diasUteis - valorDiarioVT * faltasNoMes;
+                totalVT += valorVT;
+                const valorVR = valorDiarioVR * diasUteis - valorDiarioVR * faltasNoMes;
+                totalVR += valorVR;
+            });
+            return {
+                nameCompany: company.name,
+                totalVT,
+                totalVR,
+                totalFuncionariosAtivos,
+            };
+        });
+        return {
+            data: result,
+            statusCode: common_1.HttpStatus.OK,
+            message: 'Employee costs by company retrieved successfully',
+        };
+    }
+    async findOne(id) {
+        const data = await this.prisma.company.findUnique({
             where: { id },
         });
+        if (!data) {
+            return {
+                statusCode: common_1.HttpStatus.NOT_FOUND,
+                message: 'Company not found',
+            };
+        }
+        return {
+            data,
+            statusCode: common_1.HttpStatus.OK,
+            message: 'Company retrieved successfully',
+        };
     }
-    update(id, updateCompanyDto) {
-        return this.prisma.company.update({
+    async update(id, updateCompanyDto) {
+        const existingCompany = await this.prisma.company.findUnique({
+            where: { id },
+        });
+        if (!existingCompany) {
+            return {
+                statusCode: common_1.HttpStatus.NOT_FOUND,
+                message: 'Company not found',
+            };
+        }
+        const data = await this.prisma.company.update({
             where: { id },
             data: {
                 ...updateCompanyDto,
                 last_modified: new Date(),
             },
         });
+        return {
+            data,
+            statusCode: common_1.HttpStatus.OK,
+            message: 'Company updated successfully',
+        };
     }
 };
 exports.CompanyService = CompanyService;

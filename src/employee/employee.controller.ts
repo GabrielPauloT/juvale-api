@@ -21,26 +21,43 @@ export class EmployeeController {
     return this.employeeService.create(createEmployeeDto);
   }
 
+  @Post('/batch')
+  createBatch(@Body() createEmployeeDtos: CreateEmployeeDto[]) {
+    return this.employeeService.createBatch(createEmployeeDtos);
+  }
+
   @Get()
-  findAll(@Query('page') page: string, @Query('perPage') perPage: string, ) {
-    return this.employeeService.findAll(+page, +perPage);
+  findAll(
+    @Query('page') page: string,
+    @Query('perPage') perPage: string,
+    @Query('companyId') companyId: string,
+    @Query('date') date: string,
+    @Query('name') name?: string,
+  ) {
+    return this.employeeService.findAll(
+      +page,
+      +perPage,
+      +companyId,
+      date,
+      name,
+    );
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.employeeService.findOne(+id);
+  @Get(':code_employee')
+  findOne(@Param('code_employee') code_employee: string) {
+    return this.employeeService.findOne(code_employee);
   }
 
-  @Patch(':id')
+  @Patch(':code_employee')
   update(
-    @Param('id') id: string,
+    @Param('code_employee') code_employee: string,
     @Body() updateEmployeeDto: UpdateEmployeeDto,
   ) {
-    return this.employeeService.update(+id, updateEmployeeDto);
+    return this.employeeService.update(code_employee, updateEmployeeDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.employeeService.remove(+id);
+  @Delete(':code_employee')
+  remove(@Param('code_employee') code_employee: string) {
+    return this.employeeService.remove(code_employee);
   }
 }

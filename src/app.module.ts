@@ -4,6 +4,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { EmployeeModule } from './employee/employee.module';
 import { AbsenceModule } from './absence/absence.module';
 import { TicketModule } from './ticket/ticket.module';
+import { SnackModule } from './snack/snack.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { TicketModule } from './ticket/ticket.module';
     EmployeeModule,
     AbsenceModule,
     TicketModule,
+    SnackModule,
   ],
   controllers: [],
   providers: [],
