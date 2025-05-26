@@ -17,7 +17,7 @@ export declare class PdfService {
         reactivatedEmployees: number;
         message: string;
     }>;
-    extractFuncionariosForInactive(pdfText: string, codeCompany: number): Promise<{
+    extractFuncionariosForInactive(pdfText: string): Promise<{
         statusCode: HttpStatus;
         message: string;
         inactiveEmployees?: undefined;

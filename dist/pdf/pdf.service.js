@@ -103,23 +103,10 @@ let PdfService = class PdfService {
             message: `${insertResult.count} employees inserted successfully`,
         };
     }
-    async extractFuncionariosForInactive(pdfText, codeCompany) {
-        if (!codeCompany) {
-            return {
-                statusCode: common_1.HttpStatus.BAD_REQUEST,
-                message: 'Company code is required',
-            };
-        }
-        const [company, funcionarios] = await Promise.all([
-            this.prisma.company.findUnique({ where: { id: codeCompany } }),
+    async extractFuncionariosForInactive(pdfText) {
+        const [funcionarios] = await Promise.all([
             Promise.resolve(this.extractFuncionarios(pdfText)),
         ]);
-        if (!company) {
-            return {
-                statusCode: common_1.HttpStatus.NOT_FOUND,
-                message: `Company with ID ${codeCompany} not found`,
-            };
-        }
         if (funcionarios.length === 0) {
             return {
                 statusCode: common_1.HttpStatus.NOT_FOUND,

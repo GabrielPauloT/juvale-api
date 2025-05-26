@@ -114,25 +114,10 @@ export class PdfService {
     };
   }
 
-  async extractFuncionariosForInactive(pdfText: string, codeCompany: number) {
-    if (!codeCompany) {
-      return {
-        statusCode: HttpStatus.BAD_REQUEST,
-        message: 'Company code is required',
-      };
-    }
-
-    const [company, funcionarios] = await Promise.all([
-      this.prisma.company.findUnique({ where: { id: codeCompany } }),
+  async extractFuncionariosForInactive(pdfText: string) {
+    const [funcionarios] = await Promise.all([
       Promise.resolve(this.extractFuncionarios(pdfText)),
     ]);
-
-    if (!company) {
-      return {
-        statusCode: HttpStatus.NOT_FOUND,
-        message: `Company with ID ${codeCompany} not found`,
-      };
-    }
 
     if (funcionarios.length === 0) {
       return {

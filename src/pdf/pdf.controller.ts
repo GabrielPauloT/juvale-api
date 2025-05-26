@@ -28,14 +28,8 @@ export class PdfController {
 
   @Post('/upload/inactive')
   @UseInterceptors(FileInterceptor('file'))
-  async uploadToExtractFuncionariosForInactive(
-    @UploadedFile() file,
-    @Query('codeCompany') codeCompany: string,
-  ) {
+  async uploadToExtractFuncionariosForInactive(@UploadedFile() file) {
     const data = await pdfParse(file.buffer);
-    return this.pdfService.extractFuncionariosForInactive(
-      data.text,
-      +codeCompany,
-    );
+    return this.pdfService.extractFuncionariosForInactive(data.text);
   }
 }

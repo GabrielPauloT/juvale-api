@@ -25,9 +25,9 @@ let PdfController = class PdfController {
         const data = await pdfParse(file.buffer);
         return this.pdfService.extractFuncionariosForCreated(data.text, +codeCompany);
     }
-    async uploadToExtractFuncionariosForInactive(file, codeCompany) {
+    async uploadToExtractFuncionariosForInactive(file) {
         const data = await pdfParse(file.buffer);
-        return this.pdfService.extractFuncionariosForInactive(data.text, +codeCompany);
+        return this.pdfService.extractFuncionariosForInactive(data.text);
     }
 };
 exports.PdfController = PdfController;
@@ -44,9 +44,8 @@ __decorate([
     (0, common_1.Post)('/upload/inactive'),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
     __param(0, (0, common_1.UploadedFile)()),
-    __param(1, (0, common_1.Query)('codeCompany')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], PdfController.prototype, "uploadToExtractFuncionariosForInactive", null);
 exports.PdfController = PdfController = __decorate([
