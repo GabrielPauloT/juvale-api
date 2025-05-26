@@ -13,6 +13,7 @@ const prisma_module_1 = require("./prisma/prisma.module");
 const employee_module_1 = require("./employee/employee.module");
 const absence_module_1 = require("./absence/absence.module");
 const ticket_module_1 = require("./ticket/ticket.module");
+const snack_module_1 = require("./snack/snack.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -24,6 +25,7 @@ exports.AppModule = AppModule = __decorate([
             employee_module_1.EmployeeModule,
             absence_module_1.AbsenceModule,
             ticket_module_1.TicketModule,
+            snack_module_1.SnackModule,
         ],
         controllers: [],
         providers: [],

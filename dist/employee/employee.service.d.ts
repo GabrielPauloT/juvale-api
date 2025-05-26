@@ -1,57 +1,149 @@
+import { HttpStatus } from '@nestjs/common';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { Prisma } from 'generated/prisma';
 export declare class EmployeeService {
     private prisma;
     constructor(prisma: PrismaService);
     create(createEmployeeDto: CreateEmployeeDto): Promise<{
-        name: string;
-        id: number;
-        created_at: Date;
-        last_modified: Date | null;
-        salary: import("generated/prisma/runtime/library").Decimal;
-        code_company: number;
-        job_description: string;
-        enabled: boolean;
+        statusCode: HttpStatus;
+        message: string;
+        data?: undefined;
+    } | {
+        data: {
+            code_employee: string;
+            code_company: number;
+            name: string;
+            job_description: string;
+            salary: Prisma.Decimal;
+            created_at: Date;
+            last_modified: Date | null;
+            enabled: boolean;
+        };
+        statusCode: HttpStatus;
+        message: string;
     }>;
-    findAll(page?: number, perPage?: number): import("generated/prisma").Prisma.PrismaPromise<{
-        name: string;
-        id: number;
-        created_at: Date;
-        last_modified: Date | null;
-        salary: import("generated/prisma/runtime/library").Decimal;
-        code_company: number;
-        job_description: string;
-        enabled: boolean;
-    }[]>;
-    findOne(id: number): import("generated/prisma").Prisma.Prisma__employeeClient<{
-        name: string;
-        id: number;
-        created_at: Date;
-        last_modified: Date | null;
-        salary: import("generated/prisma/runtime/library").Decimal;
-        code_company: number;
-        job_description: string;
-        enabled: boolean;
-    }, null, import("generated/prisma/runtime/library").DefaultArgs, import("generated/prisma").Prisma.PrismaClientOptions>;
-    update(id: number, updateEmployeeDto: UpdateEmployeeDto): Promise<{
-        name: string;
-        id: number;
-        created_at: Date;
-        last_modified: Date | null;
-        salary: import("generated/prisma/runtime/library").Decimal;
-        code_company: number;
-        job_description: string;
-        enabled: boolean;
+    createBatch(createEmployeeDtos: CreateEmployeeDto[]): Promise<{
+        data: ({
+            code_employee: string;
+            code_company: number;
+            name: string;
+            job_description: string;
+            salary: Prisma.Decimal;
+            created_at: Date;
+            last_modified: Date | null;
+            enabled: boolean;
+        } | {
+            statusCode: HttpStatus;
+            message: string;
+        })[];
+        statusCode: HttpStatus;
+        message: string;
     }>;
-    remove(id: number): import("generated/prisma").Prisma.Prisma__employeeClient<{
-        name: string;
-        id: number;
-        created_at: Date;
-        last_modified: Date | null;
-        salary: import("generated/prisma/runtime/library").Decimal;
-        code_company: number;
-        job_description: string;
-        enabled: boolean;
-    }, never, import("generated/prisma/runtime/library").DefaultArgs, import("generated/prisma").Prisma.PrismaClientOptions>;
+    findAll(page?: number, perPage?: number, companyId?: number, date?: string, name?: string): Promise<{
+        statusCode: HttpStatus;
+        message: string;
+        data?: undefined;
+        page?: undefined;
+        perPage?: undefined;
+        totalRecords?: undefined;
+        totalPages?: undefined;
+    } | {
+        data: {
+            codeEmployee: string;
+            codeCompany: number;
+            name: string;
+            jobDescription: string;
+            salary: Prisma.Decimal;
+            vr: number;
+            va: number;
+            enabled: boolean;
+            ticket: {
+                code_employee: string;
+                created_at: Date;
+                last_modified: Date | null;
+                id: number;
+                value: Prisma.Decimal;
+            }[];
+            snack: {
+                code_employee: string;
+                created_at: Date;
+                last_modified: Date | null;
+                id: number;
+                value: Prisma.Decimal;
+            }[];
+            absence: {
+                id: number;
+                absence_date: Date;
+                certificate_absence: boolean;
+            }[];
+            company: {
+                name: string;
+                created_at: Date;
+                last_modified: Date | null;
+                id: number;
+            };
+        }[];
+        page: number;
+        perPage: number;
+        totalRecords: number;
+        totalPages: number;
+        statusCode: HttpStatus;
+        message: string;
+    }>;
+    findOne(code_employee: string): Promise<{
+        statusCode: HttpStatus;
+        message: string;
+        data?: undefined;
+    } | {
+        data: {
+            code_employee: string;
+            code_company: number;
+            name: string;
+            job_description: string;
+            salary: Prisma.Decimal;
+            created_at: Date;
+            last_modified: Date | null;
+            enabled: boolean;
+        };
+        statusCode: HttpStatus;
+        message: string;
+    }>;
+    update(code_employee: string, updateEmployeeDto: UpdateEmployeeDto): Promise<{
+        statusCode: HttpStatus;
+        message: string;
+        data?: undefined;
+    } | {
+        data: {
+            code_employee: string;
+            code_company: number;
+            name: string;
+            job_description: string;
+            salary: Prisma.Decimal;
+            created_at: Date;
+            last_modified: Date | null;
+            enabled: boolean;
+        };
+        statusCode: HttpStatus;
+        message: string;
+    }>;
+    remove(code_employee: string): Promise<{
+        statusCode: HttpStatus;
+        message: string;
+        data?: undefined;
+    } | {
+        data: {
+            code_employee: string;
+            code_company: number;
+            name: string;
+            job_description: string;
+            salary: Prisma.Decimal;
+            created_at: Date;
+            last_modified: Date | null;
+            enabled: boolean;
+        };
+        statusCode: HttpStatus;
+        message: string;
+    }>;
 }

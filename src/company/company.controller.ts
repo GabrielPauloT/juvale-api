@@ -35,6 +35,11 @@ export class CompanyController {
     return this.companyService.update(+id, updateCompanyDto);
   }
 
+  @Get('/employee/cost')
+  findAllEmployeeCostByCompany(@Query('date') date: string) {
+    return this.companyService.findAllEmployeeCostByCompany(date);
+  }
+
   // @Delete(':id')
   // remove(@Param('id') id: string) {
   //   return this.companyService.remove(+id);

@@ -10,12 +10,12 @@ datasource db {
 
 model absence {
   id                  Int       @id @default(autoincrement())
-  code_employee       Int
+  code_employee       String
   absence_date        DateTime  @db.Timestamp(6)
   created_at          DateTime  @default(now()) @db.Timestamp(6)
   last_modified       DateTime? @db.Timestamp(6)
   certificate_absence Boolean
-  employee            employee  @relation(fields: [code_employee], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  employee            employee  @relation(fields: [code_employee], references: [code_employee], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model company {
@@ -27,7 +27,7 @@ model company {
 }
 
 model employee {
-  id              Int       @id @default(autoincrement())
+  code_employee   String    @id
   code_company    Int
   name            String    @db.VarChar(255)
   job_description String    @db.VarChar(255)
@@ -38,13 +38,23 @@ model employee {
   absence         absence[]
   company         company   @relation(fields: [code_company], references: [id], onDelete: NoAction, onUpdate: NoAction)
   ticket          ticket[]
+  snack           snack[]
 }
 
 model ticket {
-  id            Int       @id(map: "passage_pkey") @default(autoincrement())
-  code_employee Int
+  id            Int       @id(map: "ticket_pkey") @default(autoincrement())
+  code_employee String
   value         Decimal   @db.Decimal
   created_at    DateTime  @default(now()) @db.Timestamp(6)
   last_modified DateTime? @db.Timestamp(6)
-  employee      employee  @relation(fields: [code_employee], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "passage_code_employee_fkey")
+  employee      employee  @relation(fields: [code_employee], references: [code_employee], onDelete: NoAction, onUpdate: NoAction, map: "passage_code_employee_fkey")
+}
+
+model snack {
+  id            Int       @id(map: "snack_pkey") @default(autoincrement())
+  code_employee String
+  value         Decimal   @db.Decimal
+  created_at    DateTime  @default(now()) @db.Timestamp(6)
+  last_modified DateTime? @db.Timestamp(6)
+  employee      employee  @relation(fields: [code_employee], references: [code_employee], onDelete: NoAction, onUpdate: NoAction, map: "ticket_code_employee_fkey")
 }

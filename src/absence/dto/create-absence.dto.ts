@@ -1,5 +1,5 @@
 export class CreateAbsenceDto {
-  codeEmployee: number;
+  codeEmployee: string;
 
   absenceDate: string;
 

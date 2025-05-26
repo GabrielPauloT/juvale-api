@@ -1,6 +1,10 @@
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateEmployeeDto {
+  @IsString()
+  @IsNotEmpty()
+  public codeEmployee: string;
+
   @IsNumber()
   @IsNotEmpty()
   public codeCompany: number;

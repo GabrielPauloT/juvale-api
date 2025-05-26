@@ -19,24 +19,32 @@ let TicketService = class TicketService {
     async create(createTicketDto) {
         const { codeEmployee } = createTicketDto;
         const employee = await this.prisma.employee.findUnique({
-            where: { id: codeEmployee },
+            where: { code_employee: codeEmployee },
         });
         if (!employee) {
-            throw new Error('Employee not found');
+            return {
+                statusCode: common_1.HttpStatus.NOT_FOUND,
+                message: 'Employee not found',
+            };
         }
-        return this.prisma.ticket.create({
+        const data = await this.prisma.ticket.create({
             data: {
                 value: createTicketDto.value,
                 employee: {
-                    connect: { id: employee.id },
+                    connect: { code_employee: employee.code_employee },
                 },
             },
         });
+        return {
+            data,
+            statusCode: common_1.HttpStatus.CREATED,
+            message: 'Ticket created successfully',
+        };
     }
-    findAll(page, perPage) {
+    async findAll(page, perPage) {
         const skip = page ? (page - 1) * perPage : 0;
         const take = perPage || 10;
-        return this.prisma.ticket.findMany({
+        const data = await this.prisma.ticket.findMany({
             skip,
             take,
             include: {
@@ -48,9 +56,19 @@ let TicketService = class TicketService {
                 },
             },
         });
+        const countTicket = await this.prisma.ticket.count();
+        return {
+            data,
+            page: page || 1,
+            perPage: perPage || 10,
+            totalRecords: countTicket,
+            totalPages: Math.ceil(countTicket / (perPage || 10)),
+            statusCode: common_1.HttpStatus.OK,
+            message: 'Tickets retrieved successfully',
+        };
     }
-    findOne(id) {
-        return this.prisma.ticket.findUnique({
+    async findOne(id) {
+        const data = await this.prisma.ticket.findUnique({
             where: { id },
             include: {
                 employee: {
@@ -61,29 +79,72 @@ let TicketService = class TicketService {
                 },
             },
         });
+        if (!data) {
+            return {
+                statusCode: common_1.HttpStatus.NOT_FOUND,
+                message: 'Ticket not found',
+            };
+        }
+        return {
+            data,
+            statusCode: common_1.HttpStatus.OK,
+            message: 'Ticket retrieved successfully',
+        };
     }
     async update(id, updateTicketDto) {
         const { codeEmployee } = updateTicketDto;
         const employee = await this.prisma.employee.findUnique({
-            where: { id: codeEmployee },
+            where: { code_employee: codeEmployee },
         });
         if (!employee) {
-            throw new Error('Employee not found');
+            return {
+                statusCode: common_1.HttpStatus.NOT_FOUND,
+                message: 'Employee not found',
+            };
         }
-        return this.prisma.ticket.update({
+        const ticket = await this.prisma.ticket.findUnique({
+            where: { id },
+        });
+        if (!ticket) {
+            return {
+                statusCode: common_1.HttpStatus.NOT_FOUND,
+                message: 'Ticket not found',
+            };
+        }
+        const data = await this.prisma.ticket.update({
             where: { id },
             data: {
                 value: updateTicketDto.value,
+                last_modified: new Date(),
                 employee: {
-                    connect: { id: employee.id },
+                    connect: { code_employee: employee.code_employee },
                 },
             },
         });
+        return {
+            data,
+            statusCode: common_1.HttpStatus.OK,
+            message: 'Ticket updated successfully',
+        };
     }
-    remove(id) {
-        return this.prisma.ticket.delete({
+    async remove(id) {
+        const ticket = await this.prisma.ticket.findUnique({
             where: { id },
         });
+        if (!ticket) {
+            return {
+                statusCode: common_1.HttpStatus.NOT_FOUND,
+                message: 'Ticket not found',
+            };
+        }
+        const data = await this.prisma.ticket.delete({
+            where: { id },
+        });
+        return {
+            data,
+            statusCode: common_1.HttpStatus.OK,
+            message: 'Ticket deleted successfully',
+        };
     }
 };
 exports.TicketService = TicketService;

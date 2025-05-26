@@ -24,17 +24,20 @@ let EmployeeController = class EmployeeController {
     create(createEmployeeDto) {
         return this.employeeService.create(createEmployeeDto);
     }
-    findAll(page, perPage) {
-        return this.employeeService.findAll(+page, +perPage);
+    createBatch(createEmployeeDtos) {
+        return this.employeeService.createBatch(createEmployeeDtos);
     }
-    findOne(id) {
-        return this.employeeService.findOne(+id);
+    findAll(page, perPage, companyId, date, name) {
+        return this.employeeService.findAll(+page, +perPage, +companyId, date, name);
     }
-    update(id, updateEmployeeDto) {
-        return this.employeeService.update(+id, updateEmployeeDto);
+    findOne(code_employee) {
+        return this.employeeService.findOne(code_employee);
     }
-    remove(id) {
-        return this.employeeService.remove(+id);
+    update(code_employee, updateEmployeeDto) {
+        return this.employeeService.update(code_employee, updateEmployeeDto);
+    }
+    remove(code_employee) {
+        return this.employeeService.remove(code_employee);
     }
 };
 exports.EmployeeController = EmployeeController;
@@ -46,31 +49,41 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], EmployeeController.prototype, "create", null);
 __decorate([
+    (0, common_1.Post)('/batch'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Array]),
+    __metadata("design:returntype", void 0)
+], EmployeeController.prototype, "createBatch", null);
+__decorate([
     (0, common_1.Get)(),
     __param(0, (0, common_1.Query)('page')),
     __param(1, (0, common_1.Query)('perPage')),
+    __param(2, (0, common_1.Query)('companyId')),
+    __param(3, (0, common_1.Query)('date')),
+    __param(4, (0, common_1.Query)('name')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:paramtypes", [String, String, String, String, String]),
     __metadata("design:returntype", void 0)
 ], EmployeeController.prototype, "findAll", null);
 __decorate([
-    (0, common_1.Get)(':id'),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.Get)(':code_employee'),
+    __param(0, (0, common_1.Param)('code_employee')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], EmployeeController.prototype, "findOne", null);
 __decorate([
-    (0, common_1.Patch)(':id'),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.Patch)(':code_employee'),
+    __param(0, (0, common_1.Param)('code_employee')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, update_employee_dto_1.UpdateEmployeeDto]),
     __metadata("design:returntype", void 0)
 ], EmployeeController.prototype, "update", null);
 __decorate([
-    (0, common_1.Delete)(':id'),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.Delete)(':code_employee'),
+    __param(0, (0, common_1.Param)('code_employee')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)

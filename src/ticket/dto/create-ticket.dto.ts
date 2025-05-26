@@ -1,5 +1,5 @@
 export class CreateTicketDto {
-  codeEmployee: number;
+  codeEmployee: string;
 
   value: number;
 }

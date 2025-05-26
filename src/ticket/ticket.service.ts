@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -10,27 +10,36 @@ export class TicketService {
     const { codeEmployee } = createTicketDto;
 
     const employee = await this.prisma.employee.findUnique({
-      where: { id: codeEmployee },
+      where: { code_employee: codeEmployee },
     });
 
     if (!employee) {
-      throw new Error('Employee not found');
+      return {
+        statusCode: HttpStatus.NOT_FOUND,
+        message: 'Employee not found',
+      };
     }
 
-    return this.prisma.ticket.create({
+    const data = await this.prisma.ticket.create({
       data: {
         value: createTicketDto.value,
         employee: {
-          connect: { id: employee.id },
+          connect: { code_employee: employee.code_employee },
         },
       },
     });
+
+    return {
+      data,
+      statusCode: HttpStatus.CREATED,
+      message: 'Ticket created successfully',
+    };
   }
 
-  findAll(page?: number, perPage?: number) {
+  async findAll(page?: number, perPage?: number) {
     const skip = page ? (page - 1) * perPage : 0;
     const take = perPage || 10;
-    return this.prisma.ticket.findMany({
+    const data = await this.prisma.ticket.findMany({
       skip,
       take,
       include: {
@@ -42,10 +51,20 @@ export class TicketService {
         },
       },
     });
+    const countTicket = await this.prisma.ticket.count();
+    return {
+      data,
+      page: page || 1,
+      perPage: perPage || 10,
+      totalRecords: countTicket,
+      totalPages: Math.ceil(countTicket / (perPage || 10)),
+      statusCode: HttpStatus.OK,
+      message: 'Tickets retrieved successfully',
+    };
   }
 
-  findOne(id: number) {
-    return this.prisma.ticket.findUnique({
+  async findOne(id: number) {
+    const data = await this.prisma.ticket.findUnique({
       where: { id },
       include: {
         employee: {
@@ -56,33 +75,82 @@ export class TicketService {
         },
       },
     });
+    if (!data) {
+      return {
+        statusCode: HttpStatus.NOT_FOUND,
+        message: 'Ticket not found',
+      };
+    }
+    return {
+      data,
+      statusCode: HttpStatus.OK,
+      message: 'Ticket retrieved successfully',
+    };
   }
 
   async update(id: number, updateTicketDto: UpdateTicketDto) {
     const { codeEmployee } = updateTicketDto;
 
     const employee = await this.prisma.employee.findUnique({
-      where: { id: codeEmployee },
+      where: { code_employee: codeEmployee },
     });
 
     if (!employee) {
-      throw new Error('Employee not found');
+      return {
+        statusCode: HttpStatus.NOT_FOUND,
+        message: 'Employee not found',
+      };
     }
 
-    return this.prisma.ticket.update({
+    const ticket = await this.prisma.ticket.findUnique({
+      where: { id },
+    });
+
+    if (!ticket) {
+      return {
+        statusCode: HttpStatus.NOT_FOUND,
+        message: 'Ticket not found',
+      };
+    }
+
+    const data = await this.prisma.ticket.update({
       where: { id },
       data: {
         value: updateTicketDto.value,
+        last_modified: new Date(),
         employee: {
-          connect: { id: employee.id },
+          connect: { code_employee: employee.code_employee },
         },
       },
     });
+
+    return {
+      data,
+      statusCode: HttpStatus.OK,
+      message: 'Ticket updated successfully',
+    };
   }
 
-  remove(id: number) {
-    return this.prisma.ticket.delete({
+  async remove(id: number) {
+    const ticket = await this.prisma.ticket.findUnique({
       where: { id },
     });
+
+    if (!ticket) {
+      return {
+        statusCode: HttpStatus.NOT_FOUND,
+        message: 'Ticket not found',
+      };
+    }
+
+    const data = await this.prisma.ticket.delete({
+      where: { id },
+    });
+
+    return {
+      data,
+      statusCode: HttpStatus.OK,
+      message: 'Ticket deleted successfully',
+    };
   }
 }

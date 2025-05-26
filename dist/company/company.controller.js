@@ -33,6 +33,9 @@ let CompanyController = class CompanyController {
     update(id, updateCompanyDto) {
         return this.companyService.update(+id, updateCompanyDto);
     }
+    findAllEmployeeCostByCompany(date) {
+        return this.companyService.findAllEmployeeCostByCompany(date);
+    }
 };
 exports.CompanyController = CompanyController;
 __decorate([
@@ -65,6 +68,13 @@ __decorate([
     __metadata("design:paramtypes", [String, update_company_dto_1.UpdateCompanyDto]),
     __metadata("design:returntype", void 0)
 ], CompanyController.prototype, "update", null);
+__decorate([
+    (0, common_1.Get)('/employee/cost'),
+    __param(0, (0, common_1.Query)('date')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], CompanyController.prototype, "findAllEmployeeCostByCompany", null);
 exports.CompanyController = CompanyController = __decorate([
     (0, common_1.Controller)('company'),
     __metadata("design:paramtypes", [company_service_1.CompanyService])
