@@ -5,6 +5,7 @@ import { EmployeeModule } from './employee/employee.module';
 import { AbsenceModule } from './absence/absence.module';
 import { TicketModule } from './ticket/ticket.module';
 import { SnackModule } from './snack/snack.module';
+import { PdfModule } from './pdf/pdf.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { SnackModule } from './snack/snack.module';
     AbsenceModule,
     TicketModule,
     SnackModule,
+    PdfModule,
   ],
   controllers: [],
   providers: [],
