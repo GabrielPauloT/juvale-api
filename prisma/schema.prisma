@@ -58,3 +58,13 @@ model snack {
   last_modified DateTime? @db.Timestamp(6)
   employee      employee  @relation(fields: [code_employee], references: [code_employee], onDelete: NoAction, onUpdate: NoAction, map: "ticket_code_employee_fkey")
 }
+
+model user {
+  id            Int       @id(map: "user_pkey") @default(autoincrement())
+  name          String    @db.VarChar(255)
+  email         String    @unique @db.VarChar(255)
+  password      String    @db.VarChar(255)
+  role          String    @db.VarChar(50)
+  created_at    DateTime  @default(now()) @db.Timestamp(6)
+  last_modified DateTime? @db.Timestamp(6)
+}

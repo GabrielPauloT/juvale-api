@@ -15,6 +15,9 @@ const absence_module_1 = require("./absence/absence.module");
 const ticket_module_1 = require("./ticket/ticket.module");
 const snack_module_1 = require("./snack/snack.module");
 const pdf_module_1 = require("./pdf/pdf.module");
+const auth_module_1 = require("./auth/auth.module");
+const user_module_1 = require("./user/user.module");
+const jwt_1 = require("@nestjs/jwt");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -28,6 +31,9 @@ exports.AppModule = AppModule = __decorate([
             ticket_module_1.TicketModule,
             snack_module_1.SnackModule,
             pdf_module_1.PdfModule,
+            auth_module_1.AuthModule,
+            user_module_1.UserModule,
+            jwt_1.JwtModule,
         ],
         controllers: [],
         providers: [],
