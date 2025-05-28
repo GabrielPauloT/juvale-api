@@ -26,4 +26,8 @@ export declare class PdfService {
         inactiveEmployees: number;
         message: string;
     }>;
+    generateCompanyCostReport(date?: string): Promise<Buffer>;
+    generateEmployeeCostReport(date?: string): Promise<Buffer>;
+    generateEmployeeCostReportWithAbsences(date?: string): Promise<Buffer>;
+    private insertBackgroundImage;
 }

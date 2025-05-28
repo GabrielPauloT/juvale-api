@@ -1,4 +1,5 @@
 import { PdfService } from './pdf.service';
+import { Response } from 'express';
 export declare class PdfController {
     private readonly pdfService;
     constructor(pdfService: PdfService);
@@ -24,4 +25,7 @@ export declare class PdfController {
         inactiveEmployees: number;
         message: string;
     }>;
+    generateReportByCompany(date: string, res: Response): Promise<void>;
+    generateReportByEmployee(date: string, res: Response): Promise<void>;
+    generateEmployeeCostReportWithAbsences(date: string, res: Response): Promise<void>;
 }

@@ -12,13 +12,13 @@ export declare class EmployeeService {
         data?: undefined;
     } | {
         data: {
-            name: string;
-            created_at: Date;
-            last_modified: Date | null;
             code_employee: string;
             code_company: number;
+            name: string;
             job_description: string;
             salary: Prisma.Decimal;
+            created_at: Date;
+            last_modified: Date | null;
             enabled: boolean;
         };
         statusCode: HttpStatus;
@@ -26,13 +26,13 @@ export declare class EmployeeService {
     }>;
     createBatch(createEmployeeDtos: CreateEmployeeDto[]): Promise<{
         data: ({
-            name: string;
-            created_at: Date;
-            last_modified: Date | null;
             code_employee: string;
             code_company: number;
+            name: string;
             job_description: string;
             salary: Prisma.Decimal;
+            created_at: Date;
+            last_modified: Date | null;
             enabled: boolean;
         } | {
             statusCode: HttpStatus;
@@ -55,22 +55,22 @@ export declare class EmployeeService {
             codeCompany: number;
             name: string;
             jobDescription: string;
-            salary: Prisma.Decimal;
-            vr: number;
-            va: number;
+            salary: string;
+            vr: string;
+            va: string;
             enabled: boolean;
             ticket: {
-                id: number;
+                code_employee: string;
                 created_at: Date;
                 last_modified: Date | null;
-                code_employee: string;
+                id: number;
                 value: Prisma.Decimal;
             }[];
             snack: {
-                id: number;
+                code_employee: string;
                 created_at: Date;
                 last_modified: Date | null;
-                code_employee: string;
+                id: number;
                 value: Prisma.Decimal;
             }[];
             absence: {
@@ -80,9 +80,9 @@ export declare class EmployeeService {
             }[];
             company: {
                 name: string;
-                id: number;
                 created_at: Date;
                 last_modified: Date | null;
+                id: number;
             };
         }[];
         page: number;
@@ -98,13 +98,13 @@ export declare class EmployeeService {
         data?: undefined;
     } | {
         data: {
-            name: string;
-            created_at: Date;
-            last_modified: Date | null;
             code_employee: string;
             code_company: number;
+            name: string;
             job_description: string;
             salary: Prisma.Decimal;
+            created_at: Date;
+            last_modified: Date | null;
             enabled: boolean;
         };
         statusCode: HttpStatus;
@@ -116,13 +116,13 @@ export declare class EmployeeService {
         data?: undefined;
     } | {
         data: {
-            name: string;
-            created_at: Date;
-            last_modified: Date | null;
             code_employee: string;
             code_company: number;
+            name: string;
             job_description: string;
             salary: Prisma.Decimal;
+            created_at: Date;
+            last_modified: Date | null;
             enabled: boolean;
         };
         statusCode: HttpStatus;
@@ -134,13 +134,13 @@ export declare class EmployeeService {
         data?: undefined;
     } | {
         data: {
-            name: string;
-            created_at: Date;
-            last_modified: Date | null;
             code_employee: string;
             code_company: number;
+            name: string;
             job_description: string;
             salary: Prisma.Decimal;
+            created_at: Date;
+            last_modified: Date | null;
             enabled: boolean;
         };
         statusCode: HttpStatus;

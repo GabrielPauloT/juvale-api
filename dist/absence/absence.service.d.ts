@@ -6,24 +6,24 @@ export declare class AbsenceService {
     private prisma;
     constructor(prisma: PrismaService);
     create(createAbsenceDto: CreateAbsenceDto): Promise<{
-        data: import("generated/prisma").Prisma.Prisma__absenceClient<{
+        data: {
             id: number;
-            created_at: Date;
-            last_modified: Date | null;
             code_employee: string;
             absence_date: Date;
+            created_at: Date;
+            last_modified: Date | null;
             certificate_absence: boolean;
-        }, never, import("generated/prisma/runtime/library").DefaultArgs, import("generated/prisma").Prisma.PrismaClientOptions>;
+        };
         statusCode: HttpStatus;
         message: string;
     }>;
     findAll(page?: number, perPage?: number): Promise<{
         data: {
             id: number;
-            created_at: Date;
-            last_modified: Date | null;
             code_employee: string;
             absence_date: Date;
+            created_at: Date;
+            last_modified: Date | null;
             certificate_absence: boolean;
         }[];
         page: number;
@@ -40,10 +40,10 @@ export declare class AbsenceService {
     } | {
         data: {
             id: number;
-            created_at: Date;
-            last_modified: Date | null;
             code_employee: string;
             absence_date: Date;
+            created_at: Date;
+            last_modified: Date | null;
             certificate_absence: boolean;
         };
         statusCode: HttpStatus;
@@ -56,10 +56,10 @@ export declare class AbsenceService {
     } | {
         data: {
             id: number;
-            created_at: Date;
-            last_modified: Date | null;
             code_employee: string;
             absence_date: Date;
+            created_at: Date;
+            last_modified: Date | null;
             certificate_absence: boolean;
         };
         statusCode: HttpStatus;
@@ -74,10 +74,10 @@ export declare class AbsenceService {
         message: string;
         data: {
             id: number;
-            created_at: Date;
-            last_modified: Date | null;
             code_employee: string;
             absence_date: Date;
+            created_at: Date;
+            last_modified: Date | null;
             certificate_absence: boolean;
         };
     }>;

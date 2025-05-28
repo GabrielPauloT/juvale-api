@@ -11,6 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PdfService = void 0;
 const common_1 = require("@nestjs/common");
+const date_fns_1 = require("date-fns");
+const PDFDocument = require("pdfkit");
 const prisma_service_1 = require("../prisma/prisma.service");
 let PdfService = class PdfService {
     constructor(prisma) {
@@ -136,6 +138,289 @@ let PdfService = class PdfService {
             inactiveEmployees: codigos.length,
             message: `${countUpdate.count} employees marked as inactive successfully`,
         };
+    }
+    async generateCompanyCostReport(date) {
+        const companies = await this.prisma.company.findMany({
+            select: {
+                name: true,
+                employee: {
+                    where: { enabled: true },
+                    select: {
+                        salary: true,
+                        ticket: { select: { value: true } },
+                        snack: { select: { value: true } },
+                        absence: { select: { absence_date: true } },
+                    },
+                },
+            },
+        });
+        const dateSelected = date ? new Date(date) : new Date();
+        const selectedMonth = dateSelected.getMonth();
+        const selectedYear = dateSelected.getFullYear();
+        const diasUteis = Array.from({ length: (0, date_fns_1.getDaysInMonth)(dateSelected) }, (_, i) => {
+            const d = new Date(selectedYear, selectedMonth, i + 1);
+            return !(0, date_fns_1.isWeekend)(d);
+        }).filter(Boolean).length;
+        const doc = new PDFDocument({ margin: 50 });
+        const buffers = [];
+        this.insertBackgroundImage(doc, 'src/assets/logo.png');
+        doc.on('data', buffers.push.bind(buffers));
+        doc.on('end', () => { });
+        doc
+            .fontSize(18)
+            .text('Relatório de Gastos por Empresa', { align: 'center' })
+            .moveDown(2);
+        let totalGeral = 0;
+        for (const company of companies) {
+            let totalVR = 0;
+            let totalVT = 0;
+            for (const emp of company.employee) {
+                const faltas = emp.absence.filter((a) => {
+                    const d = new Date(a.absence_date);
+                    return (d.getMonth() === selectedMonth && d.getFullYear() === selectedYear);
+                }).length;
+                const vr = emp.snack.reduce((s, i) => s + Number(i.value), 0);
+                const vt = emp.ticket.reduce((s, i) => s + Number(i.value), 0);
+                totalVR += vr * (diasUteis - faltas);
+                totalVT += vt * (diasUteis - faltas);
+            }
+            const total = totalVR + totalVT;
+            totalGeral += total;
+            doc.fontSize(14).text(`Empresa: ${company.name}`).moveDown(0.5);
+            doc.fontSize(12);
+            doc.text(`Total Vale Refeição (VR): R$ ${totalVR.toFixed(2).replace('.', ',')}`);
+            doc.text(`Total Vale Transporte (VT): R$ ${totalVT.toFixed(2).replace('.', ',')}`);
+            doc.moveDown(1);
+            doc.moveDown();
+        }
+        doc
+            .moveDown(1.5)
+            .font('Helvetica-Bold')
+            .fontSize(12)
+            .text(`Total Geral: R$ ${totalGeral.toFixed(2).replace('.', ',')}`, {
+            align: 'right',
+        });
+        doc.end();
+        return new Promise((resolve) => {
+            doc.on('end', () => {
+                const pdfBuffer = Buffer.concat(buffers);
+                resolve(pdfBuffer);
+            });
+        });
+    }
+    async generateEmployeeCostReport(date) {
+        const employees = await this.prisma.employee.findMany({
+            where: { enabled: true },
+            orderBy: {
+                code_company: 'asc',
+            },
+            include: {
+                company: true,
+                snack: { select: { value: true } },
+                ticket: { select: { value: true } },
+                absence: { select: { absence_date: true } },
+            },
+        });
+        const dateSelected = date ? new Date(date) : new Date();
+        const selectedMonth = dateSelected.getMonth();
+        const selectedYear = dateSelected.getFullYear();
+        const diasUteis = Array.from({ length: (0, date_fns_1.getDaysInMonth)(dateSelected) }, (_, i) => {
+            const d = new Date(selectedYear, selectedMonth, i + 1);
+            return !(0, date_fns_1.isWeekend)(d);
+        }).filter(Boolean).length;
+        const doc = new PDFDocument({ margin: 40 });
+        const buffers = [];
+        this.insertBackgroundImage(doc, 'src/assets/logo.png');
+        doc.on('data', buffers.push.bind(buffers));
+        doc
+            .fontSize(18)
+            .text('Relatório de Gastos por Funcionário', { align: 'center' })
+            .moveDown(1.5);
+        const tableHeaders = [
+            'Funcionário',
+            'Empresa',
+            'Salário',
+            'VR',
+            'VT',
+            'Total',
+        ];
+        const columnWidths = [150, 100, 70, 70, 70, 70];
+        const startX = doc.page.margins.left;
+        let y = doc.y;
+        function drawRow(y, values, isHeader = false) {
+            const rowHeight = 30;
+            doc.font(isHeader ? 'Helvetica-Bold' : 'Helvetica').fontSize(10);
+            values.forEach((text, i) => {
+                const x = startX + columnWidths.slice(0, i).reduce((a, b) => a + b, 0);
+                doc.rect(x, y, columnWidths[i], rowHeight).stroke();
+                doc.text(text, x + 5, y + 5, {
+                    width: columnWidths[i] - 10,
+                    align: i < 2 ? 'left' : 'right',
+                });
+            });
+            return y + rowHeight;
+        }
+        y = drawRow(y, tableHeaders, true);
+        let totalGeral = 0;
+        for (const emp of employees) {
+            const faltas = emp.absence.filter((a) => {
+                const d = new Date(a.absence_date);
+                return (d.getMonth() === selectedMonth && d.getFullYear() === selectedYear);
+            }).length;
+            const vr = emp.snack.reduce((s, i) => s + Number(i.value), 0) *
+                (diasUteis - faltas);
+            const vt = emp.ticket.reduce((s, i) => s + Number(i.value), 0) *
+                (diasUteis - faltas);
+            const total = vr + vt;
+            totalGeral += total;
+            const rowData = [
+                emp.name,
+                emp.company.name,
+                `R$ ${emp.salary.toFixed(2).replace('.', ',')}`,
+                `R$ ${vr.toFixed(2).replace('.', ',')}`,
+                `R$ ${vt.toFixed(2).replace('.', ',')}`,
+                `R$ ${total.toFixed(2).replace('.', ',')}`,
+            ];
+            if (y + 25 > doc.page.height - doc.page.margins.bottom) {
+                doc.addPage();
+                this.insertBackgroundImage(doc, 'src/assets/logo.png');
+                y = doc.y;
+                y = drawRow(y, tableHeaders, true);
+            }
+            y = drawRow(y, rowData);
+        }
+        doc
+            .moveDown(1.5)
+            .font('Helvetica-Bold')
+            .fontSize(12)
+            .text(`Total Geral: R$ ${totalGeral.toFixed(2).replace('.', ',')}`, doc.page.margins.left, undefined, {
+            align: 'right',
+            width: doc.page.width -
+                doc.page.margins.left -
+                doc.page.margins.right -
+                20,
+        });
+        doc.end();
+        return new Promise((resolve) => {
+            doc.on('end', () => {
+                const pdfBuffer = Buffer.concat(buffers);
+                resolve(pdfBuffer);
+            });
+        });
+    }
+    async generateEmployeeCostReportWithAbsences(date) {
+        const employees = await this.prisma.employee.findMany({
+            where: { enabled: true },
+            orderBy: { code_company: 'asc' },
+            include: {
+                company: true,
+                snack: { select: { value: true } },
+                ticket: { select: { value: true } },
+                absence: { select: { absence_date: true } },
+            },
+        });
+        const dateSelected = date ? new Date(date) : new Date();
+        const selectedMonth = dateSelected.getMonth();
+        const selectedYear = dateSelected.getFullYear();
+        const diasUteis = Array.from({ length: (0, date_fns_1.getDaysInMonth)(dateSelected) }, (_, i) => {
+            const d = new Date(selectedYear, selectedMonth, i + 1);
+            return !(0, date_fns_1.isWeekend)(d);
+        }).filter(Boolean).length;
+        const doc = new PDFDocument({ margin: 40 });
+        const buffers = [];
+        this.insertBackgroundImage(doc, 'src/assets/logo.png');
+        doc.on('data', buffers.push.bind(buffers));
+        doc
+            .fontSize(18)
+            .text('Relatório de Gastos por Funcionário (com Faltas)', {
+            align: 'center',
+        })
+            .moveDown(1.5);
+        const tableHeaders = [
+            'Funcionário',
+            'Empresa',
+            'Salário',
+            'VR',
+            'VT',
+            'Faltas',
+            'Total',
+        ];
+        const columnWidths = [120, 90, 70, 70, 70, 70, 50];
+        const startX = doc.page.margins.left;
+        let y = doc.y;
+        const drawRow = (y, values, isHeader = false) => {
+            const rowHeight = 30;
+            doc.font(isHeader ? 'Helvetica-Bold' : 'Helvetica').fontSize(10);
+            values.forEach((text, i) => {
+                const x = startX + columnWidths.slice(0, i).reduce((a, b) => a + b, 0);
+                doc.rect(x, y, columnWidths[i], rowHeight).stroke();
+                doc.text(text, x + 5, y + 5, {
+                    width: columnWidths[i] - 10,
+                    align: i < 2 ? 'left' : 'right',
+                });
+            });
+            return y + rowHeight;
+        };
+        y = drawRow(y, tableHeaders, true);
+        let totalGeral = 0;
+        for (const emp of employees) {
+            const faltas = emp.absence.filter((a) => {
+                const d = new Date(a.absence_date);
+                return (d.getMonth() === selectedMonth && d.getFullYear() === selectedYear);
+            }).length;
+            const vr = emp.snack.reduce((s, i) => s + Number(i.value), 0) *
+                (diasUteis - faltas);
+            const vt = emp.ticket.reduce((s, i) => s + Number(i.value), 0) *
+                (diasUteis - faltas);
+            const total = vr + vt;
+            totalGeral += total;
+            const rowData = [
+                emp.name,
+                emp.company.name,
+                `R$ ${emp.salary.toFixed(2).replace('.', ',')}`,
+                `R$ ${vr.toFixed(2).replace('.', ',')}`,
+                `R$ ${vt.toFixed(2).replace('.', ',')}`,
+                `${faltas}`,
+                `R$ ${total.toFixed(2).replace('.', ',')}`,
+            ];
+            if (y + 25 > doc.page.height - doc.page.margins.bottom) {
+                doc.addPage();
+                this.insertBackgroundImage(doc, 'src/assets/logo.png');
+                y = doc.y;
+                y = drawRow(y, tableHeaders, true);
+            }
+            y = drawRow(y, rowData);
+        }
+        doc
+            .moveDown(1.5)
+            .font('Helvetica-Bold')
+            .fontSize(12)
+            .text(`Total Geral: R$ ${totalGeral.toFixed(2).replace('.', ',')}`, doc.page.margins.left, undefined, {
+            align: 'right',
+            width: doc.page.width -
+                doc.page.margins.left -
+                doc.page.margins.right -
+                20,
+        });
+        doc.end();
+        return new Promise((resolve) => {
+            doc.on('end', () => {
+                const pdfBuffer = Buffer.concat(buffers);
+                resolve(pdfBuffer);
+            });
+        });
+    }
+    insertBackgroundImage(doc, imagePath) {
+        const pageWidth = doc.page.width;
+        const pageHeight = doc.page.height;
+        const imageSize = 250;
+        const x = (pageWidth - imageSize) / 2;
+        const y = (pageHeight - imageSize) / 2;
+        doc.save();
+        doc.opacity(0.08);
+        doc.image(imagePath, x, y, { width: imageSize, height: imageSize });
+        doc.opacity(1);
+        doc.restore();
     }
 };
 exports.PdfService = PdfService;

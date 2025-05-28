@@ -19,7 +19,7 @@ export class AbsenceService {
       throw new Error('Employee not found');
     }
 
-    const data = this.prisma.absence.create({
+    const data = await this.prisma.absence.create({
       data: {
         employee: {
           connect: { code_employee: employeeId.code_employee },

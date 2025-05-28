@@ -5,24 +5,24 @@ export declare class AbsenceController {
     private readonly absenceService;
     constructor(absenceService: AbsenceService);
     create(createAbsenceDto: CreateAbsenceDto): Promise<{
-        data: import("generated/prisma").Prisma.Prisma__absenceClient<{
+        data: {
             id: number;
-            created_at: Date;
-            last_modified: Date | null;
             code_employee: string;
             absence_date: Date;
+            created_at: Date;
+            last_modified: Date | null;
             certificate_absence: boolean;
-        }, never, import("generated/prisma/runtime/library").DefaultArgs, import("generated/prisma").Prisma.PrismaClientOptions>;
+        };
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;
     }>;
     findAll(page: string, perPage: string): Promise<{
         data: {
             id: number;
-            created_at: Date;
-            last_modified: Date | null;
             code_employee: string;
             absence_date: Date;
+            created_at: Date;
+            last_modified: Date | null;
             certificate_absence: boolean;
         }[];
         page: number;
@@ -39,10 +39,10 @@ export declare class AbsenceController {
     } | {
         data: {
             id: number;
-            created_at: Date;
-            last_modified: Date | null;
             code_employee: string;
             absence_date: Date;
+            created_at: Date;
+            last_modified: Date | null;
             certificate_absence: boolean;
         };
         statusCode: import("@nestjs/common").HttpStatus;
@@ -55,10 +55,10 @@ export declare class AbsenceController {
     } | {
         data: {
             id: number;
-            created_at: Date;
-            last_modified: Date | null;
             code_employee: string;
             absence_date: Date;
+            created_at: Date;
+            last_modified: Date | null;
             certificate_absence: boolean;
         };
         statusCode: import("@nestjs/common").HttpStatus;
@@ -73,10 +73,10 @@ export declare class AbsenceController {
         message: string;
         data: {
             id: number;
-            created_at: Date;
-            last_modified: Date | null;
             code_employee: string;
             absence_date: Date;
+            created_at: Date;
+            last_modified: Date | null;
             certificate_absence: boolean;
         };
     }>;
