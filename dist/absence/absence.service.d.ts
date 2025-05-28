@@ -8,10 +8,10 @@ export declare class AbsenceService {
     create(createAbsenceDto: CreateAbsenceDto): Promise<{
         data: {
             id: number;
-            code_employee: string;
-            absence_date: Date;
             created_at: Date;
             last_modified: Date | null;
+            code_employee: string;
+            absence_date: Date;
             certificate_absence: boolean;
         };
         statusCode: HttpStatus;
@@ -20,10 +20,10 @@ export declare class AbsenceService {
     findAll(page?: number, perPage?: number): Promise<{
         data: {
             id: number;
-            code_employee: string;
-            absence_date: Date;
             created_at: Date;
             last_modified: Date | null;
+            code_employee: string;
+            absence_date: Date;
             certificate_absence: boolean;
         }[];
         page: number;
@@ -40,10 +40,10 @@ export declare class AbsenceService {
     } | {
         data: {
             id: number;
-            code_employee: string;
-            absence_date: Date;
             created_at: Date;
             last_modified: Date | null;
+            code_employee: string;
+            absence_date: Date;
             certificate_absence: boolean;
         };
         statusCode: HttpStatus;
@@ -56,10 +56,10 @@ export declare class AbsenceService {
     } | {
         data: {
             id: number;
-            code_employee: string;
-            absence_date: Date;
             created_at: Date;
             last_modified: Date | null;
+            code_employee: string;
+            absence_date: Date;
             certificate_absence: boolean;
         };
         statusCode: HttpStatus;
@@ -74,10 +74,10 @@ export declare class AbsenceService {
         message: string;
         data: {
             id: number;
-            code_employee: string;
-            absence_date: Date;
             created_at: Date;
             last_modified: Date | null;
+            code_employee: string;
+            absence_date: Date;
             certificate_absence: boolean;
         };
     }>;

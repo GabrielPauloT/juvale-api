@@ -12,6 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PdfService = void 0;
 const common_1 = require("@nestjs/common");
 const date_fns_1 = require("date-fns");
+const path = require("path");
+const fs = require("fs");
 const PDFDocument = require("pdfkit");
 const prisma_service_1 = require("../prisma/prisma.service");
 let PdfService = class PdfService {
@@ -163,7 +165,7 @@ let PdfService = class PdfService {
         }).filter(Boolean).length;
         const doc = new PDFDocument({ margin: 50 });
         const buffers = [];
-        this.insertBackgroundImage(doc, 'src/assets/logo.png');
+        this.insertBackgroundImage(doc);
         doc.on('data', buffers.push.bind(buffers));
         doc.on('end', () => { });
         doc
@@ -230,7 +232,7 @@ let PdfService = class PdfService {
         }).filter(Boolean).length;
         const doc = new PDFDocument({ margin: 40 });
         const buffers = [];
-        this.insertBackgroundImage(doc, 'src/assets/logo.png');
+        this.insertBackgroundImage(doc);
         doc.on('data', buffers.push.bind(buffers));
         doc
             .fontSize(18)
@@ -283,7 +285,7 @@ let PdfService = class PdfService {
             ];
             if (y + 25 > doc.page.height - doc.page.margins.bottom) {
                 doc.addPage();
-                this.insertBackgroundImage(doc, 'src/assets/logo.png');
+                this.insertBackgroundImage(doc);
                 y = doc.y;
                 y = drawRow(y, tableHeaders, true);
             }
@@ -328,7 +330,7 @@ let PdfService = class PdfService {
         }).filter(Boolean).length;
         const doc = new PDFDocument({ margin: 40 });
         const buffers = [];
-        this.insertBackgroundImage(doc, 'src/assets/logo.png');
+        this.insertBackgroundImage(doc);
         doc.on('data', buffers.push.bind(buffers));
         doc
             .fontSize(18)
@@ -385,7 +387,7 @@ let PdfService = class PdfService {
             ];
             if (y + 25 > doc.page.height - doc.page.margins.bottom) {
                 doc.addPage();
-                this.insertBackgroundImage(doc, 'src/assets/logo.png');
+                this.insertBackgroundImage(doc);
                 y = doc.y;
                 y = drawRow(y, tableHeaders, true);
             }
@@ -410,17 +412,23 @@ let PdfService = class PdfService {
             });
         });
     }
-    insertBackgroundImage(doc, imagePath) {
+    insertBackgroundImage(doc) {
         const pageWidth = doc.page.width;
         const pageHeight = doc.page.height;
         const imageSize = 250;
         const x = (pageWidth - imageSize) / 2;
         const y = (pageHeight - imageSize) / 2;
-        doc.save();
-        doc.opacity(0.08);
-        doc.image(imagePath, x, y, { width: imageSize, height: imageSize });
-        doc.opacity(1);
-        doc.restore();
+        const resolvedPath = path.resolve(__dirname, '..', 'logo.png');
+        if (fs.existsSync(resolvedPath)) {
+            doc.save();
+            doc.opacity(0.08);
+            doc.image(resolvedPath, x, y, { width: imageSize, height: imageSize });
+            doc.opacity(1);
+            doc.restore();
+        }
+        else {
+            console.warn('Logo não encontrada em:', resolvedPath);
+        }
     }
 };
 exports.PdfService = PdfService;

@@ -1,5 +1,7 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { getDaysInMonth, isWeekend } from 'date-fns';
+import * as path from 'path';
+import * as fs from 'fs';
 import * as PDFDocument from 'pdfkit';
 import { PrismaService } from 'src/prisma/prisma.service';
 
@@ -185,7 +187,7 @@ export class PdfService {
     const doc = new PDFDocument({ margin: 50 });
     const buffers: Buffer[] = [];
 
-    this.insertBackgroundImage(doc, 'src/assets/logo.png');
+    this.insertBackgroundImage(doc);
 
     doc.on('data', buffers.push.bind(buffers));
     doc.on('end', () => {});
@@ -277,7 +279,7 @@ export class PdfService {
     const doc = new PDFDocument({ margin: 40 });
     const buffers: Buffer[] = [];
 
-    this.insertBackgroundImage(doc, 'src/assets/logo.png');
+    this.insertBackgroundImage(doc);
 
     doc.on('data', buffers.push.bind(buffers));
 
@@ -347,7 +349,7 @@ export class PdfService {
 
       if (y + 25 > doc.page.height - doc.page.margins.bottom) {
         doc.addPage();
-        this.insertBackgroundImage(doc, 'src/assets/logo.png');
+        this.insertBackgroundImage(doc);
         y = doc.y;
         y = drawRow(y, tableHeaders, true);
       }
@@ -409,7 +411,7 @@ export class PdfService {
     const doc = new PDFDocument({ margin: 40 });
     const buffers: Buffer[] = [];
 
-    this.insertBackgroundImage(doc, 'src/assets/logo.png');
+    this.insertBackgroundImage(doc);
 
     doc.on('data', buffers.push.bind(buffers));
 
@@ -482,7 +484,7 @@ export class PdfService {
 
       if (y + 25 > doc.page.height - doc.page.margins.bottom) {
         doc.addPage();
-        this.insertBackgroundImage(doc, 'src/assets/logo.png');
+        this.insertBackgroundImage(doc);
         y = doc.y;
         y = drawRow(y, tableHeaders, true);
       }
@@ -518,7 +520,7 @@ export class PdfService {
     });
   }
 
-  private insertBackgroundImage(doc: PDFDocument, imagePath: string) {
+  private insertBackgroundImage(doc: PDFDocument) {
     const pageWidth = doc.page.width;
     const pageHeight = doc.page.height;
 
@@ -526,10 +528,16 @@ export class PdfService {
     const x = (pageWidth - imageSize) / 2;
     const y = (pageHeight - imageSize) / 2;
 
-    doc.save();
-    doc.opacity(0.08);
-    doc.image(imagePath, x, y, { width: imageSize, height: imageSize });
-    doc.opacity(1);
-    doc.restore();
+    const resolvedPath = path.resolve(__dirname, '..', 'logo.png');
+
+    if (fs.existsSync(resolvedPath)) {
+      doc.save();
+      doc.opacity(0.08);
+      doc.image(resolvedPath, x, y, { width: imageSize, height: imageSize });
+      doc.opacity(1);
+      doc.restore();
+    } else {
+      console.warn('Logo não encontrada em:', resolvedPath);
+    }
   }
 }

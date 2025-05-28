@@ -10,13 +10,13 @@ export declare class EmployeeController {
         data?: undefined;
     } | {
         data: {
-            code_employee: string;
-            code_company: number;
             name: string;
-            job_description: string;
-            salary: import("generated/prisma/runtime/library").Decimal;
             created_at: Date;
             last_modified: Date | null;
+            code_employee: string;
+            code_company: number;
+            job_description: string;
+            salary: import("generated/prisma/runtime/library").Decimal;
             enabled: boolean;
         };
         statusCode: import("@nestjs/common").HttpStatus;
@@ -24,13 +24,13 @@ export declare class EmployeeController {
     }>;
     createBatch(createEmployeeDtos: CreateEmployeeDto[]): Promise<{
         data: ({
-            code_employee: string;
-            code_company: number;
             name: string;
-            job_description: string;
-            salary: import("generated/prisma/runtime/library").Decimal;
             created_at: Date;
             last_modified: Date | null;
+            code_employee: string;
+            code_company: number;
+            job_description: string;
+            salary: import("generated/prisma/runtime/library").Decimal;
             enabled: boolean;
         } | {
             statusCode: import("@nestjs/common").HttpStatus;
@@ -58,17 +58,17 @@ export declare class EmployeeController {
             va: string;
             enabled: boolean;
             ticket: {
-                code_employee: string;
+                id: number;
                 created_at: Date;
                 last_modified: Date | null;
-                id: number;
+                code_employee: string;
                 value: import("generated/prisma/runtime/library").Decimal;
             }[];
             snack: {
-                code_employee: string;
+                id: number;
                 created_at: Date;
                 last_modified: Date | null;
-                id: number;
+                code_employee: string;
                 value: import("generated/prisma/runtime/library").Decimal;
             }[];
             absence: {
@@ -78,9 +78,9 @@ export declare class EmployeeController {
             }[];
             company: {
                 name: string;
+                id: number;
                 created_at: Date;
                 last_modified: Date | null;
-                id: number;
             };
         }[];
         page: number;
@@ -96,13 +96,13 @@ export declare class EmployeeController {
         data?: undefined;
     } | {
         data: {
-            code_employee: string;
-            code_company: number;
             name: string;
-            job_description: string;
-            salary: import("generated/prisma/runtime/library").Decimal;
             created_at: Date;
             last_modified: Date | null;
+            code_employee: string;
+            code_company: number;
+            job_description: string;
+            salary: import("generated/prisma/runtime/library").Decimal;
             enabled: boolean;
         };
         statusCode: import("@nestjs/common").HttpStatus;
@@ -114,13 +114,13 @@ export declare class EmployeeController {
         data?: undefined;
     } | {
         data: {
-            code_employee: string;
-            code_company: number;
             name: string;
-            job_description: string;
-            salary: import("generated/prisma/runtime/library").Decimal;
             created_at: Date;
             last_modified: Date | null;
+            code_employee: string;
+            code_company: number;
+            job_description: string;
+            salary: import("generated/prisma/runtime/library").Decimal;
             enabled: boolean;
         };
         statusCode: import("@nestjs/common").HttpStatus;
@@ -132,13 +132,13 @@ export declare class EmployeeController {
         data?: undefined;
     } | {
         data: {
-            code_employee: string;
-            code_company: number;
             name: string;
-            job_description: string;
-            salary: import("generated/prisma/runtime/library").Decimal;
             created_at: Date;
             last_modified: Date | null;
+            code_employee: string;
+            code_company: number;
+            job_description: string;
+            salary: import("generated/prisma/runtime/library").Decimal;
             enabled: boolean;
         };
         statusCode: import("@nestjs/common").HttpStatus;
