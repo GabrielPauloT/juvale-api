@@ -206,7 +206,7 @@ let EmployeeService = class EmployeeService {
         };
     }
     async update(code_employee, updateEmployeeDto) {
-        const { codeCompany } = updateEmployeeDto;
+        const { codeCompany, snackValue } = updateEmployeeDto;
         const company = await this.prisma.company.findUnique({
             where: { id: codeCompany },
         });
@@ -224,6 +224,32 @@ let EmployeeService = class EmployeeService {
                 statusCode: common_1.HttpStatus.NOT_FOUND,
                 message: 'Employee not found',
             };
+        }
+        const snack = await this.prisma.snack.findMany({
+            where: { code_employee },
+        });
+        if (snack.length === 0) {
+            await this.prisma.snack.create({
+                data: {
+                    value: snackValue,
+                    employee: {
+                        connect: { code_employee: employee.code_employee },
+                    },
+                },
+            });
+        }
+        else {
+            await this.prisma.snack.update({
+                where: {
+                    id: snack[0].id,
+                },
+                data: {
+                    value: snackValue,
+                    employee: {
+                        connect: { code_employee: employee.code_employee },
+                    },
+                },
+            });
         }
         const data = await this.prisma.employee.update({
             where: { code_employee },
