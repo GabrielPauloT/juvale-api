@@ -56,8 +56,10 @@ export declare class EmployeeService {
             name: string;
             jobDescription: string;
             salary: string;
-            vr: string;
-            va: string;
+            vtTotal: string;
+            vtPerDay: string;
+            vrTotal: string;
+            vrPerDay: string;
             enabled: boolean;
             ticket: {
                 id: number;
