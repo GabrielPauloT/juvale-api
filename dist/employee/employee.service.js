@@ -208,7 +208,7 @@ let EmployeeService = class EmployeeService {
     async update(code_employee, updateEmployeeDto) {
         const { codeCompany, snackValue } = updateEmployeeDto;
         const company = await this.prisma.company.findUnique({
-            where: { id: codeCompany },
+            where: { id: Number(codeCompany) },
         });
         if (!company) {
             return {

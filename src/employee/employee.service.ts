@@ -247,7 +247,7 @@ export class EmployeeService {
     const { codeCompany, snackValue } = updateEmployeeDto;
 
     const company = await this.prisma.company.findUnique({
-      where: { id: codeCompany },
+      where: { id: Number(codeCompany) },
     });
 
     if (!company) {
