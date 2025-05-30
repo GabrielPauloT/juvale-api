@@ -17,13 +17,16 @@ let AbsenceService = class AbsenceService {
         this.prisma = prisma;
     }
     async create(createAbsenceDto) {
-        const { codeEmployee, absenceDate, cerficateAbsence } = createAbsenceDto;
+        const { codeEmployee, absenceDate, certificateAbsence } = createAbsenceDto;
         const absenceDateObj = new Date(absenceDate);
         const employeeId = await this.prisma.employee.findUnique({
             where: { code_employee: codeEmployee },
         });
         if (!employeeId) {
-            throw new Error('Employee not found');
+            return {
+                statusCode: common_1.HttpStatus.NOT_FOUND,
+                message: 'Employee not found',
+            };
         }
         const data = await this.prisma.absence.create({
             data: {
@@ -31,7 +34,7 @@ let AbsenceService = class AbsenceService {
                     connect: { code_employee: employeeId.code_employee },
                 },
                 absence_date: absenceDateObj,
-                certificate_absence: cerficateAbsence,
+                certificate_absence: certificateAbsence,
             },
         });
         return {
@@ -75,7 +78,7 @@ let AbsenceService = class AbsenceService {
         };
     }
     async update(id, updateAbsenceDto) {
-        const { codeEmployee, absenceDate, cerficateAbsence } = updateAbsenceDto;
+        const { codeEmployee, absenceDate, certificateAbsence: cerficateAbsence, } = updateAbsenceDto;
         const absenceDateObj = new Date(absenceDate);
         const employeeId = await this.prisma.employee.findUnique({
             where: { code_employee: codeEmployee },

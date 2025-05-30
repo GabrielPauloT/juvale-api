@@ -3,5 +3,5 @@ export class CreateAbsenceDto {
 
   absenceDate: string;
 
-  cerficateAbsence: boolean;
+  certificateAbsence: boolean;
 }

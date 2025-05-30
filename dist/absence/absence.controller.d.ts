@@ -5,12 +5,16 @@ export declare class AbsenceController {
     private readonly absenceService;
     constructor(absenceService: AbsenceService);
     create(createAbsenceDto: CreateAbsenceDto): Promise<{
+        statusCode: import("@nestjs/common").HttpStatus;
+        message: string;
+        data?: undefined;
+    } | {
         data: {
             id: number;
-            created_at: Date;
-            last_modified: Date | null;
             code_employee: string;
             absence_date: Date;
+            created_at: Date;
+            last_modified: Date | null;
             certificate_absence: boolean;
         };
         statusCode: import("@nestjs/common").HttpStatus;
@@ -19,10 +23,10 @@ export declare class AbsenceController {
     findAll(page: string, perPage: string): Promise<{
         data: {
             id: number;
-            created_at: Date;
-            last_modified: Date | null;
             code_employee: string;
             absence_date: Date;
+            created_at: Date;
+            last_modified: Date | null;
             certificate_absence: boolean;
         }[];
         page: number;
@@ -39,10 +43,10 @@ export declare class AbsenceController {
     } | {
         data: {
             id: number;
-            created_at: Date;
-            last_modified: Date | null;
             code_employee: string;
             absence_date: Date;
+            created_at: Date;
+            last_modified: Date | null;
             certificate_absence: boolean;
         };
         statusCode: import("@nestjs/common").HttpStatus;
@@ -55,10 +59,10 @@ export declare class AbsenceController {
     } | {
         data: {
             id: number;
-            created_at: Date;
-            last_modified: Date | null;
             code_employee: string;
             absence_date: Date;
+            created_at: Date;
+            last_modified: Date | null;
             certificate_absence: boolean;
         };
         statusCode: import("@nestjs/common").HttpStatus;
@@ -73,10 +77,10 @@ export declare class AbsenceController {
         message: string;
         data: {
             id: number;
-            created_at: Date;
-            last_modified: Date | null;
             code_employee: string;
             absence_date: Date;
+            created_at: Date;
+            last_modified: Date | null;
             certificate_absence: boolean;
         };
     }>;
