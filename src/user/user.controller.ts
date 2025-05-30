@@ -25,8 +25,9 @@ export class UserController {
   findAll(
     @Query('page') page: number = 1,
     @Query('perPage') perPage: number = 10,
+    @Query('name') name?: string,
   ) {
-    return this.userService.findAll(+page, +perPage);
+    return this.userService.findAll(+page, +perPage, name);
   }
 
   @Get(':id')

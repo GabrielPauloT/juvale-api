@@ -18,7 +18,7 @@ export declare class UserController {
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;
     }>;
-    findAll(page?: number, perPage?: number): Promise<{
+    findAll(page?: number, perPage?: number, name?: string): Promise<{
         data: {
             id: number;
             name: string;

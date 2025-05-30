@@ -24,8 +24,8 @@ let UserController = class UserController {
     create(createUserDto) {
         return this.userService.create(createUserDto);
     }
-    findAll(page = 1, perPage = 10) {
-        return this.userService.findAll(+page, +perPage);
+    findAll(page = 1, perPage = 10, name) {
+        return this.userService.findAll(+page, +perPage, name);
     }
     findOne(id) {
         return this.userService.findOne(+id);
@@ -49,8 +49,9 @@ __decorate([
     (0, common_1.Get)(),
     __param(0, (0, common_1.Query)('page')),
     __param(1, (0, common_1.Query)('perPage')),
+    __param(2, (0, common_1.Query)('name')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, Number]),
+    __metadata("design:paramtypes", [Number, Number, String]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "findAll", null);
 __decorate([

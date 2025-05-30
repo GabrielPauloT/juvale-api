@@ -46,12 +46,16 @@ let UserService = class UserService {
             message: 'User created successfully',
         };
     }
-    async findAll(page, perPage) {
+    async findAll(page, perPage, name) {
         const skip = page ? (page - 1) * perPage : 0;
         const take = perPage || 10;
+        const whereClause = {
+            ...(name ? { name: { contains: name, mode: 'insensitive' } } : {}),
+        };
         const data = await this.prisma.user.findMany({
             skip,
             take,
+            where: whereClause,
         });
         const countUsers = await this.prisma.user.count();
         return {
@@ -68,7 +72,7 @@ let UserService = class UserService {
             totalRecords: countUsers,
             totalPages: Math.ceil(countUsers / (perPage || 10)),
             statusCode: common_1.HttpStatus.OK,
-            message: 'Tickets retrieved successfully',
+            message: 'Users retrieved successfully',
         };
     }
     async findOne(id) {

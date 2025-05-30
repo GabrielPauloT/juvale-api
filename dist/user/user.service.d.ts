@@ -19,7 +19,7 @@ export declare class UserService {
         statusCode: HttpStatus;
         message: string;
     }>;
-    findAll(page: any, perPage: any): Promise<{
+    findAll(page: any, perPage: any, name: any): Promise<{
         data: {
             id: number;
             name: string;

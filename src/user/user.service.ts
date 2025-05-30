@@ -3,6 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
+import { Prisma } from 'generated/prisma';
 
 @Injectable()
 export class UserService {
@@ -41,14 +42,22 @@ export class UserService {
     };
   }
 
-  async findAll(page, perPage) {
+  async findAll(page, perPage, name) {
     const skip = page ? (page - 1) * perPage : 0;
     const take = perPage || 10;
+
+    const whereClause: Prisma.userWhereInput = {
+      ...(name ? { name: { contains: name, mode: 'insensitive' } } : {}),
+    };
+
     const data = await this.prisma.user.findMany({
       skip,
       take,
+      where: whereClause,
     });
+
     const countUsers = await this.prisma.user.count();
+
     return {
       data: data.map((user) => ({
         id: user.id,
@@ -63,7 +72,7 @@ export class UserService {
       totalRecords: countUsers,
       totalPages: Math.ceil(countUsers / (perPage || 10)),
       statusCode: HttpStatus.OK,
-      message: 'Tickets retrieved successfully',
+      message: 'Users retrieved successfully',
     };
   }
 
