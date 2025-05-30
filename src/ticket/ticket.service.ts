@@ -2,6 +2,7 @@ import { HttpStatus, Injectable } from '@nestjs/common';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateTicketManyDto } from './dto/create-ticket-many.dto';
 
 @Injectable()
 export class TicketService {
@@ -33,6 +34,48 @@ export class TicketService {
       data,
       statusCode: HttpStatus.CREATED,
       message: 'Ticket created successfully',
+    };
+  }
+
+  async createMany(tickets: CreateTicketManyDto[]) {
+    const codeEmployees = tickets.map((t) => t.codeEmployee);
+
+    const existingTickets = await this.prisma.ticket.findMany({
+      where: { employee: { code_employee: { in: codeEmployees } } },
+    });
+
+    const toCreate = tickets.filter((ticket) => {
+      return !existingTickets.some(
+        (et) => et.code_employee === ticket.codeEmployee && et.id === ticket.id,
+      );
+    });
+
+    const toDelete = existingTickets.filter((et) => {
+      return !tickets.some(
+        (ticket) =>
+          ticket.id === et.id && ticket.codeEmployee === et.code_employee,
+      );
+    });
+
+    await this.prisma.$transaction([
+      ...toDelete.map((t) =>
+        this.prisma.ticket.delete({ where: { id: t.id } }),
+      ),
+      ...toCreate.map((ticket) =>
+        this.prisma.ticket.create({
+          data: {
+            value: ticket.value,
+            employee: {
+              connect: { code_employee: ticket.codeEmployee },
+            },
+          },
+        }),
+      ),
+    ]);
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: `Processado com sucesso: criados ${toCreate.length}, removidos ${toDelete.length}`,
     };
   }
 

@@ -41,6 +41,33 @@ let TicketService = class TicketService {
             message: 'Ticket created successfully',
         };
     }
+    async createMany(tickets) {
+        const codeEmployees = tickets.map((t) => t.codeEmployee);
+        const existingTickets = await this.prisma.ticket.findMany({
+            where: { employee: { code_employee: { in: codeEmployees } } },
+        });
+        const toCreate = tickets.filter((ticket) => {
+            return !existingTickets.some((et) => et.code_employee === ticket.codeEmployee && et.id === ticket.id);
+        });
+        const toDelete = existingTickets.filter((et) => {
+            return !tickets.some((ticket) => ticket.id === et.id && ticket.codeEmployee === et.code_employee);
+        });
+        await this.prisma.$transaction([
+            ...toDelete.map((t) => this.prisma.ticket.delete({ where: { id: t.id } })),
+            ...toCreate.map((ticket) => this.prisma.ticket.create({
+                data: {
+                    value: ticket.value,
+                    employee: {
+                        connect: { code_employee: ticket.codeEmployee },
+                    },
+                },
+            })),
+        ]);
+        return {
+            statusCode: common_1.HttpStatus.OK,
+            message: `Processado com sucesso: criados ${toCreate.length}, removidos ${toDelete.length}`,
+        };
+    }
     async findAll(page, perPage) {
         const skip = page ? (page - 1) * perPage : 0;
         const take = perPage || 10;

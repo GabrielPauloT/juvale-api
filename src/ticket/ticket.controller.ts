@@ -11,6 +11,7 @@ import {
 import { TicketService } from './ticket.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
+import { CreateTicketManyDto } from './dto/create-ticket-many.dto';
 
 @Controller('ticket')
 export class TicketController {
@@ -19,6 +20,11 @@ export class TicketController {
   @Post()
   create(@Body() createTicketDto: CreateTicketDto) {
     return this.ticketService.create(createTicketDto);
+  }
+
+  @Post('/batch')
+  async createMany(@Body() body: CreateTicketManyDto[]) {
+    return this.ticketService.createMany(body);
   }
 
   @Get()

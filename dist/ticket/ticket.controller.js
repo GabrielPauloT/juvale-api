@@ -24,6 +24,9 @@ let TicketController = class TicketController {
     create(createTicketDto) {
         return this.ticketService.create(createTicketDto);
     }
+    async createMany(body) {
+        return this.ticketService.createMany(body);
+    }
     findAll(page, perPage) {
         return this.ticketService.findAll(+page, +perPage);
     }
@@ -45,6 +48,13 @@ __decorate([
     __metadata("design:paramtypes", [create_ticket_dto_1.CreateTicketDto]),
     __metadata("design:returntype", void 0)
 ], TicketController.prototype, "create", null);
+__decorate([
+    (0, common_1.Post)('/batch'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Array]),
+    __metadata("design:returntype", Promise)
+], TicketController.prototype, "createMany", null);
 __decorate([
     (0, common_1.Get)(),
     __param(0, (0, common_1.Query)('page')),

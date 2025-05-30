@@ -2,6 +2,7 @@ import { HttpStatus } from '@nestjs/common';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateTicketManyDto } from './dto/create-ticket-many.dto';
 export declare class TicketService {
     private prisma;
     constructor(prisma: PrismaService);
@@ -12,11 +13,15 @@ export declare class TicketService {
     } | {
         data: {
             id: number;
-            created_at: Date;
-            last_modified: Date | null;
             code_employee: string;
             value: import("generated/prisma/runtime/library").Decimal;
+            created_at: Date;
+            last_modified: Date | null;
         };
+        statusCode: HttpStatus;
+        message: string;
+    }>;
+    createMany(tickets: CreateTicketManyDto[]): Promise<{
         statusCode: HttpStatus;
         message: string;
     }>;
@@ -28,10 +33,10 @@ export declare class TicketService {
             };
         } & {
             id: number;
-            created_at: Date;
-            last_modified: Date | null;
             code_employee: string;
             value: import("generated/prisma/runtime/library").Decimal;
+            created_at: Date;
+            last_modified: Date | null;
         })[];
         page: number;
         perPage: number;
@@ -52,10 +57,10 @@ export declare class TicketService {
             };
         } & {
             id: number;
-            created_at: Date;
-            last_modified: Date | null;
             code_employee: string;
             value: import("generated/prisma/runtime/library").Decimal;
+            created_at: Date;
+            last_modified: Date | null;
         };
         statusCode: HttpStatus;
         message: string;
@@ -67,10 +72,10 @@ export declare class TicketService {
     } | {
         data: {
             id: number;
-            created_at: Date;
-            last_modified: Date | null;
             code_employee: string;
             value: import("generated/prisma/runtime/library").Decimal;
+            created_at: Date;
+            last_modified: Date | null;
         };
         statusCode: HttpStatus;
         message: string;
@@ -82,10 +87,10 @@ export declare class TicketService {
     } | {
         data: {
             id: number;
-            created_at: Date;
-            last_modified: Date | null;
             code_employee: string;
             value: import("generated/prisma/runtime/library").Decimal;
+            created_at: Date;
+            last_modified: Date | null;
         };
         statusCode: HttpStatus;
         message: string;

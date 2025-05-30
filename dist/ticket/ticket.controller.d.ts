@@ -1,6 +1,7 @@
 import { TicketService } from './ticket.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
+import { CreateTicketManyDto } from './dto/create-ticket-many.dto';
 export declare class TicketController {
     private readonly ticketService;
     constructor(ticketService: TicketService);
@@ -11,11 +12,15 @@ export declare class TicketController {
     } | {
         data: {
             id: number;
-            created_at: Date;
-            last_modified: Date | null;
             code_employee: string;
             value: import("generated/prisma/runtime/library").Decimal;
+            created_at: Date;
+            last_modified: Date | null;
         };
+        statusCode: import("@nestjs/common").HttpStatus;
+        message: string;
+    }>;
+    createMany(body: CreateTicketManyDto[]): Promise<{
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;
     }>;
@@ -27,10 +32,10 @@ export declare class TicketController {
             };
         } & {
             id: number;
-            created_at: Date;
-            last_modified: Date | null;
             code_employee: string;
             value: import("generated/prisma/runtime/library").Decimal;
+            created_at: Date;
+            last_modified: Date | null;
         })[];
         page: number;
         perPage: number;
@@ -51,10 +56,10 @@ export declare class TicketController {
             };
         } & {
             id: number;
-            created_at: Date;
-            last_modified: Date | null;
             code_employee: string;
             value: import("generated/prisma/runtime/library").Decimal;
+            created_at: Date;
+            last_modified: Date | null;
         };
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;
@@ -66,10 +71,10 @@ export declare class TicketController {
     } | {
         data: {
             id: number;
-            created_at: Date;
-            last_modified: Date | null;
             code_employee: string;
             value: import("generated/prisma/runtime/library").Decimal;
+            created_at: Date;
+            last_modified: Date | null;
         };
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;
@@ -81,10 +86,10 @@ export declare class TicketController {
     } | {
         data: {
             id: number;
-            created_at: Date;
-            last_modified: Date | null;
             code_employee: string;
             value: import("generated/prisma/runtime/library").Decimal;
+            created_at: Date;
+            last_modified: Date | null;
         };
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;
