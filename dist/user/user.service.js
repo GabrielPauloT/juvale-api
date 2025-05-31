@@ -106,13 +106,20 @@ let UserService = class UserService {
                 message: 'User not found',
             };
         }
-        const updateData = {
-            email: updateUserDto.email,
-            role: updateUserDto.role,
-            name: updateUserDto.name,
-            password: updateUserDto.password,
-        };
-        if (updateUserDto.password) {
+        const password = updateUserDto.password?.trim();
+        const updateData = password
+            ? {
+                email: updateUserDto.email,
+                role: updateUserDto.role,
+                name: updateUserDto.name,
+                password: updateUserDto.password,
+            }
+            : {
+                email: updateUserDto.email,
+                role: updateUserDto.role,
+                name: updateUserDto.name,
+            };
+        if (password) {
             updateData.password = await bcrypt.hash(updateUserDto.password, 10);
         }
         const updatedUser = await this.prisma.user.update({

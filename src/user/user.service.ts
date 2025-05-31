@@ -112,14 +112,22 @@ export class UserService {
       };
     }
 
-    const updateData = {
-      email: updateUserDto.email,
-      role: updateUserDto.role,
-      name: updateUserDto.name,
-      password: updateUserDto.password,
-    };
+    const password = updateUserDto.password?.trim();
 
-    if (updateUserDto.password) {
+    const updateData = password
+      ? {
+          email: updateUserDto.email,
+          role: updateUserDto.role,
+          name: updateUserDto.name,
+          password: updateUserDto.password,
+        }
+      : {
+          email: updateUserDto.email,
+          role: updateUserDto.role,
+          name: updateUserDto.name,
+        };
+
+    if (password) {
       updateData.password = await bcrypt.hash(updateUserDto.password, 10);
     }
 
