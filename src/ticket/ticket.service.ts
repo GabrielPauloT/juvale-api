@@ -50,6 +50,12 @@ export class TicketService {
       );
     });
 
+    const toUpdate = tickets.filter((ticket) => {
+      return existingTickets.some(
+        (et) => et.code_employee === ticket.codeEmployee && et.id === ticket.id,
+      );
+    });
+
     const toDelete = existingTickets.filter((et) => {
       return !tickets.some(
         (ticket) =>
@@ -71,11 +77,19 @@ export class TicketService {
           },
         }),
       ),
+      ...toUpdate.map((ticket) =>
+        this.prisma.ticket.updateMany({
+          where: { id: ticket.id },
+          data: {
+            value: ticket.value,
+          },
+        }),
+      ),
     ]);
 
     return {
       statusCode: HttpStatus.OK,
-      message: `Processado com sucesso: criados ${toCreate.length}, removidos ${toDelete.length}`,
+      message: `Processado com sucesso: criados ${toCreate.length}, removidos ${toDelete.length}, atualizados ${toUpdate.length}`,
     };
   }
 
