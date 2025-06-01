@@ -13,10 +13,10 @@ export declare class TicketService {
     } | {
         data: {
             id: number;
-            code_employee: string;
-            value: import("generated/prisma/runtime/library").Decimal;
             created_at: Date;
             last_modified: Date | null;
+            code_employee: string;
+            value: import("generated/prisma/runtime/library").Decimal;
         };
         statusCode: HttpStatus;
         message: string;
@@ -33,10 +33,10 @@ export declare class TicketService {
             };
         } & {
             id: number;
-            code_employee: string;
-            value: import("generated/prisma/runtime/library").Decimal;
             created_at: Date;
             last_modified: Date | null;
+            code_employee: string;
+            value: import("generated/prisma/runtime/library").Decimal;
         })[];
         page: number;
         perPage: number;
@@ -57,10 +57,10 @@ export declare class TicketService {
             };
         } & {
             id: number;
-            code_employee: string;
-            value: import("generated/prisma/runtime/library").Decimal;
             created_at: Date;
             last_modified: Date | null;
+            code_employee: string;
+            value: import("generated/prisma/runtime/library").Decimal;
         };
         statusCode: HttpStatus;
         message: string;
@@ -72,10 +72,10 @@ export declare class TicketService {
     } | {
         data: {
             id: number;
-            code_employee: string;
-            value: import("generated/prisma/runtime/library").Decimal;
             created_at: Date;
             last_modified: Date | null;
+            code_employee: string;
+            value: import("generated/prisma/runtime/library").Decimal;
         };
         statusCode: HttpStatus;
         message: string;
@@ -87,10 +87,10 @@ export declare class TicketService {
     } | {
         data: {
             id: number;
-            code_employee: string;
-            value: import("generated/prisma/runtime/library").Decimal;
             created_at: Date;
             last_modified: Date | null;
+            code_employee: string;
+            value: import("generated/prisma/runtime/library").Decimal;
         };
         statusCode: HttpStatus;
         message: string;

@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const employee_service_1 = require("./employee.service");
 const create_employee_dto_1 = require("./dto/create-employee.dto");
 const update_employee_dto_1 = require("./dto/update-employee.dto");
+const jwt_verify_interceptors_1 = require("../core/guards/jwt-verify.interceptors");
 let EmployeeController = class EmployeeController {
     constructor(employeeService) {
         this.employeeService = employeeService;
@@ -90,6 +91,7 @@ __decorate([
 ], EmployeeController.prototype, "remove", null);
 exports.EmployeeController = EmployeeController = __decorate([
     (0, common_1.Controller)('employee'),
+    (0, common_1.UseGuards)(jwt_verify_interceptors_1.JwtAuthGuard),
     __metadata("design:paramtypes", [employee_service_1.EmployeeService])
 ], EmployeeController);
 //# sourceMappingURL=employee.controller.js.map

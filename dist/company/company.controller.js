@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const company_service_1 = require("./company.service");
 const create_company_dto_1 = require("./dto/create-company.dto");
 const update_company_dto_1 = require("./dto/update-company.dto");
+const jwt_verify_interceptors_1 = require("../core/guards/jwt-verify.interceptors");
 let CompanyController = class CompanyController {
     constructor(companyService) {
         this.companyService = companyService;
@@ -77,6 +78,7 @@ __decorate([
 ], CompanyController.prototype, "findAllEmployeeCostByCompany", null);
 exports.CompanyController = CompanyController = __decorate([
     (0, common_1.Controller)('company'),
+    (0, common_1.UseGuards)(jwt_verify_interceptors_1.JwtAuthGuard),
     __metadata("design:paramtypes", [company_service_1.CompanyService])
 ], CompanyController);
 //# sourceMappingURL=company.controller.js.map

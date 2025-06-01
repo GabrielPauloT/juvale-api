@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const snack_service_1 = require("./snack.service");
 const create_snack_dto_1 = require("./dto/create-snack.dto");
 const update_snack_dto_1 = require("./dto/update-snack.dto");
+const jwt_verify_interceptors_1 = require("../core/guards/jwt-verify.interceptors");
 let SnackController = class SnackController {
     constructor(snackService) {
         this.snackService = snackService;
@@ -75,6 +76,7 @@ __decorate([
 ], SnackController.prototype, "remove", null);
 exports.SnackController = SnackController = __decorate([
     (0, common_1.Controller)('snack'),
+    (0, common_1.UseGuards)(jwt_verify_interceptors_1.JwtAuthGuard),
     __metadata("design:paramtypes", [snack_service_1.SnackService])
 ], SnackController);
 //# sourceMappingURL=snack.controller.js.map

@@ -7,13 +7,16 @@ import {
   Param,
   Delete,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { TicketService } from './ticket.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
 import { CreateTicketManyDto } from './dto/create-ticket-many.dto';
+import { JwtAuthGuard } from 'src/core/guards/jwt-verify.interceptors';
 
 @Controller('ticket')
+@UseGuards(JwtAuthGuard)
 export class TicketController {
   constructor(private readonly ticketService: TicketService) {}
 

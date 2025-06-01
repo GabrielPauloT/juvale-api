@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const pdf_service_1 = require("./pdf.service");
 const platform_express_1 = require("@nestjs/platform-express");
 const pdfParse = require("pdf-parse");
+const jwt_verify_interceptors_1 = require("../core/guards/jwt-verify.interceptors");
 let PdfController = class PdfController {
     constructor(pdfService) {
         this.pdfService = pdfService;
@@ -98,6 +99,7 @@ __decorate([
 ], PdfController.prototype, "generateEmployeeCostReportWithAbsences", null);
 exports.PdfController = PdfController = __decorate([
     (0, common_1.Controller)('pdf'),
+    (0, common_1.UseGuards)(jwt_verify_interceptors_1.JwtAuthGuard),
     __metadata("design:paramtypes", [pdf_service_1.PdfService])
 ], PdfController);
 //# sourceMappingURL=pdf.controller.js.map

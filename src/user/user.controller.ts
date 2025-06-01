@@ -7,12 +7,16 @@ import {
   Param,
   Delete,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { AdminGuard } from 'src/core/guards/admin.guards';
+import { JwtAuthGuard } from 'src/core/guards/jwt-verify.interceptors';
 
 @Controller('user')
+@UseGuards(JwtAuthGuard, AdminGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 

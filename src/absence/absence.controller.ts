@@ -7,12 +7,15 @@ import {
   Param,
   Delete,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { AbsenceService } from './absence.service';
 import { CreateAbsenceDto } from './dto/create-absence.dto';
 import { UpdateAbsenceDto } from './dto/update-absence.dto';
+import { JwtAuthGuard } from 'src/core/guards/jwt-verify.interceptors';
 
 @Controller('absence')
+@UseGuards(JwtAuthGuard)
 export class AbsenceController {
   constructor(private readonly absenceService: AbsenceService) {}
 

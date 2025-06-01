@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const absence_service_1 = require("./absence.service");
 const create_absence_dto_1 = require("./dto/create-absence.dto");
 const update_absence_dto_1 = require("./dto/update-absence.dto");
+const jwt_verify_interceptors_1 = require("../core/guards/jwt-verify.interceptors");
 let AbsenceController = class AbsenceController {
     constructor(absenceService) {
         this.absenceService = absenceService;
@@ -77,6 +78,7 @@ __decorate([
 ], AbsenceController.prototype, "remove", null);
 exports.AbsenceController = AbsenceController = __decorate([
     (0, common_1.Controller)('absence'),
+    (0, common_1.UseGuards)(jwt_verify_interceptors_1.JwtAuthGuard),
     __metadata("design:paramtypes", [absence_service_1.AbsenceService])
 ], AbsenceController);
 //# sourceMappingURL=absence.controller.js.map

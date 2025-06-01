@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const ticket_service_1 = require("./ticket.service");
 const create_ticket_dto_1 = require("./dto/create-ticket.dto");
 const update_ticket_dto_1 = require("./dto/update-ticket.dto");
+const jwt_verify_interceptors_1 = require("../core/guards/jwt-verify.interceptors");
 let TicketController = class TicketController {
     constructor(ticketService) {
         this.ticketService = ticketService;
@@ -87,6 +88,7 @@ __decorate([
 ], TicketController.prototype, "remove", null);
 exports.TicketController = TicketController = __decorate([
     (0, common_1.Controller)('ticket'),
+    (0, common_1.UseGuards)(jwt_verify_interceptors_1.JwtAuthGuard),
     __metadata("design:paramtypes", [ticket_service_1.TicketService])
 ], TicketController);
 //# sourceMappingURL=ticket.controller.js.map

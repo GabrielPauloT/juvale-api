@@ -6,13 +6,16 @@ import {
   Query,
   Res,
   Get,
+  UseGuards,
 } from '@nestjs/common';
 import { PdfService } from './pdf.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import * as pdfParse from 'pdf-parse';
 import { Response } from 'express';
+import { JwtAuthGuard } from 'src/core/guards/jwt-verify.interceptors';
 
 @Controller('pdf')
+@UseGuards(JwtAuthGuard)
 export class PdfController {
   constructor(private readonly pdfService: PdfService) {}
 

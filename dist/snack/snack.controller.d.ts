@@ -11,10 +11,10 @@ export declare class SnackController {
     } | {
         data: {
             id: number;
-            created_at: Date;
-            last_modified: Date | null;
             code_employee: string;
             value: import("generated/prisma/runtime/library").Decimal;
+            created_at: Date;
+            last_modified: Date | null;
         };
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;
@@ -27,10 +27,10 @@ export declare class SnackController {
             };
         } & {
             id: number;
-            created_at: Date;
-            last_modified: Date | null;
             code_employee: string;
             value: import("generated/prisma/runtime/library").Decimal;
+            created_at: Date;
+            last_modified: Date | null;
         })[];
         page: number;
         perPage: number;
@@ -51,10 +51,10 @@ export declare class SnackController {
             };
         } & {
             id: number;
-            created_at: Date;
-            last_modified: Date | null;
             code_employee: string;
             value: import("generated/prisma/runtime/library").Decimal;
+            created_at: Date;
+            last_modified: Date | null;
         };
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;
@@ -66,10 +66,10 @@ export declare class SnackController {
     } | {
         data: {
             id: number;
-            created_at: Date;
-            last_modified: Date | null;
             code_employee: string;
             value: import("generated/prisma/runtime/library").Decimal;
+            created_at: Date;
+            last_modified: Date | null;
         };
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;
@@ -81,10 +81,10 @@ export declare class SnackController {
     } | {
         data: {
             id: number;
-            created_at: Date;
-            last_modified: Date | null;
             code_employee: string;
             value: import("generated/prisma/runtime/library").Decimal;
+            created_at: Date;
+            last_modified: Date | null;
         };
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;
