@@ -79,8 +79,8 @@ export declare class EmployeeController {
                 certificate_absence: boolean;
             }[];
             company: {
-                name: string;
                 id: number;
+                name: string;
                 created_at: Date;
                 last_modified: Date | null;
             };

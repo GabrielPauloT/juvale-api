@@ -4,7 +4,7 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { jwtVerify } from 'jose';
+import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
@@ -19,10 +19,9 @@ export class JwtAuthGuard implements CanActivate {
     const token = authHeader.split(' ')[1];
 
     try {
-      const secret = new TextEncoder().encode(process.env.JWT_SECRET!);
-      const { payload } = await jwtVerify(token, secret);
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      request.user = payload;
+      request.user = decoded;
       return true;
     } catch {
       throw new UnauthorizedException('Token inválido ou expirado');

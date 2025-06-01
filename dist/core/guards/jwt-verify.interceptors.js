@@ -8,7 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.JwtAuthGuard = void 0;
 const common_1 = require("@nestjs/common");
-const jose_1 = require("jose");
+const jwt = require("jsonwebtoken");
 let JwtAuthGuard = class JwtAuthGuard {
     async canActivate(context) {
         const request = context.switchToHttp().getRequest();
@@ -18,9 +18,8 @@ let JwtAuthGuard = class JwtAuthGuard {
         }
         const token = authHeader.split(' ')[1];
         try {
-            const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-            const { payload } = await (0, jose_1.jwtVerify)(token, secret);
-            request.user = payload;
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            request.user = decoded;
             return true;
         }
         catch {
