@@ -11,10 +11,10 @@ export declare class AbsenceController {
     } | {
         data: {
             id: number;
-            code_employee: string;
-            absence_date: Date;
             created_at: Date;
             last_modified: Date | null;
+            code_employee: string;
+            absence_date: Date;
             certificate_absence: boolean;
         };
         statusCode: import("@nestjs/common").HttpStatus;
@@ -23,10 +23,10 @@ export declare class AbsenceController {
     findAll(page: string, perPage: string): Promise<{
         data: {
             id: number;
-            code_employee: string;
-            absence_date: Date;
             created_at: Date;
             last_modified: Date | null;
+            code_employee: string;
+            absence_date: Date;
             certificate_absence: boolean;
         }[];
         page: number;
@@ -43,10 +43,10 @@ export declare class AbsenceController {
     } | {
         data: {
             id: number;
-            code_employee: string;
-            absence_date: Date;
             created_at: Date;
             last_modified: Date | null;
+            code_employee: string;
+            absence_date: Date;
             certificate_absence: boolean;
         };
         statusCode: import("@nestjs/common").HttpStatus;
@@ -59,10 +59,10 @@ export declare class AbsenceController {
     } | {
         data: {
             id: number;
-            code_employee: string;
-            absence_date: Date;
             created_at: Date;
             last_modified: Date | null;
+            code_employee: string;
+            absence_date: Date;
             certificate_absence: boolean;
         };
         statusCode: import("@nestjs/common").HttpStatus;
@@ -77,10 +77,10 @@ export declare class AbsenceController {
         message: string;
         data: {
             id: number;
-            code_employee: string;
-            absence_date: Date;
             created_at: Date;
             last_modified: Date | null;
+            code_employee: string;
+            absence_date: Date;
             certificate_absence: boolean;
         };
     }>;

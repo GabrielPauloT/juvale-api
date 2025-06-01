@@ -6,8 +6,8 @@ export declare class CompanyController {
     constructor(companyService: CompanyService);
     create(createCompanyDto: CreateCompanyDto): Promise<{
         data: {
-            id: number;
             name: string;
+            id: number;
             created_at: Date;
             last_modified: Date | null;
         };
@@ -16,8 +16,8 @@ export declare class CompanyController {
     }>;
     findAll(page: string, perPage: string): Promise<{
         data: {
-            id: number;
             name: string;
+            id: number;
             created_at: Date;
             last_modified: Date | null;
         }[];
@@ -34,8 +34,8 @@ export declare class CompanyController {
         data?: undefined;
     } | {
         data: {
-            id: number;
             name: string;
+            id: number;
             created_at: Date;
             last_modified: Date | null;
         };
@@ -48,8 +48,8 @@ export declare class CompanyController {
         data?: undefined;
     } | {
         data: {
-            id: number;
             name: string;
+            id: number;
             created_at: Date;
             last_modified: Date | null;
         };

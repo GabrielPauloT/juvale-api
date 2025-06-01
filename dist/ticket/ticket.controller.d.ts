@@ -12,10 +12,10 @@ export declare class TicketController {
     } | {
         data: {
             id: number;
-            code_employee: string;
-            value: import("generated/prisma/runtime/library").Decimal;
             created_at: Date;
             last_modified: Date | null;
+            code_employee: string;
+            value: import("generated/prisma/runtime/library").Decimal;
         };
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;
@@ -32,10 +32,10 @@ export declare class TicketController {
             };
         } & {
             id: number;
-            code_employee: string;
-            value: import("generated/prisma/runtime/library").Decimal;
             created_at: Date;
             last_modified: Date | null;
+            code_employee: string;
+            value: import("generated/prisma/runtime/library").Decimal;
         })[];
         page: number;
         perPage: number;
@@ -56,10 +56,10 @@ export declare class TicketController {
             };
         } & {
             id: number;
-            code_employee: string;
-            value: import("generated/prisma/runtime/library").Decimal;
             created_at: Date;
             last_modified: Date | null;
+            code_employee: string;
+            value: import("generated/prisma/runtime/library").Decimal;
         };
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;
@@ -71,10 +71,10 @@ export declare class TicketController {
     } | {
         data: {
             id: number;
-            code_employee: string;
-            value: import("generated/prisma/runtime/library").Decimal;
             created_at: Date;
             last_modified: Date | null;
+            code_employee: string;
+            value: import("generated/prisma/runtime/library").Decimal;
         };
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;
@@ -86,10 +86,10 @@ export declare class TicketController {
     } | {
         data: {
             id: number;
-            code_employee: string;
-            value: import("generated/prisma/runtime/library").Decimal;
             created_at: Date;
             last_modified: Date | null;
+            code_employee: string;
+            value: import("generated/prisma/runtime/library").Decimal;
         };
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;
