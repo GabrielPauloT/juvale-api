@@ -9,9 +9,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PrismaService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_1 = require("../../generated/prisma");
-let PrismaService = class PrismaService extends prisma_1.PrismaClient {
+const extension_optimize_1 = require("@prisma/extension-optimize");
+const extension_accelerate_1 = require("@prisma/extension-accelerate");
+let PrismaService = class PrismaService {
+    constructor() {
+        this.prisma = new prisma_1.PrismaClient()
+            .$extends((0, extension_optimize_1.withOptimize)({ apiKey: process.env.OPTIMIZE_API_KEY }))
+            .$extends((0, extension_accelerate_1.withAccelerate)());
+    }
     async onModuleInit() {
-        await this.$connect();
+        await this.prisma.$connect();
+    }
+    async onModuleDestroy() {
+        await this.prisma.$disconnect();
+    }
+    get client() {
+        return this.prisma;
     }
 };
 exports.PrismaService = PrismaService;

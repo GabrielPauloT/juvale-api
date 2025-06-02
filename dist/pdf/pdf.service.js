@@ -57,7 +57,7 @@ let PdfService = class PdfService {
             };
         }
         const [company, funcionarios] = await Promise.all([
-            this.prisma.company.findUnique({ where: { id: codeCompany } }),
+            this.prisma.client.company.findUnique({ where: { id: codeCompany } }),
             Promise.resolve(this.extractFuncionarios(pdfText)),
         ]);
         if (!company) {
@@ -73,13 +73,13 @@ let PdfService = class PdfService {
             };
         }
         const codigos = funcionarios.map((f) => f.codigo);
-        const existing = await this.prisma.employee.findMany({
+        const existing = await this.prisma.client.employee.findMany({
             where: { code_employee: { in: codigos } },
         });
         const existingSet = new Set(existing.map((e) => e.code_employee));
         const toInsert = funcionarios.filter((f) => !existingSet.has(f.codigo));
         const reativar = existing.filter((e) => !e.enabled);
-        await Promise.all(reativar.map((employee) => this.prisma.employee.update({
+        await Promise.all(reativar.map((employee) => this.prisma.client.employee.update({
             where: { code_employee: employee.code_employee },
             data: {
                 enabled: true,
@@ -89,7 +89,7 @@ let PdfService = class PdfService {
                 code_company: codeCompany,
             },
         })));
-        const insertResult = await this.prisma.employee.createMany({
+        const insertResult = await this.prisma.client.employee.createMany({
             data: toInsert.map((f) => ({
                 code_employee: f.codigo,
                 name: f.nome,
@@ -119,18 +119,18 @@ let PdfService = class PdfService {
         }
         const codigos = funcionarios.map((f) => f.codigo);
         const [countUpdate] = await Promise.all([
-            this.prisma.employee.updateMany({
+            this.prisma.client.employee.updateMany({
                 where: { code_employee: { in: codigos } },
                 data: { enabled: false },
             }),
             Promise.all([
-                this.prisma.snack.deleteMany({
+                this.prisma.client.snack.deleteMany({
                     where: { code_employee: { in: codigos } },
                 }),
-                this.prisma.ticket.deleteMany({
+                this.prisma.client.ticket.deleteMany({
                     where: { employee: { code_employee: { in: codigos } } },
                 }),
-                this.prisma.absence.deleteMany({
+                this.prisma.client.absence.deleteMany({
                     where: { code_employee: { in: codigos } },
                 }),
             ]),
@@ -142,7 +142,7 @@ let PdfService = class PdfService {
         };
     }
     async generateCompanyCostReport(date) {
-        const companies = await this.prisma.company.findMany({
+        const companies = await this.prisma.client.company.findMany({
             select: {
                 name: true,
                 employee: {
@@ -211,7 +211,7 @@ let PdfService = class PdfService {
         });
     }
     async generateEmployeeCostReport(date) {
-        const employees = await this.prisma.employee.findMany({
+        const employees = await this.prisma.client.employee.findMany({
             where: { enabled: true },
             orderBy: {
                 code_company: 'asc',
@@ -311,7 +311,7 @@ let PdfService = class PdfService {
         });
     }
     async generateEmployeeCostReportWithAbsences(date) {
-        const employees = await this.prisma.employee.findMany({
+        const employees = await this.prisma.client.employee.findMany({
             where: { enabled: true },
             orderBy: { code_company: 'asc' },
             include: {

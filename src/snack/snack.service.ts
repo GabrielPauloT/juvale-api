@@ -9,7 +9,7 @@ export class SnackService {
   async create(createSnackDto: CreateSnackDto) {
     const { codeEmployee } = createSnackDto;
 
-    const employee = await this.prisma.employee.findUnique({
+    const employee = await this.prisma.client.employee.findUnique({
       where: { code_employee: codeEmployee },
     });
 
@@ -20,7 +20,7 @@ export class SnackService {
       };
     }
 
-    const data = await this.prisma.snack.create({
+    const data = await this.prisma.client.snack.create({
       data: {
         value: createSnackDto.value,
         employee: {
@@ -38,7 +38,7 @@ export class SnackService {
   async findAll(page?: number, perPage?: number) {
     const skip = page ? (page - 1) * perPage : 0;
     const take = perPage || 10;
-    const data = await this.prisma.snack.findMany({
+    const data = await this.prisma.client.snack.findMany({
       skip,
       take,
       include: {
@@ -50,7 +50,7 @@ export class SnackService {
         },
       },
     });
-    const countSnack = await this.prisma.snack.count();
+    const countSnack = await this.prisma.client.snack.count();
     return {
       data,
       page: page || 1,
@@ -63,7 +63,7 @@ export class SnackService {
   }
 
   async findOne(id: number) {
-    const data = await this.prisma.snack.findUnique({
+    const data = await this.prisma.client.snack.findUnique({
       where: { id },
       include: {
         employee: {
@@ -90,7 +90,7 @@ export class SnackService {
   async update(id: number, updateSnackDto: UpdateSnackDto) {
     const { codeEmployee } = updateSnackDto;
 
-    const employee = await this.prisma.employee.findUnique({
+    const employee = await this.prisma.client.employee.findUnique({
       where: { code_employee: codeEmployee },
     });
 
@@ -101,7 +101,7 @@ export class SnackService {
       };
     }
 
-    const snack = await this.prisma.snack.findUnique({
+    const snack = await this.prisma.client.snack.findUnique({
       where: { id },
     });
 
@@ -112,7 +112,7 @@ export class SnackService {
       };
     }
 
-    const data = await this.prisma.snack.update({
+    const data = await this.prisma.client.snack.update({
       where: { id },
       data: {
         value: updateSnackDto.value,
@@ -130,7 +130,7 @@ export class SnackService {
   }
 
   async remove(id: number) {
-    const snack = await this.prisma.snack.findUnique({
+    const snack = await this.prisma.client.snack.findUnique({
       where: { id },
     });
 
@@ -141,7 +141,7 @@ export class SnackService {
       };
     }
 
-    const data = await this.prisma.snack.delete({
+    const data = await this.prisma.client.snack.delete({
       where: { id },
     });
 

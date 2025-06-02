@@ -8,9 +8,9 @@ export declare class CompanyService {
     create(createCompanyDto: CreateCompanyDto): Promise<{
         data: {
             name: string;
-            id: number;
             created_at: Date;
             last_modified: Date | null;
+            id: number;
         };
         statusCode: HttpStatus;
         message: string;
@@ -18,9 +18,9 @@ export declare class CompanyService {
     findAll(page?: number, perPage?: number): Promise<{
         data: {
             name: string;
-            id: number;
             created_at: Date;
             last_modified: Date | null;
+            id: number;
         }[];
         page: number;
         perPage: number;
@@ -46,9 +46,9 @@ export declare class CompanyService {
     } | {
         data: {
             name: string;
-            id: number;
             created_at: Date;
             last_modified: Date | null;
+            id: number;
         };
         statusCode: HttpStatus;
         message: string;
@@ -60,9 +60,9 @@ export declare class CompanyService {
     } | {
         data: {
             name: string;
-            id: number;
             created_at: Date;
             last_modified: Date | null;
+            id: number;
         };
         statusCode: HttpStatus;
         message: string;

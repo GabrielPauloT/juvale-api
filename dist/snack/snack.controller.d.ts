@@ -10,9 +10,9 @@ export declare class SnackController {
         data?: undefined;
     } | {
         data: {
-            id: number;
             created_at: Date;
             last_modified: Date | null;
+            id: number;
             code_employee: string;
             value: import("generated/prisma/runtime/library").Decimal;
         };
@@ -26,9 +26,9 @@ export declare class SnackController {
                 job_description: string;
             };
         } & {
-            id: number;
             created_at: Date;
             last_modified: Date | null;
+            id: number;
             code_employee: string;
             value: import("generated/prisma/runtime/library").Decimal;
         })[];
@@ -50,9 +50,9 @@ export declare class SnackController {
                 job_description: string;
             };
         } & {
-            id: number;
             created_at: Date;
             last_modified: Date | null;
+            id: number;
             code_employee: string;
             value: import("generated/prisma/runtime/library").Decimal;
         };
@@ -65,9 +65,9 @@ export declare class SnackController {
         data?: undefined;
     } | {
         data: {
-            id: number;
             created_at: Date;
             last_modified: Date | null;
+            id: number;
             code_employee: string;
             value: import("generated/prisma/runtime/library").Decimal;
         };
@@ -80,9 +80,9 @@ export declare class SnackController {
         data?: undefined;
     } | {
         data: {
-            id: number;
             created_at: Date;
             last_modified: Date | null;
+            id: number;
             code_employee: string;
             value: import("generated/prisma/runtime/library").Decimal;
         };

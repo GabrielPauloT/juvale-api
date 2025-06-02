@@ -11,9 +11,9 @@ export declare class AbsenceService {
         data?: undefined;
     } | {
         data: {
-            id: number;
             created_at: Date;
             last_modified: Date | null;
+            id: number;
             code_employee: string;
             absence_date: Date;
             certificate_absence: boolean;
@@ -23,9 +23,9 @@ export declare class AbsenceService {
     }>;
     findAll(page?: number, perPage?: number): Promise<{
         data: {
-            id: number;
             created_at: Date;
             last_modified: Date | null;
+            id: number;
             code_employee: string;
             absence_date: Date;
             certificate_absence: boolean;
@@ -43,9 +43,9 @@ export declare class AbsenceService {
         data?: undefined;
     } | {
         data: {
-            id: number;
             created_at: Date;
             last_modified: Date | null;
+            id: number;
             code_employee: string;
             absence_date: Date;
             certificate_absence: boolean;
@@ -59,9 +59,9 @@ export declare class AbsenceService {
         data?: undefined;
     } | {
         data: {
-            id: number;
             created_at: Date;
             last_modified: Date | null;
+            id: number;
             code_employee: string;
             absence_date: Date;
             certificate_absence: boolean;
@@ -77,9 +77,9 @@ export declare class AbsenceService {
         statusCode: HttpStatus;
         message: string;
         data: {
-            id: number;
             created_at: Date;
             last_modified: Date | null;
+            id: number;
             code_employee: string;
             absence_date: Date;
             certificate_absence: boolean;

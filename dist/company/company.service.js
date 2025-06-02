@@ -18,7 +18,7 @@ let CompanyService = class CompanyService {
         this.prisma = prisma;
     }
     async create(createCompanyDto) {
-        const data = await this.prisma.company.create({
+        const data = await this.prisma.client.company.create({
             data: createCompanyDto,
         });
         return {
@@ -30,11 +30,14 @@ let CompanyService = class CompanyService {
     async findAll(page, perPage) {
         const skip = page ? (page - 1) * perPage : 0;
         const take = perPage || 10;
-        const data = await this.prisma.company.findMany({
+        const data = await this.prisma.client.company.findMany({
             skip,
             take,
+            cacheStrategy: { ttl: 60 },
         });
-        const countCompany = await this.prisma.company.count();
+        const countCompany = await this.prisma.client.company.count({
+            cacheStrategy: { ttl: 60 },
+        });
         return {
             data,
             page: page || 1,
@@ -46,7 +49,7 @@ let CompanyService = class CompanyService {
         };
     }
     async findAllEmployeeCostByCompany(date) {
-        const companies = await this.prisma.company.findMany({
+        const companies = await this.prisma.client.company.findMany({
             select: {
                 id: true,
                 name: true,
@@ -110,8 +113,9 @@ let CompanyService = class CompanyService {
         };
     }
     async findOne(id) {
-        const data = await this.prisma.company.findUnique({
+        const data = await this.prisma.client.company.findUnique({
             where: { id },
+            cacheStrategy: { ttl: 60 },
         });
         if (!data) {
             return {
@@ -126,7 +130,7 @@ let CompanyService = class CompanyService {
         };
     }
     async update(id, updateCompanyDto) {
-        const existingCompany = await this.prisma.company.findUnique({
+        const existingCompany = await this.prisma.client.company.findUnique({
             where: { id },
         });
         if (!existingCompany) {
@@ -135,7 +139,7 @@ let CompanyService = class CompanyService {
                 message: 'Company not found',
             };
         }
-        const data = await this.prisma.company.update({
+        const data = await this.prisma.client.company.update({
             where: { id },
             data: {
                 ...updateCompanyDto,
