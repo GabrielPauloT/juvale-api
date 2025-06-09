@@ -24,8 +24,12 @@ export class CompanyController {
   }
 
   @Get()
-  findAll(@Query('page') page: string, @Query('perPage') perPage: string) {
-    return this.companyService.findAll(+page, +perPage);
+  findAll(
+    @Query('page') page: string,
+    @Query('perPage') perPage: string,
+    @Query('name') name: string,
+  ) {
+    return this.companyService.findAll(+page, +perPage, name);
   }
 
   @Get(':id')

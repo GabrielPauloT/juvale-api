@@ -18,16 +18,22 @@ export class CompanyService {
     };
   }
 
-  async findAll(page?: number, perPage?: number) {
+  async findAll(page?: number, perPage?: number, name?: string) {
     const skip = page ? (page - 1) * perPage : 0;
     const take = perPage || 10;
     const data = await this.prisma.client.company.findMany({
       skip,
       take,
+      where: {
+        name: name ? { contains: name, mode: 'insensitive' } : undefined,
+      },
       cacheStrategy: { ttl: 60 },
     });
 
     const countCompany = await this.prisma.client.company.count({
+      where: {
+        name: name ? { contains: name, mode: 'insensitive' } : undefined,
+      },
       cacheStrategy: { ttl: 60 },
     });
 
