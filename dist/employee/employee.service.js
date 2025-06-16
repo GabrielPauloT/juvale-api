@@ -19,7 +19,7 @@ let EmployeeService = class EmployeeService {
     }
     async create(createEmployeeDto) {
         const { codeCompany, codeEmployee } = createEmployeeDto;
-        const codeEmployeeExists = await this.prisma.client.employee.findUnique({
+        const codeEmployeeExists = await this.prisma.employee.findUnique({
             where: { code_employee: codeEmployee },
         });
         if (codeEmployeeExists) {
@@ -28,7 +28,7 @@ let EmployeeService = class EmployeeService {
                 message: 'Employee code already exists',
             };
         }
-        const company = await this.prisma.client.company.findUnique({
+        const company = await this.prisma.company.findUnique({
             where: { id: codeCompany },
         });
         if (!company) {
@@ -37,7 +37,7 @@ let EmployeeService = class EmployeeService {
                 message: 'Company not found',
             };
         }
-        const data = await this.prisma.client.employee.create({
+        const data = await this.prisma.employee.create({
             data: {
                 code_employee: createEmployeeDto.codeEmployee,
                 name: createEmployeeDto.name,
@@ -58,7 +58,7 @@ let EmployeeService = class EmployeeService {
     async createBatch(createEmployeeDtos) {
         const employees = await Promise.all(createEmployeeDtos.map(async (dto) => {
             const { codeCompany, codeEmployee } = dto;
-            const codeEmployeeExists = await this.prisma.client.employee.findUnique({
+            const codeEmployeeExists = await this.prisma.employee.findUnique({
                 where: { code_employee: codeEmployee },
             });
             if (codeEmployeeExists) {
@@ -67,7 +67,7 @@ let EmployeeService = class EmployeeService {
                     message: `Employee code ${codeEmployee} already exists`,
                 };
             }
-            const company = await this.prisma.client.company.findUnique({
+            const company = await this.prisma.company.findUnique({
                 where: { id: codeCompany },
             });
             if (!company) {
@@ -76,7 +76,7 @@ let EmployeeService = class EmployeeService {
                     message: `Company with ID ${codeCompany} not found`,
                 };
             }
-            return await this.prisma.client.employee.create({
+            return await this.prisma.employee.create({
                 data: {
                     code_employee: dto.codeEmployee,
                     name: dto.name,
@@ -102,9 +102,8 @@ let EmployeeService = class EmployeeService {
         if (!Number.isNaN(companyIdNumber) &&
             companyId !== null &&
             companyIdNumber > 0) {
-            const company = await this.prisma.client.company.findUnique({
+            const company = await this.prisma.company.findUnique({
                 where: { id: companyId },
-                cacheStrategy: { ttl: 60 },
             });
             if (!company) {
                 return {
@@ -122,7 +121,7 @@ let EmployeeService = class EmployeeService {
         const dateSelected = date ? new Date(date) : new Date();
         const selectedMonth = dateSelected.getMonth();
         const selectedYear = dateSelected.getFullYear();
-        const data = await this.prisma.client.employee.findMany({
+        const data = await this.prisma.employee.findMany({
             skip,
             take,
             include: {
@@ -177,7 +176,7 @@ let EmployeeService = class EmployeeService {
                 company: employee.company,
             };
         });
-        const countEmployee = await this.prisma.client.employee.count({
+        const countEmployee = await this.prisma.employee.count({
             where: whereClause,
         });
         return {
@@ -191,9 +190,8 @@ let EmployeeService = class EmployeeService {
         };
     }
     async findOne(code_employee) {
-        const data = await this.prisma.client.employee.findUnique({
+        const data = await this.prisma.employee.findUnique({
             where: { code_employee },
-            cacheStrategy: { ttl: 60 },
         });
         if (!data) {
             return {
@@ -209,7 +207,7 @@ let EmployeeService = class EmployeeService {
     }
     async update(code_employee, updateEmployeeDto) {
         const { codeCompany, snackValue } = updateEmployeeDto;
-        const company = await this.prisma.client.company.findUnique({
+        const company = await this.prisma.company.findUnique({
             where: { id: Number(codeCompany) },
         });
         if (!company) {
@@ -218,7 +216,7 @@ let EmployeeService = class EmployeeService {
                 message: 'Company not found',
             };
         }
-        const employee = await this.prisma.client.employee.findUnique({
+        const employee = await this.prisma.employee.findUnique({
             where: { code_employee },
         });
         if (!employee) {
@@ -227,11 +225,11 @@ let EmployeeService = class EmployeeService {
                 message: 'Employee not found',
             };
         }
-        const snack = await this.prisma.client.snack.findMany({
+        const snack = await this.prisma.snack.findMany({
             where: { code_employee },
         });
         if (snack.length === 0) {
-            await this.prisma.client.snack.create({
+            await this.prisma.snack.create({
                 data: {
                     value: snackValue,
                     employee: {
@@ -241,7 +239,7 @@ let EmployeeService = class EmployeeService {
             });
         }
         else {
-            await this.prisma.client.snack.update({
+            await this.prisma.snack.update({
                 where: {
                     id: snack[0].id,
                 },
@@ -253,7 +251,7 @@ let EmployeeService = class EmployeeService {
                 },
             });
         }
-        const data = await this.prisma.client.employee.update({
+        const data = await this.prisma.employee.update({
             where: { code_employee },
             data: {
                 company: {
@@ -272,7 +270,7 @@ let EmployeeService = class EmployeeService {
         };
     }
     async remove(code_employee) {
-        const employee = await this.prisma.client.employee.findUnique({
+        const employee = await this.prisma.employee.findUnique({
             where: { code_employee },
         });
         if (!employee) {
@@ -281,7 +279,7 @@ let EmployeeService = class EmployeeService {
                 message: 'Employee not found',
             };
         }
-        const data = await this.prisma.client.employee.update({
+        const data = await this.prisma.employee.update({
             data: { enabled: false, last_modified: new Date() },
             where: { code_employee },
         });

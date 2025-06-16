@@ -19,7 +19,7 @@ let AbsenceService = class AbsenceService {
     async create(createAbsenceDto) {
         const { codeEmployee, absenceDate, certificateAbsence } = createAbsenceDto;
         const absenceDateObj = new Date(absenceDate);
-        const employeeId = await this.prisma.client.employee.findUnique({
+        const employeeId = await this.prisma.employee.findUnique({
             where: { code_employee: codeEmployee },
         });
         if (!employeeId) {
@@ -28,7 +28,7 @@ let AbsenceService = class AbsenceService {
                 message: 'Employee not found',
             };
         }
-        const data = await this.prisma.client.absence.create({
+        const data = await this.prisma.absence.create({
             data: {
                 employee: {
                     connect: { code_employee: employeeId.code_employee },
@@ -46,11 +46,11 @@ let AbsenceService = class AbsenceService {
     async findAll(page, perPage) {
         const skip = page ? (page - 1) * perPage : 0;
         const take = perPage || 10;
-        const data = await this.prisma.client.absence.findMany({
+        const data = await this.prisma.absence.findMany({
             skip,
             take,
         });
-        const countAbsence = await this.prisma.client.absence.count();
+        const countAbsence = await this.prisma.absence.count();
         return {
             data,
             page: page || 1,
@@ -62,7 +62,7 @@ let AbsenceService = class AbsenceService {
         };
     }
     async findOne(id) {
-        const data = await this.prisma.client.absence.findUnique({
+        const data = await this.prisma.absence.findUnique({
             where: { id },
         });
         if (!data) {
@@ -78,7 +78,7 @@ let AbsenceService = class AbsenceService {
         };
     }
     async findByCodeEmployeeAndDate(codeEmployee, date) {
-        const employee = await this.prisma.client.employee.findUnique({
+        const employee = await this.prisma.employee.findUnique({
             where: { code_employee: codeEmployee },
         });
         if (!employee) {
@@ -90,7 +90,7 @@ let AbsenceService = class AbsenceService {
         const inputDate = new Date(date);
         const startDate = new Date(inputDate.getFullYear(), inputDate.getMonth(), 1);
         const endDate = new Date(inputDate.getFullYear(), inputDate.getMonth() + 1, 0, 23, 59, 59, 999);
-        const data = await this.prisma.client.absence.findMany({
+        const data = await this.prisma.absence.findMany({
             where: {
                 code_employee: employee.code_employee,
                 absence_date: {
@@ -111,7 +111,7 @@ let AbsenceService = class AbsenceService {
     async update(id, updateAbsenceDto) {
         const { codeEmployee, absenceDate, certificateAbsence: cerficateAbsence, } = updateAbsenceDto;
         const absenceDateObj = new Date(absenceDate);
-        const employeeId = await this.prisma.client.employee.findUnique({
+        const employeeId = await this.prisma.employee.findUnique({
             where: { code_employee: codeEmployee },
         });
         if (!employeeId) {
@@ -120,7 +120,7 @@ let AbsenceService = class AbsenceService {
                 message: 'Employee not found',
             };
         }
-        const absence = await this.prisma.client.absence.findUnique({
+        const absence = await this.prisma.absence.findUnique({
             where: { id },
         });
         if (!absence) {
@@ -129,7 +129,7 @@ let AbsenceService = class AbsenceService {
                 message: 'Absence not found',
             };
         }
-        const data = await this.prisma.client.absence.update({
+        const data = await this.prisma.absence.update({
             where: { id },
             data: {
                 employee: {
@@ -146,7 +146,7 @@ let AbsenceService = class AbsenceService {
         };
     }
     async remove(id) {
-        const absence = await this.prisma.client.absence.findUnique({
+        const absence = await this.prisma.absence.findUnique({
             where: { id },
         });
         if (!absence) {
@@ -155,7 +155,7 @@ let AbsenceService = class AbsenceService {
                 message: 'Absence not found',
             };
         }
-        const data = await this.prisma.client.absence.delete({
+        const data = await this.prisma.absence.delete({
             where: { id },
         });
         return {

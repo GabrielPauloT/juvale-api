@@ -11,7 +11,7 @@ export class UserService {
   async create(createUserDto: CreateUserDto) {
     const { email, password } = createUserDto;
 
-    const existing = await this.prisma.client.user.findUnique({
+    const existing = await this.prisma.user.findUnique({
       where: { email },
     });
     if (existing) {
@@ -23,7 +23,7 @@ export class UserService {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const data = await this.prisma.client.user.create({
+    const data = await this.prisma.user.create({
       data: {
         email,
         role: createUserDto.role,
@@ -52,13 +52,13 @@ export class UserService {
       ...(name ? { name: { contains: name, mode: 'insensitive' } } : {}),
     };
 
-    const data = await this.prisma.client.user.findMany({
+    const data = await this.prisma.user.findMany({
       skip,
       take,
       where: whereClause,
     });
 
-    const countUsers = await this.prisma.client.user.count({
+    const countUsers = await this.prisma.user.count({
       where: whereClause,
     });
 
@@ -81,7 +81,7 @@ export class UserService {
   }
 
   async findOne(id: number) {
-    const user = await this.prisma.client.user.findUnique({
+    const user = await this.prisma.user.findUnique({
       where: { id },
     });
 
@@ -105,7 +105,7 @@ export class UserService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
-    const user = await this.prisma.client.user.findUnique({
+    const user = await this.prisma.user.findUnique({
       where: { id },
     });
 
@@ -135,7 +135,7 @@ export class UserService {
       updateData.password = await bcrypt.hash(updateUserDto.password, 10);
     }
 
-    const updatedUser = await this.prisma.client.user.update({
+    const updatedUser = await this.prisma.user.update({
       where: { id },
       data: updateData,
     });
@@ -153,7 +153,7 @@ export class UserService {
   }
 
   async remove(id: number) {
-    const user = await this.prisma.client.user.findUnique({
+    const user = await this.prisma.user.findUnique({
       where: { id },
     });
 
@@ -164,7 +164,7 @@ export class UserService {
       };
     }
 
-    await this.prisma.client.user.delete({
+    await this.prisma.user.delete({
       where: { id },
     });
 

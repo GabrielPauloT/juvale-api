@@ -7,9 +7,9 @@ export declare class CompanyController {
     create(createCompanyDto: CreateCompanyDto): Promise<{
         data: {
             name: string;
+            id: number;
             created_at: Date;
             last_modified: Date | null;
-            id: number;
         };
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;
@@ -17,9 +17,9 @@ export declare class CompanyController {
     findAll(page: string, perPage: string, name: string): Promise<{
         data: {
             name: string;
+            id: number;
             created_at: Date;
             last_modified: Date | null;
-            id: number;
         }[];
         page: number;
         perPage: number;
@@ -35,9 +35,9 @@ export declare class CompanyController {
     } | {
         data: {
             name: string;
+            id: number;
             created_at: Date;
             last_modified: Date | null;
-            id: number;
         };
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;
@@ -49,9 +49,9 @@ export declare class CompanyController {
     } | {
         data: {
             name: string;
+            id: number;
             created_at: Date;
             last_modified: Date | null;
-            id: number;
         };
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;

@@ -10,7 +10,7 @@ export class TicketService {
   async create(createTicketDto: CreateTicketDto) {
     const { codeEmployee } = createTicketDto;
 
-    const employee = await this.prisma.client.employee.findUnique({
+    const employee = await this.prisma.employee.findUnique({
       where: { code_employee: codeEmployee },
     });
 
@@ -21,7 +21,7 @@ export class TicketService {
       };
     }
 
-    const data = await this.prisma.client.ticket.create({
+    const data = await this.prisma.ticket.create({
       data: {
         value: createTicketDto.value,
         employee: {
@@ -40,7 +40,7 @@ export class TicketService {
   async createMany(tickets: CreateTicketManyDto[]) {
     const codeEmployees = tickets.map((t) => t.codeEmployee);
 
-    const existingTickets = await this.prisma.client.ticket.findMany({
+    const existingTickets = await this.prisma.ticket.findMany({
       where: { employee: { code_employee: { in: codeEmployees } } },
     });
 
@@ -63,12 +63,12 @@ export class TicketService {
       );
     });
 
-    await this.prisma.client.$transaction([
+    await this.prisma.$transaction([
       ...toDelete.map((t) =>
-        this.prisma.client.ticket.delete({ where: { id: t.id } }),
+        this.prisma.ticket.delete({ where: { id: t.id } }),
       ),
       ...toCreate.map((ticket) =>
-        this.prisma.client.ticket.create({
+        this.prisma.ticket.create({
           data: {
             value: ticket.value,
             employee: {
@@ -78,7 +78,7 @@ export class TicketService {
         }),
       ),
       ...toUpdate.map((ticket) =>
-        this.prisma.client.ticket.updateMany({
+        this.prisma.ticket.updateMany({
           where: { id: ticket.id },
           data: {
             value: ticket.value,
@@ -96,7 +96,7 @@ export class TicketService {
   async findAll(page?: number, perPage?: number) {
     const skip = page ? (page - 1) * perPage : 0;
     const take = perPage || 10;
-    const data = await this.prisma.client.ticket.findMany({
+    const data = await this.prisma.ticket.findMany({
       skip,
       take,
       include: {
@@ -108,7 +108,7 @@ export class TicketService {
         },
       },
     });
-    const countTicket = await this.prisma.client.ticket.count();
+    const countTicket = await this.prisma.ticket.count();
     return {
       data,
       page: page || 1,
@@ -121,7 +121,7 @@ export class TicketService {
   }
 
   async findOne(id: number) {
-    const data = await this.prisma.client.ticket.findUnique({
+    const data = await this.prisma.ticket.findUnique({
       where: { id },
       include: {
         employee: {
@@ -148,7 +148,7 @@ export class TicketService {
   async update(id: number, updateTicketDto: UpdateTicketDto) {
     const { codeEmployee } = updateTicketDto;
 
-    const employee = await this.prisma.client.employee.findUnique({
+    const employee = await this.prisma.employee.findUnique({
       where: { code_employee: codeEmployee },
     });
 
@@ -159,7 +159,7 @@ export class TicketService {
       };
     }
 
-    const ticket = await this.prisma.client.ticket.findUnique({
+    const ticket = await this.prisma.ticket.findUnique({
       where: { id },
     });
 
@@ -170,7 +170,7 @@ export class TicketService {
       };
     }
 
-    const data = await this.prisma.client.ticket.update({
+    const data = await this.prisma.ticket.update({
       where: { id },
       data: {
         value: updateTicketDto.value,
@@ -189,7 +189,7 @@ export class TicketService {
   }
 
   async remove(id: number) {
-    const ticket = await this.prisma.client.ticket.findUnique({
+    const ticket = await this.prisma.ticket.findUnique({
       where: { id },
     });
 
@@ -200,7 +200,7 @@ export class TicketService {
       };
     }
 
-    const data = await this.prisma.client.ticket.delete({
+    const data = await this.prisma.ticket.delete({
       where: { id },
     });
 

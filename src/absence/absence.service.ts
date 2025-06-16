@@ -11,7 +11,7 @@ export class AbsenceService {
 
     const absenceDateObj = new Date(absenceDate);
 
-    const employeeId = await this.prisma.client.employee.findUnique({
+    const employeeId = await this.prisma.employee.findUnique({
       where: { code_employee: codeEmployee },
     });
 
@@ -22,7 +22,7 @@ export class AbsenceService {
       };
     }
 
-    const data = await this.prisma.client.absence.create({
+    const data = await this.prisma.absence.create({
       data: {
         employee: {
           connect: { code_employee: employeeId.code_employee },
@@ -42,12 +42,12 @@ export class AbsenceService {
     const skip = page ? (page - 1) * perPage : 0;
     const take = perPage || 10;
 
-    const data = await this.prisma.client.absence.findMany({
+    const data = await this.prisma.absence.findMany({
       skip,
       take,
     });
 
-    const countAbsence = await this.prisma.client.absence.count();
+    const countAbsence = await this.prisma.absence.count();
 
     return {
       data,
@@ -61,7 +61,7 @@ export class AbsenceService {
   }
 
   async findOne(id: number) {
-    const data = await this.prisma.client.absence.findUnique({
+    const data = await this.prisma.absence.findUnique({
       where: { id },
     });
 
@@ -80,7 +80,7 @@ export class AbsenceService {
   }
 
   async findByCodeEmployeeAndDate(codeEmployee: string, date: string) {
-    const employee = await this.prisma.client.employee.findUnique({
+    const employee = await this.prisma.employee.findUnique({
       where: { code_employee: codeEmployee },
     });
 
@@ -107,7 +107,7 @@ export class AbsenceService {
       999,
     );
 
-    const data = await this.prisma.client.absence.findMany({
+    const data = await this.prisma.absence.findMany({
       where: {
         code_employee: employee.code_employee,
         absence_date: {
@@ -136,7 +136,7 @@ export class AbsenceService {
 
     const absenceDateObj = new Date(absenceDate);
 
-    const employeeId = await this.prisma.client.employee.findUnique({
+    const employeeId = await this.prisma.employee.findUnique({
       where: { code_employee: codeEmployee },
     });
 
@@ -147,7 +147,7 @@ export class AbsenceService {
       };
     }
 
-    const absence = await this.prisma.client.absence.findUnique({
+    const absence = await this.prisma.absence.findUnique({
       where: { id },
     });
 
@@ -158,7 +158,7 @@ export class AbsenceService {
       };
     }
 
-    const data = await this.prisma.client.absence.update({
+    const data = await this.prisma.absence.update({
       where: { id },
       data: {
         employee: {
@@ -177,7 +177,7 @@ export class AbsenceService {
   }
 
   async remove(id: number) {
-    const absence = await this.prisma.client.absence.findUnique({
+    const absence = await this.prisma.absence.findUnique({
       where: { id },
     });
 
@@ -188,7 +188,7 @@ export class AbsenceService {
       };
     }
 
-    const data = await this.prisma.client.absence.delete({
+    const data = await this.prisma.absence.delete({
       where: { id },
     });
 

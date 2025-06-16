@@ -10,9 +10,9 @@ export declare class AbsenceController {
         data?: undefined;
     } | {
         data: {
+            id: number;
             created_at: Date;
             last_modified: Date | null;
-            id: number;
             code_employee: string;
             absence_date: Date;
             certificate_absence: boolean;
@@ -22,9 +22,9 @@ export declare class AbsenceController {
     }>;
     findAll(page: string, perPage: string): Promise<{
         data: {
+            id: number;
             created_at: Date;
             last_modified: Date | null;
-            id: number;
             code_employee: string;
             absence_date: Date;
             certificate_absence: boolean;
@@ -42,9 +42,9 @@ export declare class AbsenceController {
         data?: undefined;
     } | {
         data: {
+            id: number;
             created_at: Date;
             last_modified: Date | null;
-            id: number;
             code_employee: string;
             absence_date: Date;
             certificate_absence: boolean;
@@ -63,15 +63,15 @@ export declare class AbsenceController {
                 created_at: Date;
                 last_modified: Date | null;
                 code_employee: string;
+                code_company: number;
                 job_description: string;
                 salary: import("generated/prisma/runtime/library").Decimal;
                 enabled: boolean;
-                code_company: number;
             };
         } & {
+            id: number;
             created_at: Date;
             last_modified: Date | null;
-            id: number;
             code_employee: string;
             absence_date: Date;
             certificate_absence: boolean;
@@ -85,9 +85,9 @@ export declare class AbsenceController {
         data?: undefined;
     } | {
         data: {
+            id: number;
             created_at: Date;
             last_modified: Date | null;
-            id: number;
             code_employee: string;
             absence_date: Date;
             certificate_absence: boolean;
@@ -103,9 +103,9 @@ export declare class AbsenceController {
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;
         data: {
+            id: number;
             created_at: Date;
             last_modified: Date | null;
-            id: number;
             code_employee: string;
             absence_date: Date;
             certificate_absence: boolean;

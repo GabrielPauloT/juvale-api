@@ -14,10 +14,10 @@ export declare class EmployeeController {
             created_at: Date;
             last_modified: Date | null;
             code_employee: string;
+            code_company: number;
             job_description: string;
             salary: import("generated/prisma/runtime/library").Decimal;
             enabled: boolean;
-            code_company: number;
         };
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;
@@ -28,10 +28,10 @@ export declare class EmployeeController {
             created_at: Date;
             last_modified: Date | null;
             code_employee: string;
+            code_company: number;
             job_description: string;
             salary: import("generated/prisma/runtime/library").Decimal;
             enabled: boolean;
-            code_company: number;
         } | {
             statusCode: import("@nestjs/common").HttpStatus;
             message: string;
@@ -60,16 +60,16 @@ export declare class EmployeeController {
             vrPerDay: string;
             enabled: boolean;
             ticket: {
+                id: number;
                 created_at: Date;
                 last_modified: Date | null;
-                id: number;
                 code_employee: string;
                 value: import("generated/prisma/runtime/library").Decimal;
             }[];
             snack: {
+                id: number;
                 created_at: Date;
                 last_modified: Date | null;
-                id: number;
                 code_employee: string;
                 value: import("generated/prisma/runtime/library").Decimal;
             }[];
@@ -80,9 +80,9 @@ export declare class EmployeeController {
             }[];
             company: {
                 name: string;
+                id: number;
                 created_at: Date;
                 last_modified: Date | null;
-                id: number;
             };
         }[];
         page: number;
@@ -102,10 +102,10 @@ export declare class EmployeeController {
             created_at: Date;
             last_modified: Date | null;
             code_employee: string;
+            code_company: number;
             job_description: string;
             salary: import("generated/prisma/runtime/library").Decimal;
             enabled: boolean;
-            code_company: number;
         };
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;
@@ -120,10 +120,10 @@ export declare class EmployeeController {
             created_at: Date;
             last_modified: Date | null;
             code_employee: string;
+            code_company: number;
             job_description: string;
             salary: import("generated/prisma/runtime/library").Decimal;
             enabled: boolean;
-            code_company: number;
         };
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;
@@ -138,10 +138,10 @@ export declare class EmployeeController {
             created_at: Date;
             last_modified: Date | null;
             code_employee: string;
+            code_company: number;
             job_description: string;
             salary: import("generated/prisma/runtime/library").Decimal;
             enabled: boolean;
-            code_company: number;
         };
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;

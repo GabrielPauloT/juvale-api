@@ -16,10 +16,10 @@ export declare class EmployeeService {
             created_at: Date;
             last_modified: Date | null;
             code_employee: string;
+            code_company: number;
             job_description: string;
             salary: Prisma.Decimal;
             enabled: boolean;
-            code_company: number;
         };
         statusCode: HttpStatus;
         message: string;
@@ -30,10 +30,10 @@ export declare class EmployeeService {
             created_at: Date;
             last_modified: Date | null;
             code_employee: string;
+            code_company: number;
             job_description: string;
             salary: Prisma.Decimal;
             enabled: boolean;
-            code_company: number;
         } | {
             statusCode: HttpStatus;
             message: string;
@@ -62,16 +62,16 @@ export declare class EmployeeService {
             vrPerDay: string;
             enabled: boolean;
             ticket: {
+                id: number;
                 created_at: Date;
                 last_modified: Date | null;
-                id: number;
                 code_employee: string;
                 value: Prisma.Decimal;
             }[];
             snack: {
+                id: number;
                 created_at: Date;
                 last_modified: Date | null;
-                id: number;
                 code_employee: string;
                 value: Prisma.Decimal;
             }[];
@@ -82,9 +82,9 @@ export declare class EmployeeService {
             }[];
             company: {
                 name: string;
+                id: number;
                 created_at: Date;
                 last_modified: Date | null;
-                id: number;
             };
         }[];
         page: number;
@@ -104,10 +104,10 @@ export declare class EmployeeService {
             created_at: Date;
             last_modified: Date | null;
             code_employee: string;
+            code_company: number;
             job_description: string;
             salary: Prisma.Decimal;
             enabled: boolean;
-            code_company: number;
         };
         statusCode: HttpStatus;
         message: string;
@@ -122,10 +122,10 @@ export declare class EmployeeService {
             created_at: Date;
             last_modified: Date | null;
             code_employee: string;
+            code_company: number;
             job_description: string;
             salary: Prisma.Decimal;
             enabled: boolean;
-            code_company: number;
         };
         statusCode: HttpStatus;
         message: string;
@@ -140,10 +140,10 @@ export declare class EmployeeService {
             created_at: Date;
             last_modified: Date | null;
             code_employee: string;
+            code_company: number;
             job_description: string;
             salary: Prisma.Decimal;
             enabled: boolean;
-            code_company: number;
         };
         statusCode: HttpStatus;
         message: string;

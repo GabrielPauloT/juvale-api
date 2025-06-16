@@ -19,7 +19,7 @@ let UserService = class UserService {
     }
     async create(createUserDto) {
         const { email, password } = createUserDto;
-        const existing = await this.prisma.client.user.findUnique({
+        const existing = await this.prisma.user.findUnique({
             where: { email },
         });
         if (existing) {
@@ -29,7 +29,7 @@ let UserService = class UserService {
             };
         }
         const hashedPassword = await bcrypt.hash(password, 10);
-        const data = await this.prisma.client.user.create({
+        const data = await this.prisma.user.create({
             data: {
                 email,
                 role: createUserDto.role,
@@ -54,12 +54,12 @@ let UserService = class UserService {
         const whereClause = {
             ...(name ? { name: { contains: name, mode: 'insensitive' } } : {}),
         };
-        const data = await this.prisma.client.user.findMany({
+        const data = await this.prisma.user.findMany({
             skip,
             take,
             where: whereClause,
         });
-        const countUsers = await this.prisma.client.user.count({
+        const countUsers = await this.prisma.user.count({
             where: whereClause,
         });
         return {
@@ -80,7 +80,7 @@ let UserService = class UserService {
         };
     }
     async findOne(id) {
-        const user = await this.prisma.client.user.findUnique({
+        const user = await this.prisma.user.findUnique({
             where: { id },
         });
         if (!user) {
@@ -101,7 +101,7 @@ let UserService = class UserService {
         };
     }
     async update(id, updateUserDto) {
-        const user = await this.prisma.client.user.findUnique({
+        const user = await this.prisma.user.findUnique({
             where: { id },
         });
         if (!user) {
@@ -126,7 +126,7 @@ let UserService = class UserService {
         if (password) {
             updateData.password = await bcrypt.hash(updateUserDto.password, 10);
         }
-        const updatedUser = await this.prisma.client.user.update({
+        const updatedUser = await this.prisma.user.update({
             where: { id },
             data: updateData,
         });
@@ -142,7 +142,7 @@ let UserService = class UserService {
         };
     }
     async remove(id) {
-        const user = await this.prisma.client.user.findUnique({
+        const user = await this.prisma.user.findUnique({
             where: { id },
         });
         if (!user) {
@@ -151,7 +151,7 @@ let UserService = class UserService {
                 message: 'User not found',
             };
         }
-        await this.prisma.client.user.delete({
+        await this.prisma.user.delete({
             where: { id },
         });
         return {

@@ -11,9 +11,9 @@ export declare class TicketController {
         data?: undefined;
     } | {
         data: {
+            id: number;
             created_at: Date;
             last_modified: Date | null;
-            id: number;
             code_employee: string;
             value: import("generated/prisma/runtime/library").Decimal;
         };
@@ -31,9 +31,9 @@ export declare class TicketController {
                 job_description: string;
             };
         } & {
+            id: number;
             created_at: Date;
             last_modified: Date | null;
-            id: number;
             code_employee: string;
             value: import("generated/prisma/runtime/library").Decimal;
         })[];
@@ -55,9 +55,9 @@ export declare class TicketController {
                 job_description: string;
             };
         } & {
+            id: number;
             created_at: Date;
             last_modified: Date | null;
-            id: number;
             code_employee: string;
             value: import("generated/prisma/runtime/library").Decimal;
         };
@@ -70,9 +70,9 @@ export declare class TicketController {
         data?: undefined;
     } | {
         data: {
+            id: number;
             created_at: Date;
             last_modified: Date | null;
-            id: number;
             code_employee: string;
             value: import("generated/prisma/runtime/library").Decimal;
         };
@@ -85,9 +85,9 @@ export declare class TicketController {
         data?: undefined;
     } | {
         data: {
+            id: number;
             created_at: Date;
             last_modified: Date | null;
-            id: number;
             code_employee: string;
             value: import("generated/prisma/runtime/library").Decimal;
         };
