@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model absence {
+  id                  Int       @id @default(autoincrement())
+  code_employee       String
+  absence_date        DateTime  @db.Timestamp(6)
+  created_at          DateTime  @default(now()) @db.Timestamp(6)
+  last_modified       DateTime? @db.Timestamp(6)
+  certificate_absence Boolean
+  employee            employee  @relation(fields: [code_employee], references: [code_employee], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model company {
+  id            Int        @id @default(autoincrement())
+  name          String     @db.VarChar(255)
+  created_at    DateTime   @default(now()) @db.Timestamp(6)
+  last_modified DateTime?  @db.Timestamp(6)
+  employee      employee[]
+}
+
+model employee {
+  code_employee   String    @id
+  code_company    Int
+  name            String    @db.VarChar(255)
+  job_description String    @db.VarChar(255)
+  salary          Decimal   @db.Decimal
+  created_at      DateTime  @default(now()) @db.Timestamp(6)
+  last_modified   DateTime? @db.Timestamp(6)
+  enabled         Boolean
+  absence         absence[]
+  company         company   @relation(fields: [code_company], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  ticket          ticket[]
+  snack           snack[]
+}
+
+model ticket {
+  id            Int       @id(map: "ticket_pkey") @default(autoincrement())
+  code_employee String
+  value         Decimal   @db.Decimal
+  created_at    DateTime  @default(now()) @db.Timestamp(6)
+  last_modified DateTime? @db.Timestamp(6)
+  employee      employee  @relation(fields: [code_employee], references: [code_employee], onDelete: NoAction, onUpdate: NoAction, map: "passage_code_employee_fkey")
+}
+
+model snack {
+  id            Int       @id(map: "snack_pkey") @default(autoincrement())
+  code_employee String
+  value         Decimal   @db.Decimal
+  created_at    DateTime  @default(now()) @db.Timestamp(6)
+  last_modified DateTime? @db.Timestamp(6)
+  employee      employee  @relation(fields: [code_employee], references: [code_employee], onDelete: NoAction, onUpdate: NoAction, map: "ticket_code_employee_fkey")
+}
+
+model user {
+  id            Int       @id(map: "user_pkey") @default(autoincrement())
+  name          String    @db.VarChar(255)
+  email         String    @unique @db.VarChar(255)
+  password      String    @db.VarChar(255)
+  role          String    @db.VarChar(50)
+  created_at    DateTime  @default(now()) @db.Timestamp(6)
+  last_modified DateTime? @db.Timestamp(6)
+}
