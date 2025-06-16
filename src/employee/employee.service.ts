@@ -3,7 +3,7 @@ import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { getDaysInMonth, isWeekend } from 'date-fns';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Prisma } from 'generated/prisma';
+import { Prisma } from 'prisma/generated/prisma';
 
 @Injectable()
 export class EmployeeService {
