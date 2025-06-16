@@ -35,6 +35,7 @@ let CompanyService = class CompanyService {
             take,
             where: {
                 name: name ? { contains: name, mode: 'insensitive' } : undefined,
+                enabled: true,
             },
         });
         const countCompany = await this.prisma.company.count({
@@ -77,6 +78,7 @@ let CompanyService = class CompanyService {
                     },
                 },
             },
+            where: { enabled: true },
         });
         const dateSelected = date ? new Date(date) : new Date();
         const selectedMonth = dateSelected.getMonth();
@@ -153,6 +155,26 @@ let CompanyService = class CompanyService {
             data,
             statusCode: common_1.HttpStatus.OK,
             message: 'Company updated successfully',
+        };
+    }
+    async remove(id) {
+        const company = await this.prisma.company.findUnique({
+            where: { id },
+        });
+        if (!company) {
+            return {
+                statusCode: common_1.HttpStatus.NOT_FOUND,
+                message: 'Company not found',
+            };
+        }
+        const data = await this.prisma.company.update({
+            data: { enabled: false, last_modified: new Date() },
+            where: { id },
+        });
+        return {
+            data,
+            statusCode: common_1.HttpStatus.OK,
+            message: 'Company removed successfully',
         };
     }
 };

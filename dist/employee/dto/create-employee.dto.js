@@ -39,4 +39,9 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
 ], CreateEmployeeDto.prototype, "salary", void 0);
+__decorate([
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", Number)
+], CreateEmployeeDto.prototype, "snackValue", void 0);
 //# sourceMappingURL=create-employee.dto.js.map

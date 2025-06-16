@@ -9,7 +9,7 @@ import { Prisma } from 'prisma/generated/prisma';
 export class EmployeeService {
   constructor(private prisma: PrismaService) {}
   async create(createEmployeeDto: CreateEmployeeDto) {
-    const { codeCompany, codeEmployee } = createEmployeeDto;
+    const { codeCompany, codeEmployee, snackValue } = createEmployeeDto;
 
     const codeEmployeeExists = await this.prisma.employee.findUnique({
       where: { code_employee: codeEmployee },
@@ -45,6 +45,20 @@ export class EmployeeService {
         },
       },
     });
+
+    if (data) {
+      await this.prisma.snack.create({
+        data: {
+          value: snackValue,
+          employee: {
+            connect: {
+              code_employee: data.code_employee,
+            },
+          },
+        },
+      });
+    }
+
     return {
       data,
       statusCode: HttpStatus.CREATED,
@@ -160,6 +174,7 @@ export class EmployeeService {
         company: true,
         snack: true,
       },
+      orderBy: { created_at: 'desc' },
       where: whereClause,
     });
 

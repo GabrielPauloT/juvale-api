@@ -18,7 +18,7 @@ let EmployeeService = class EmployeeService {
         this.prisma = prisma;
     }
     async create(createEmployeeDto) {
-        const { codeCompany, codeEmployee } = createEmployeeDto;
+        const { codeCompany, codeEmployee, snackValue } = createEmployeeDto;
         const codeEmployeeExists = await this.prisma.employee.findUnique({
             where: { code_employee: codeEmployee },
         });
@@ -49,6 +49,18 @@ let EmployeeService = class EmployeeService {
                 },
             },
         });
+        if (data) {
+            await this.prisma.snack.create({
+                data: {
+                    value: snackValue,
+                    employee: {
+                        connect: {
+                            code_employee: data.code_employee,
+                        },
+                    },
+                },
+            });
+        }
         return {
             data,
             statusCode: common_1.HttpStatus.CREATED,
@@ -142,6 +154,7 @@ let EmployeeService = class EmployeeService {
                 company: true,
                 snack: true,
             },
+            orderBy: { created_at: 'desc' },
             where: whereClause,
         });
         const totalDiasNoMes = (0, date_fns_1.getDaysInMonth)(new Date(selectedYear, selectedMonth));

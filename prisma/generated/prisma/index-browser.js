@@ -133,7 +133,8 @@ exports.Prisma.CompanyScalarFieldEnum = {
   id: 'id',
   name: 'name',
   created_at: 'created_at',
-  last_modified: 'last_modified'
+  last_modified: 'last_modified',
+  enabled: 'enabled'
 };
 
 exports.Prisma.EmployeeScalarFieldEnum = {

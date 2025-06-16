@@ -7,6 +7,7 @@ import {
   Param,
   Query,
   UseGuards,
+  Delete,
 } from '@nestjs/common';
 import { CompanyService } from './company.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
@@ -47,8 +48,8 @@ export class CompanyController {
     return this.companyService.findAllEmployeeCostByCompany(date);
   }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.companyService.remove(+id);
-  // }
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.companyService.remove(+id);
+  }
 }

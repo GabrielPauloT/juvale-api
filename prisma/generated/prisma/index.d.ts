@@ -2533,6 +2533,7 @@ export namespace Prisma {
     name: string | null
     created_at: Date | null
     last_modified: Date | null
+    enabled: boolean | null
   }
 
   export type CompanyMaxAggregateOutputType = {
@@ -2540,6 +2541,7 @@ export namespace Prisma {
     name: string | null
     created_at: Date | null
     last_modified: Date | null
+    enabled: boolean | null
   }
 
   export type CompanyCountAggregateOutputType = {
@@ -2547,6 +2549,7 @@ export namespace Prisma {
     name: number
     created_at: number
     last_modified: number
+    enabled: number
     _all: number
   }
 
@@ -2564,6 +2567,7 @@ export namespace Prisma {
     name?: true
     created_at?: true
     last_modified?: true
+    enabled?: true
   }
 
   export type CompanyMaxAggregateInputType = {
@@ -2571,6 +2575,7 @@ export namespace Prisma {
     name?: true
     created_at?: true
     last_modified?: true
+    enabled?: true
   }
 
   export type CompanyCountAggregateInputType = {
@@ -2578,6 +2583,7 @@ export namespace Prisma {
     name?: true
     created_at?: true
     last_modified?: true
+    enabled?: true
     _all?: true
   }
 
@@ -2672,6 +2678,7 @@ export namespace Prisma {
     name: string
     created_at: Date
     last_modified: Date | null
+    enabled: boolean
     _count: CompanyCountAggregateOutputType | null
     _avg: CompanyAvgAggregateOutputType | null
     _sum: CompanySumAggregateOutputType | null
@@ -2698,6 +2705,7 @@ export namespace Prisma {
     name?: boolean
     created_at?: boolean
     last_modified?: boolean
+    enabled?: boolean
     employee?: boolean | company$employeeArgs<ExtArgs>
     _count?: boolean | CompanyCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["company"]>
@@ -2707,6 +2715,7 @@ export namespace Prisma {
     name?: boolean
     created_at?: boolean
     last_modified?: boolean
+    enabled?: boolean
   }, ExtArgs["result"]["company"]>
 
   export type companySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2714,6 +2723,7 @@ export namespace Prisma {
     name?: boolean
     created_at?: boolean
     last_modified?: boolean
+    enabled?: boolean
   }, ExtArgs["result"]["company"]>
 
   export type companySelectScalar = {
@@ -2721,9 +2731,10 @@ export namespace Prisma {
     name?: boolean
     created_at?: boolean
     last_modified?: boolean
+    enabled?: boolean
   }
 
-  export type companyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "created_at" | "last_modified", ExtArgs["result"]["company"]>
+  export type companyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "created_at" | "last_modified" | "enabled", ExtArgs["result"]["company"]>
   export type companyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     employee?: boolean | company$employeeArgs<ExtArgs>
     _count?: boolean | CompanyCountOutputTypeDefaultArgs<ExtArgs>
@@ -2741,6 +2752,7 @@ export namespace Prisma {
       name: string
       created_at: Date
       last_modified: Date | null
+      enabled: boolean
     }, ExtArgs["result"]["company"]>
     composites: {}
   }
@@ -3169,6 +3181,7 @@ export namespace Prisma {
     readonly name: FieldRef<"company", 'String'>
     readonly created_at: FieldRef<"company", 'DateTime'>
     readonly last_modified: FieldRef<"company", 'DateTime'>
+    readonly enabled: FieldRef<"company", 'Boolean'>
   }
     
 
@@ -8097,7 +8110,8 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     created_at: 'created_at',
-    last_modified: 'last_modified'
+    last_modified: 'last_modified',
+    enabled: 'enabled'
   };
 
   export type CompanyScalarFieldEnum = (typeof CompanyScalarFieldEnum)[keyof typeof CompanyScalarFieldEnum]
@@ -8331,6 +8345,7 @@ export namespace Prisma {
     name?: StringFilter<"company"> | string
     created_at?: DateTimeFilter<"company"> | Date | string
     last_modified?: DateTimeNullableFilter<"company"> | Date | string | null
+    enabled?: BoolFilter<"company"> | boolean
     employee?: EmployeeListRelationFilter
   }
 
@@ -8339,6 +8354,7 @@ export namespace Prisma {
     name?: SortOrder
     created_at?: SortOrder
     last_modified?: SortOrderInput | SortOrder
+    enabled?: SortOrder
     employee?: employeeOrderByRelationAggregateInput
   }
 
@@ -8350,6 +8366,7 @@ export namespace Prisma {
     name?: StringFilter<"company"> | string
     created_at?: DateTimeFilter<"company"> | Date | string
     last_modified?: DateTimeNullableFilter<"company"> | Date | string | null
+    enabled?: BoolFilter<"company"> | boolean
     employee?: EmployeeListRelationFilter
   }, "id">
 
@@ -8358,6 +8375,7 @@ export namespace Prisma {
     name?: SortOrder
     created_at?: SortOrder
     last_modified?: SortOrderInput | SortOrder
+    enabled?: SortOrder
     _count?: companyCountOrderByAggregateInput
     _avg?: companyAvgOrderByAggregateInput
     _max?: companyMaxOrderByAggregateInput
@@ -8373,6 +8391,7 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"company"> | string
     created_at?: DateTimeWithAggregatesFilter<"company"> | Date | string
     last_modified?: DateTimeNullableWithAggregatesFilter<"company"> | Date | string | null
+    enabled?: BoolWithAggregatesFilter<"company"> | boolean
   }
 
   export type employeeWhereInput = {
@@ -8697,6 +8716,7 @@ export namespace Prisma {
     name: string
     created_at?: Date | string
     last_modified?: Date | string | null
+    enabled?: boolean
     employee?: employeeCreateNestedManyWithoutCompanyInput
   }
 
@@ -8705,6 +8725,7 @@ export namespace Prisma {
     name: string
     created_at?: Date | string
     last_modified?: Date | string | null
+    enabled?: boolean
     employee?: employeeUncheckedCreateNestedManyWithoutCompanyInput
   }
 
@@ -8712,6 +8733,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     last_modified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    enabled?: BoolFieldUpdateOperationsInput | boolean
     employee?: employeeUpdateManyWithoutCompanyNestedInput
   }
 
@@ -8720,6 +8742,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     last_modified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    enabled?: BoolFieldUpdateOperationsInput | boolean
     employee?: employeeUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
@@ -8728,12 +8751,14 @@ export namespace Prisma {
     name: string
     created_at?: Date | string
     last_modified?: Date | string | null
+    enabled?: boolean
   }
 
   export type companyUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     last_modified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    enabled?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type companyUncheckedUpdateManyInput = {
@@ -8741,6 +8766,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     last_modified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    enabled?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type employeeCreateInput = {
@@ -8750,7 +8776,7 @@ export namespace Prisma {
     salary: Decimal | DecimalJsLike | number | string
     created_at?: Date | string
     last_modified?: Date | string | null
-    enabled: boolean
+    enabled?: boolean
     absence?: absenceCreateNestedManyWithoutEmployeeInput
     company: companyCreateNestedOneWithoutEmployeeInput
     ticket?: ticketCreateNestedManyWithoutEmployeeInput
@@ -8765,7 +8791,7 @@ export namespace Prisma {
     salary: Decimal | DecimalJsLike | number | string
     created_at?: Date | string
     last_modified?: Date | string | null
-    enabled: boolean
+    enabled?: boolean
     absence?: absenceUncheckedCreateNestedManyWithoutEmployeeInput
     ticket?: ticketUncheckedCreateNestedManyWithoutEmployeeInput
     snack?: snackUncheckedCreateNestedManyWithoutEmployeeInput
@@ -8807,7 +8833,7 @@ export namespace Prisma {
     salary: Decimal | DecimalJsLike | number | string
     created_at?: Date | string
     last_modified?: Date | string | null
-    enabled: boolean
+    enabled?: boolean
   }
 
   export type employeeUpdateManyMutationInput = {
@@ -9185,6 +9211,7 @@ export namespace Prisma {
     name?: SortOrder
     created_at?: SortOrder
     last_modified?: SortOrder
+    enabled?: SortOrder
   }
 
   export type companyAvgOrderByAggregateInput = {
@@ -9196,6 +9223,7 @@ export namespace Prisma {
     name?: SortOrder
     created_at?: SortOrder
     last_modified?: SortOrder
+    enabled?: SortOrder
   }
 
   export type companyMinOrderByAggregateInput = {
@@ -9203,6 +9231,7 @@ export namespace Prisma {
     name?: SortOrder
     created_at?: SortOrder
     last_modified?: SortOrder
+    enabled?: SortOrder
   }
 
   export type companySumOrderByAggregateInput = {
@@ -9853,7 +9882,7 @@ export namespace Prisma {
     salary: Decimal | DecimalJsLike | number | string
     created_at?: Date | string
     last_modified?: Date | string | null
-    enabled: boolean
+    enabled?: boolean
     company: companyCreateNestedOneWithoutEmployeeInput
     ticket?: ticketCreateNestedManyWithoutEmployeeInput
     snack?: snackCreateNestedManyWithoutEmployeeInput
@@ -9867,7 +9896,7 @@ export namespace Prisma {
     salary: Decimal | DecimalJsLike | number | string
     created_at?: Date | string
     last_modified?: Date | string | null
-    enabled: boolean
+    enabled?: boolean
     ticket?: ticketUncheckedCreateNestedManyWithoutEmployeeInput
     snack?: snackUncheckedCreateNestedManyWithoutEmployeeInput
   }
@@ -9921,7 +9950,7 @@ export namespace Prisma {
     salary: Decimal | DecimalJsLike | number | string
     created_at?: Date | string
     last_modified?: Date | string | null
-    enabled: boolean
+    enabled?: boolean
     absence?: absenceCreateNestedManyWithoutEmployeeInput
     ticket?: ticketCreateNestedManyWithoutEmployeeInput
     snack?: snackCreateNestedManyWithoutEmployeeInput
@@ -9934,7 +9963,7 @@ export namespace Prisma {
     salary: Decimal | DecimalJsLike | number | string
     created_at?: Date | string
     last_modified?: Date | string | null
-    enabled: boolean
+    enabled?: boolean
     absence?: absenceUncheckedCreateNestedManyWithoutEmployeeInput
     ticket?: ticketUncheckedCreateNestedManyWithoutEmployeeInput
     snack?: snackUncheckedCreateNestedManyWithoutEmployeeInput
@@ -10009,6 +10038,7 @@ export namespace Prisma {
     name: string
     created_at?: Date | string
     last_modified?: Date | string | null
+    enabled?: boolean
   }
 
   export type companyUncheckedCreateWithoutEmployeeInput = {
@@ -10016,6 +10046,7 @@ export namespace Prisma {
     name: string
     created_at?: Date | string
     last_modified?: Date | string | null
+    enabled?: boolean
   }
 
   export type companyCreateOrConnectWithoutEmployeeInput = {
@@ -10112,6 +10143,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     last_modified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    enabled?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type companyUncheckedUpdateWithoutEmployeeInput = {
@@ -10119,6 +10151,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     last_modified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    enabled?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ticketUpsertWithWhereUniqueWithoutEmployeeInput = {
@@ -10182,7 +10215,7 @@ export namespace Prisma {
     salary: Decimal | DecimalJsLike | number | string
     created_at?: Date | string
     last_modified?: Date | string | null
-    enabled: boolean
+    enabled?: boolean
     absence?: absenceCreateNestedManyWithoutEmployeeInput
     company: companyCreateNestedOneWithoutEmployeeInput
     snack?: snackCreateNestedManyWithoutEmployeeInput
@@ -10196,7 +10229,7 @@ export namespace Prisma {
     salary: Decimal | DecimalJsLike | number | string
     created_at?: Date | string
     last_modified?: Date | string | null
-    enabled: boolean
+    enabled?: boolean
     absence?: absenceUncheckedCreateNestedManyWithoutEmployeeInput
     snack?: snackUncheckedCreateNestedManyWithoutEmployeeInput
   }
@@ -10250,7 +10283,7 @@ export namespace Prisma {
     salary: Decimal | DecimalJsLike | number | string
     created_at?: Date | string
     last_modified?: Date | string | null
-    enabled: boolean
+    enabled?: boolean
     absence?: absenceCreateNestedManyWithoutEmployeeInput
     company: companyCreateNestedOneWithoutEmployeeInput
     ticket?: ticketCreateNestedManyWithoutEmployeeInput
@@ -10264,7 +10297,7 @@ export namespace Prisma {
     salary: Decimal | DecimalJsLike | number | string
     created_at?: Date | string
     last_modified?: Date | string | null
-    enabled: boolean
+    enabled?: boolean
     absence?: absenceUncheckedCreateNestedManyWithoutEmployeeInput
     ticket?: ticketUncheckedCreateNestedManyWithoutEmployeeInput
   }
@@ -10318,7 +10351,7 @@ export namespace Prisma {
     salary: Decimal | DecimalJsLike | number | string
     created_at?: Date | string
     last_modified?: Date | string | null
-    enabled: boolean
+    enabled?: boolean
   }
 
   export type employeeUpdateWithoutCompanyInput = {

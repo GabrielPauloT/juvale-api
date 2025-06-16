@@ -4,4 +4,5 @@ export declare class CreateEmployeeDto {
     name: string;
     jobDescription: string;
     salary: number;
+    snackValue: number;
 }

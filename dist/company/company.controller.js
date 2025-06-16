@@ -37,6 +37,9 @@ let CompanyController = class CompanyController {
     findAllEmployeeCostByCompany(date) {
         return this.companyService.findAllEmployeeCostByCompany(date);
     }
+    remove(id) {
+        return this.companyService.remove(+id);
+    }
 };
 exports.CompanyController = CompanyController;
 __decorate([
@@ -77,6 +80,13 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], CompanyController.prototype, "findAllEmployeeCostByCompany", null);
+__decorate([
+    (0, common_1.Delete)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], CompanyController.prototype, "remove", null);
 exports.CompanyController = CompanyController = __decorate([
     (0, common_1.Controller)('company'),
     (0, common_1.UseGuards)(jwt_verify_interceptors_1.JwtAuthGuard),

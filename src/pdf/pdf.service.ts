@@ -159,6 +159,7 @@ export class PdfService {
 
   async generateCompanyCostReport(date?: string): Promise<Buffer> {
     const companies = await this.prisma.company.findMany({
+      where: { enabled: true },
       select: {
         name: true,
         employee: {
@@ -268,6 +269,7 @@ export class PdfService {
     }
 
     const companies = await this.prisma.company.findMany({
+      where: { enabled: true },
       select: {
         name: true,
         employee: {
@@ -383,7 +385,7 @@ export class PdfService {
 
   async generateEmployeeCostReport(date?: string): Promise<Buffer> {
     const employees = await this.prisma.employee.findMany({
-      where: { enabled: true },
+      where: { enabled: true, company: { enabled: true } },
       orderBy: {
         code_company: 'asc',
       },
@@ -517,7 +519,7 @@ export class PdfService {
 
   async generateEmployeeCostReportWithAbsences(date?: string): Promise<Buffer> {
     const employees = await this.prisma.employee.findMany({
-      where: { enabled: true },
+      where: { enabled: true, company: { enabled: true } },
       orderBy: { code_company: 'asc' },
       include: {
         company: true,

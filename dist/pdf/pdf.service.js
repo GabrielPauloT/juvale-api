@@ -143,6 +143,7 @@ let PdfService = class PdfService {
     }
     async generateCompanyCostReport(date) {
         const companies = await this.prisma.company.findMany({
+            where: { enabled: true },
             select: {
                 name: true,
                 employee: {
@@ -219,6 +220,7 @@ let PdfService = class PdfService {
             throw new common_1.BadRequestException('A data inicial não pode ser maior que a data final');
         }
         const companies = await this.prisma.company.findMany({
+            where: { enabled: true },
             select: {
                 name: true,
                 employee: {
@@ -310,7 +312,7 @@ let PdfService = class PdfService {
     }
     async generateEmployeeCostReport(date) {
         const employees = await this.prisma.employee.findMany({
-            where: { enabled: true },
+            where: { enabled: true, company: { enabled: true } },
             orderBy: {
                 code_company: 'asc',
             },
@@ -410,7 +412,7 @@ let PdfService = class PdfService {
     }
     async generateEmployeeCostReportWithAbsences(date) {
         const employees = await this.prisma.employee.findMany({
-            where: { enabled: true },
+            where: { enabled: true, company: { enabled: true } },
             orderBy: { code_company: 'asc' },
             include: {
                 company: true,

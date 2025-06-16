@@ -11,6 +11,7 @@ export declare class CompanyService {
             id: number;
             created_at: Date;
             last_modified: Date | null;
+            enabled: boolean;
         };
         statusCode: HttpStatus;
         message: string;
@@ -21,6 +22,7 @@ export declare class CompanyService {
             id: number;
             created_at: Date;
             last_modified: Date | null;
+            enabled: boolean;
         }[];
         page: number;
         perPage: number;
@@ -49,6 +51,7 @@ export declare class CompanyService {
             id: number;
             created_at: Date;
             last_modified: Date | null;
+            enabled: boolean;
         };
         statusCode: HttpStatus;
         message: string;
@@ -63,6 +66,22 @@ export declare class CompanyService {
             id: number;
             created_at: Date;
             last_modified: Date | null;
+            enabled: boolean;
+        };
+        statusCode: HttpStatus;
+        message: string;
+    }>;
+    remove(id: number): Promise<{
+        statusCode: HttpStatus;
+        message: string;
+        data?: undefined;
+    } | {
+        data: {
+            name: string;
+            id: number;
+            created_at: Date;
+            last_modified: Date | null;
+            enabled: boolean;
         };
         statusCode: HttpStatus;
         message: string;

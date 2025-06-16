@@ -63,11 +63,11 @@ export declare class AbsenceService {
                 name: string;
                 created_at: Date;
                 last_modified: Date | null;
+                enabled: boolean;
                 code_employee: string;
                 code_company: number;
                 job_description: string;
                 salary: import("prisma/generated/prisma/runtime/library").Decimal;
-                enabled: boolean;
             };
         } & {
             id: number;

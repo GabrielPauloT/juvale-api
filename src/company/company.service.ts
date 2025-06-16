@@ -26,6 +26,7 @@ export class CompanyService {
       take,
       where: {
         name: name ? { contains: name, mode: 'insensitive' } : undefined,
+        enabled: true,
       },
     });
 
@@ -71,6 +72,7 @@ export class CompanyService {
           },
         },
       },
+      where: { enabled: true },
     });
 
     const dateSelected = date ? new Date(date) : new Date();
@@ -167,6 +169,30 @@ export class CompanyService {
       data,
       statusCode: HttpStatus.OK,
       message: 'Company updated successfully',
+    };
+  }
+
+  async remove(id: number) {
+    const company = await this.prisma.company.findUnique({
+      where: { id },
+    });
+
+    if (!company) {
+      return {
+        statusCode: HttpStatus.NOT_FOUND,
+        message: 'Company not found',
+      };
+    }
+
+    const data = await this.prisma.company.update({
+      data: { enabled: false, last_modified: new Date() },
+      where: { id },
+    });
+
+    return {
+      data,
+      statusCode: HttpStatus.OK,
+      message: 'Company removed successfully',
     };
   }
 }

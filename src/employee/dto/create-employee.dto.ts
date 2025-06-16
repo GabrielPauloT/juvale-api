@@ -20,4 +20,8 @@ export class CreateEmployeeDto {
   @IsNumber()
   @IsNotEmpty()
   public salary: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  public snackValue: number;
 }

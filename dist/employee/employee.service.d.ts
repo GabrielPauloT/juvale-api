@@ -15,11 +15,11 @@ export declare class EmployeeService {
             name: string;
             created_at: Date;
             last_modified: Date | null;
+            enabled: boolean;
             code_employee: string;
             code_company: number;
             job_description: string;
             salary: Prisma.Decimal;
-            enabled: boolean;
         };
         statusCode: HttpStatus;
         message: string;
@@ -29,11 +29,11 @@ export declare class EmployeeService {
             name: string;
             created_at: Date;
             last_modified: Date | null;
+            enabled: boolean;
             code_employee: string;
             code_company: number;
             job_description: string;
             salary: Prisma.Decimal;
-            enabled: boolean;
         } | {
             statusCode: HttpStatus;
             message: string;
@@ -85,6 +85,7 @@ export declare class EmployeeService {
                 id: number;
                 created_at: Date;
                 last_modified: Date | null;
+                enabled: boolean;
             };
         }[];
         page: number;
@@ -103,11 +104,11 @@ export declare class EmployeeService {
             name: string;
             created_at: Date;
             last_modified: Date | null;
+            enabled: boolean;
             code_employee: string;
             code_company: number;
             job_description: string;
             salary: Prisma.Decimal;
-            enabled: boolean;
         };
         statusCode: HttpStatus;
         message: string;
@@ -121,11 +122,11 @@ export declare class EmployeeService {
             name: string;
             created_at: Date;
             last_modified: Date | null;
+            enabled: boolean;
             code_employee: string;
             code_company: number;
             job_description: string;
             salary: Prisma.Decimal;
-            enabled: boolean;
         };
         statusCode: HttpStatus;
         message: string;
@@ -139,11 +140,11 @@ export declare class EmployeeService {
             name: string;
             created_at: Date;
             last_modified: Date | null;
+            enabled: boolean;
             code_employee: string;
             code_company: number;
             job_description: string;
             salary: Prisma.Decimal;
-            enabled: boolean;
         };
         statusCode: HttpStatus;
         message: string;
