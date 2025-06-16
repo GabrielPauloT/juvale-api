@@ -52,6 +52,33 @@ export declare class AbsenceController {
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;
     }>;
+    findByCodeEmployeeAndDate(codeEmployee: string, date: string): Promise<{
+        statusCode: import("@nestjs/common").HttpStatus;
+        message: string;
+        data?: undefined;
+    } | {
+        data: ({
+            employee: {
+                name: string;
+                created_at: Date;
+                last_modified: Date | null;
+                code_employee: string;
+                job_description: string;
+                salary: import("generated/prisma/runtime/library").Decimal;
+                enabled: boolean;
+                code_company: number;
+            };
+        } & {
+            created_at: Date;
+            last_modified: Date | null;
+            id: number;
+            code_employee: string;
+            absence_date: Date;
+            certificate_absence: boolean;
+        })[];
+        statusCode: import("@nestjs/common").HttpStatus;
+        message: string;
+    }>;
     update(id: string, updateAbsenceDto: UpdateAbsenceDto): Promise<{
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;

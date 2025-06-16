@@ -25,8 +25,8 @@ let CompanyController = class CompanyController {
     create(createCompanyDto) {
         return this.companyService.create(createCompanyDto);
     }
-    findAll(page, perPage) {
-        return this.companyService.findAll(+page, +perPage);
+    findAll(page, perPage, name) {
+        return this.companyService.findAll(+page, +perPage, name);
     }
     findOne(id) {
         return this.companyService.findOne(+id);
@@ -50,8 +50,9 @@ __decorate([
     (0, common_1.Get)(),
     __param(0, (0, common_1.Query)('page')),
     __param(1, (0, common_1.Query)('perPage')),
+    __param(2, (0, common_1.Query)('name')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:paramtypes", [String, String, String]),
     __metadata("design:returntype", void 0)
 ], CompanyController.prototype, "findAll", null);
 __decorate([

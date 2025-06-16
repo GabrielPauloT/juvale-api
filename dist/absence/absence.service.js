@@ -77,6 +77,37 @@ let AbsenceService = class AbsenceService {
             message: 'Absence retrieved successfully',
         };
     }
+    async findByCodeEmployeeAndDate(codeEmployee, date) {
+        const employee = await this.prisma.client.employee.findUnique({
+            where: { code_employee: codeEmployee },
+        });
+        if (!employee) {
+            return {
+                statusCode: common_1.HttpStatus.NOT_FOUND,
+                message: 'Employee not found',
+            };
+        }
+        const inputDate = new Date(date);
+        const startDate = new Date(inputDate.getFullYear(), inputDate.getMonth(), 1);
+        const endDate = new Date(inputDate.getFullYear(), inputDate.getMonth() + 1, 0, 23, 59, 59, 999);
+        const data = await this.prisma.client.absence.findMany({
+            where: {
+                code_employee: employee.code_employee,
+                absence_date: {
+                    gte: startDate,
+                    lte: endDate,
+                },
+            },
+            include: {
+                employee: true,
+            },
+        });
+        return {
+            data,
+            statusCode: common_1.HttpStatus.OK,
+            message: 'Absences retrieved successfully',
+        };
+    }
     async update(id, updateAbsenceDto) {
         const { codeEmployee, absenceDate, certificateAbsence: cerficateAbsence, } = updateAbsenceDto;
         const absenceDateObj = new Date(absenceDate);

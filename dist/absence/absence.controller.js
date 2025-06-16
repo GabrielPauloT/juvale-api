@@ -31,6 +31,9 @@ let AbsenceController = class AbsenceController {
     findOne(id) {
         return this.absenceService.findOne(+id);
     }
+    findByCodeEmployeeAndDate(codeEmployee, date) {
+        return this.absenceService.findByCodeEmployeeAndDate(codeEmployee, date);
+    }
     update(id, updateAbsenceDto) {
         return this.absenceService.update(+id, updateAbsenceDto);
     }
@@ -61,6 +64,14 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], AbsenceController.prototype, "findOne", null);
+__decorate([
+    (0, common_1.Get)('/code_employee/:codeEmployee/date/:date'),
+    __param(0, (0, common_1.Param)('codeEmployee')),
+    __param(1, (0, common_1.Param)('date')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", void 0)
+], AbsenceController.prototype, "findByCodeEmployeeAndDate", null);
 __decorate([
     (0, common_1.Patch)(':id'),
     __param(0, (0, common_1.Param)('id')),

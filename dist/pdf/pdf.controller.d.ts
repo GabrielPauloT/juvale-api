@@ -26,6 +26,7 @@ export declare class PdfController {
         message: string;
     }>;
     generateReportByCompany(date: string, res: Response): Promise<void>;
+    generateCompanyCostReportByPeriod(startDate: string, endDate: string, res: Response): Promise<void>;
     generateReportByEmployee(date: string, res: Response): Promise<void>;
     generateEmployeeCostReportWithAbsences(date: string, res: Response): Promise<void>;
 }

@@ -52,6 +52,23 @@ export class PdfController {
     res.end(buffer);
   }
 
+  @Get('/report/company-period')
+  async generateCompanyCostReportByPeriod(
+    @Query('startDate') startDate: string,
+    @Query('endDate') endDate: string,
+    @Res() res: Response,
+  ) {
+    const buffer = await this.pdfService.generateCompanyCostReportByPeriod(
+      startDate,
+      endDate,
+    );
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': `attachment; filename=relatorio-empresa-${startDate}_to_${endDate}.pdf`,
+    });
+    res.end(buffer);
+  }
+
   @Get('/report/employees')
   async generateReportByEmployee(
     @Query('date') date: string,

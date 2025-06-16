@@ -14,7 +14,7 @@ export declare class CompanyController {
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;
     }>;
-    findAll(page: string, perPage: string): Promise<{
+    findAll(page: string, perPage: string, name: string): Promise<{
         data: {
             name: string;
             created_at: Date;

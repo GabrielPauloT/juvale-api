@@ -15,7 +15,7 @@ export declare class CompanyService {
         statusCode: HttpStatus;
         message: string;
     }>;
-    findAll(page?: number, perPage?: number): Promise<{
+    findAll(page?: number, perPage?: number, name?: string): Promise<{
         data: {
             name: string;
             created_at: Date;

@@ -59,7 +59,9 @@ let UserService = class UserService {
             take,
             where: whereClause,
         });
-        const countUsers = await this.prisma.client.user.count();
+        const countUsers = await this.prisma.client.user.count({
+            where: whereClause,
+        });
         return {
             data: data.map((user) => ({
                 id: user.id,

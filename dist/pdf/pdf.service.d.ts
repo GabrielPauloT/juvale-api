@@ -27,6 +27,7 @@ export declare class PdfService {
         message: string;
     }>;
     generateCompanyCostReport(date?: string): Promise<Buffer>;
+    generateCompanyCostReportByPeriod(startDate: string, endDate: string): Promise<Buffer>;
     generateEmployeeCostReport(date?: string): Promise<Buffer>;
     generateEmployeeCostReportWithAbsences(date?: string): Promise<Buffer>;
     private insertBackgroundImage;

@@ -210,6 +210,104 @@ let PdfService = class PdfService {
             });
         });
     }
+    async generateCompanyCostReportByPeriod(startDate, endDate) {
+        const start = new Date(startDate);
+        start.setDate(start.getDate() + 1);
+        const end = new Date(endDate);
+        end.setDate(end.getDate() + 1);
+        if (start > end) {
+            throw new common_1.BadRequestException('A data inicial não pode ser maior que a data final');
+        }
+        const companies = await this.prisma.client.company.findMany({
+            select: {
+                name: true,
+                employee: {
+                    where: { enabled: true },
+                    select: {
+                        salary: true,
+                        ticket: { select: { value: true, created_at: true } },
+                        snack: { select: { value: true, created_at: true } },
+                        absence: { select: { absence_date: true } },
+                    },
+                },
+            },
+        });
+        const doc = new PDFDocument({ margin: 50 });
+        const buffers = [];
+        this.insertBackgroundImage(doc);
+        doc.on('data', buffers.push.bind(buffers));
+        const startDateFormatted = (0, date_fns_1.format)(start, 'dd/MM/yyyy');
+        const endDateFormatted = (0, date_fns_1.format)(end, 'dd/MM/yyyy');
+        const formatCurrency = (value) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        doc
+            .fontSize(18)
+            .text(`Relatório de Gastos por Empresa`, { align: 'center' })
+            .moveDown(0.5);
+        doc
+            .fontSize(12)
+            .text(`Período: ${startDateFormatted} até ${endDateFormatted}`, {
+            align: 'center',
+        })
+            .moveDown(2);
+        let totalGeral = 0;
+        for (const company of companies) {
+            let totalVR = 0;
+            let totalVT = 0;
+            for (const emp of company.employee) {
+                const faltas = emp.absence.filter((a) => {
+                    const d = new Date(a.absence_date);
+                    return d >= start && d <= end;
+                }).length;
+                const vr = emp.snack
+                    .filter((s) => {
+                    const d = new Date(s.created_at);
+                    return d >= start && d <= end;
+                })
+                    .reduce((sum, item) => sum + Number(item.value), 0);
+                const vt = emp.ticket
+                    .filter((t) => {
+                    const d = new Date(t.created_at);
+                    return d >= start && d <= end;
+                })
+                    .reduce((sum, item) => sum + Number(item.value), 0);
+                const diasNoPeriodo = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) +
+                    1;
+                const diasUteis = Array.from({ length: diasNoPeriodo }, (_, i) => {
+                    const d = new Date(start);
+                    d.setDate(start.getDate() + i);
+                    return !(0, date_fns_1.isWeekend)(d);
+                }).filter(Boolean).length;
+                const diasTrabalhados = Math.max(diasUteis - faltas, 0);
+                totalVR += vr * diasTrabalhados;
+                totalVT += vt * diasTrabalhados;
+            }
+            const total = totalVR + totalVT;
+            totalGeral += total;
+            doc
+                .fontSize(14)
+                .text(`Empresa: ${company.name}`, { underline: true })
+                .moveDown(0.5);
+            doc.fontSize(12);
+            doc.text(`Total Vale Refeição (VR): ${formatCurrency(totalVR)}`);
+            doc.text(`Total Vale Transporte (VT): ${formatCurrency(totalVT)}`);
+            doc.text(`Total Geral da Empresa: ${formatCurrency(total)}`);
+            doc.moveDown(1);
+        }
+        doc
+            .moveDown(1.5)
+            .font('Helvetica-Bold')
+            .fontSize(12)
+            .text(`TOTAL GERAL DO PERÍODO: ${formatCurrency(totalGeral)}`, {
+            align: 'right',
+        });
+        doc.end();
+        return new Promise((resolve) => {
+            doc.on('end', () => {
+                const pdfBuffer = Buffer.concat(buffers);
+                resolve(pdfBuffer);
+            });
+        });
+    }
     async generateEmployeeCostReport(date) {
         const employees = await this.prisma.client.employee.findMany({
             where: { enabled: true },

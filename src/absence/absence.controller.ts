@@ -34,6 +34,14 @@ export class AbsenceController {
     return this.absenceService.findOne(+id);
   }
 
+  @Get('/code_employee/:codeEmployee/date/:date')
+  findByCodeEmployeeAndDate(
+    @Param('codeEmployee') codeEmployee: string,
+    @Param('date') date: string,
+  ) {
+    return this.absenceService.findByCodeEmployeeAndDate(codeEmployee, date);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAbsenceDto: UpdateAbsenceDto) {
     return this.absenceService.update(+id, updateAbsenceDto);

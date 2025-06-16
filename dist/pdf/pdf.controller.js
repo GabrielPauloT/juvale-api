@@ -38,6 +38,14 @@ let PdfController = class PdfController {
         });
         res.end(buffer);
     }
+    async generateCompanyCostReportByPeriod(startDate, endDate, res) {
+        const buffer = await this.pdfService.generateCompanyCostReportByPeriod(startDate, endDate);
+        res.set({
+            'Content-Type': 'application/pdf',
+            'Content-Disposition': `attachment; filename=relatorio-empresa-${startDate}_to_${endDate}.pdf`,
+        });
+        res.end(buffer);
+    }
     async generateReportByEmployee(date, res) {
         const buffer = await this.pdfService.generateEmployeeCostReport(date);
         res.set({
@@ -81,6 +89,15 @@ __decorate([
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], PdfController.prototype, "generateReportByCompany", null);
+__decorate([
+    (0, common_1.Get)('/report/company-period'),
+    __param(0, (0, common_1.Query)('startDate')),
+    __param(1, (0, common_1.Query)('endDate')),
+    __param(2, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String, Object]),
+    __metadata("design:returntype", Promise)
+], PdfController.prototype, "generateCompanyCostReportByPeriod", null);
 __decorate([
     (0, common_1.Get)('/report/employees'),
     __param(0, (0, common_1.Query)('date')),
