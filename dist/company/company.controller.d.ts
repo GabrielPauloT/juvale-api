@@ -5,15 +5,25 @@ export declare class CompanyController {
     private readonly companyService;
     constructor(companyService: CompanyService);
     create(createCompanyDto: CreateCompanyDto): Promise<{
-        data: any;
+        data: {
+            name: string;
+            id: number;
+            created_at: Date;
+            last_modified: Date | null;
+        };
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;
     }>;
     findAll(page: string, perPage: string, name: string): Promise<{
-        data: any;
+        data: {
+            name: string;
+            id: number;
+            created_at: Date;
+            last_modified: Date | null;
+        }[];
         page: number;
         perPage: number;
-        totalRecords: any;
+        totalRecords: number;
         totalPages: number;
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;
@@ -23,7 +33,12 @@ export declare class CompanyController {
         message: string;
         data?: undefined;
     } | {
-        data: any;
+        data: {
+            name: string;
+            id: number;
+            created_at: Date;
+            last_modified: Date | null;
+        };
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;
     }>;
@@ -32,12 +47,22 @@ export declare class CompanyController {
         message: string;
         data?: undefined;
     } | {
-        data: any;
+        data: {
+            name: string;
+            id: number;
+            created_at: Date;
+            last_modified: Date | null;
+        };
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;
     }>;
     findAllEmployeeCostByCompany(date: string): Promise<{
-        data: any;
+        data: {
+            nameCompany: string;
+            totalVT: number;
+            totalVR: number;
+            totalFuncionariosAtivos: number;
+        }[];
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;
     }>;

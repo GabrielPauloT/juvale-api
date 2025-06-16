@@ -516,7 +516,7 @@ let PdfService = class PdfService {
         const imageSize = 250;
         const x = (pageWidth - imageSize) / 2;
         const y = (pageHeight - imageSize) / 2;
-        const resolvedPath = path.resolve(__dirname, '..', 'logo.png');
+        const resolvedPath = path.resolve(__dirname, 'assets/assets', 'logo.png');
         if (fs.existsSync(resolvedPath)) {
             doc.save();
             doc.opacity(0.08);

@@ -11,9 +11,9 @@ export declare class PdfController {
         reactivatedEmployees?: undefined;
     } | {
         statusCode: import("@nestjs/common").HttpStatus;
-        existingEmployees: any;
-        insertedEmployees: any;
-        reactivatedEmployees: any;
+        existingEmployees: number;
+        insertedEmployees: number;
+        reactivatedEmployees: number;
         message: string;
     }>;
     uploadToExtractFuncionariosForInactive(file: any): Promise<{

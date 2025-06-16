@@ -658,7 +658,7 @@ export class PdfService {
     const x = (pageWidth - imageSize) / 2;
     const y = (pageHeight - imageSize) / 2;
 
-    const resolvedPath = path.resolve(__dirname, '..', 'logo.png');
+    const resolvedPath = path.resolve(__dirname, 'assets/assets', 'logo.png');
 
     if (fs.existsSync(resolvedPath)) {
       doc.save();

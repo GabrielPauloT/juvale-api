@@ -9,15 +9,29 @@ export declare class AbsenceController {
         message: string;
         data?: undefined;
     } | {
-        data: any;
+        data: {
+            id: number;
+            created_at: Date;
+            last_modified: Date | null;
+            code_employee: string;
+            absence_date: Date;
+            certificate_absence: boolean;
+        };
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;
     }>;
     findAll(page: string, perPage: string): Promise<{
-        data: any;
+        data: {
+            id: number;
+            created_at: Date;
+            last_modified: Date | null;
+            code_employee: string;
+            absence_date: Date;
+            certificate_absence: boolean;
+        }[];
         page: number;
         perPage: number;
-        totalRecords: any;
+        totalRecords: number;
         totalPages: number;
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;
@@ -27,7 +41,14 @@ export declare class AbsenceController {
         message: string;
         data?: undefined;
     } | {
-        data: any;
+        data: {
+            id: number;
+            created_at: Date;
+            last_modified: Date | null;
+            code_employee: string;
+            absence_date: Date;
+            certificate_absence: boolean;
+        };
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;
     }>;
@@ -36,7 +57,25 @@ export declare class AbsenceController {
         message: string;
         data?: undefined;
     } | {
-        data: any;
+        data: ({
+            employee: {
+                name: string;
+                created_at: Date;
+                last_modified: Date | null;
+                code_employee: string;
+                code_company: number;
+                job_description: string;
+                salary: import("prisma/generated/prisma/runtime/library").Decimal;
+                enabled: boolean;
+            };
+        } & {
+            id: number;
+            created_at: Date;
+            last_modified: Date | null;
+            code_employee: string;
+            absence_date: Date;
+            certificate_absence: boolean;
+        })[];
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;
     }>;
@@ -45,7 +84,14 @@ export declare class AbsenceController {
         message: string;
         data?: undefined;
     } | {
-        data: any;
+        data: {
+            id: number;
+            created_at: Date;
+            last_modified: Date | null;
+            code_employee: string;
+            absence_date: Date;
+            certificate_absence: boolean;
+        };
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;
     }>;
@@ -56,6 +102,13 @@ export declare class AbsenceController {
     } | {
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;
-        data: any;
+        data: {
+            id: number;
+            created_at: Date;
+            last_modified: Date | null;
+            code_employee: string;
+            absence_date: Date;
+            certificate_absence: boolean;
+        };
     }>;
 }

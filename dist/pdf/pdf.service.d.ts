@@ -12,9 +12,9 @@ export declare class PdfService {
         reactivatedEmployees?: undefined;
     } | {
         statusCode: HttpStatus;
-        existingEmployees: any;
-        insertedEmployees: any;
-        reactivatedEmployees: any;
+        existingEmployees: number;
+        insertedEmployees: number;
+        reactivatedEmployees: number;
         message: string;
     }>;
     extractFuncionariosForInactive(pdfText: string): Promise<{
