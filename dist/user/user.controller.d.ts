@@ -10,26 +10,19 @@ export declare class UserController {
         data?: undefined;
     } | {
         data: {
-            id: number;
-            email: string;
-            role: string;
-            name: string;
+            id: any;
+            email: any;
+            role: any;
+            name: any;
         };
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;
     }>;
     findAll(page?: number, perPage?: number, name?: string): Promise<{
-        data: {
-            id: number;
-            name: string;
-            email: string;
-            role: string;
-            createdAt: Date;
-            updatedAt: Date;
-        }[];
+        data: any;
         page: any;
         perPage: any;
-        totalRecords: number;
+        totalRecords: any;
         totalPages: number;
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;
@@ -40,10 +33,10 @@ export declare class UserController {
         data?: undefined;
     } | {
         data: {
-            id: number;
-            email: string;
-            role: string;
-            name: string;
+            id: any;
+            email: any;
+            role: any;
+            name: any;
         };
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;
@@ -54,10 +47,10 @@ export declare class UserController {
         data?: undefined;
     } | {
         data: {
-            id: number;
-            email: string;
-            role: string;
-            name: string;
+            id: any;
+            email: any;
+            role: any;
+            name: any;
         };
         statusCode: import("@nestjs/common").HttpStatus;
         message: string;

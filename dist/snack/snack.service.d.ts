@@ -10,32 +10,15 @@ export declare class SnackService {
         message: string;
         data?: undefined;
     } | {
-        data: {
-            id: number;
-            created_at: Date;
-            last_modified: Date | null;
-            code_employee: string;
-            value: import("generated/prisma/runtime/library").Decimal;
-        };
+        data: any;
         statusCode: HttpStatus;
         message: string;
     }>;
     findAll(page?: number, perPage?: number): Promise<{
-        data: ({
-            employee: {
-                name: string;
-                job_description: string;
-            };
-        } & {
-            id: number;
-            created_at: Date;
-            last_modified: Date | null;
-            code_employee: string;
-            value: import("generated/prisma/runtime/library").Decimal;
-        })[];
+        data: any;
         page: number;
         perPage: number;
-        totalRecords: number;
+        totalRecords: any;
         totalPages: number;
         statusCode: HttpStatus;
         message: string;
@@ -45,18 +28,7 @@ export declare class SnackService {
         message: string;
         data?: undefined;
     } | {
-        data: {
-            employee: {
-                name: string;
-                job_description: string;
-            };
-        } & {
-            id: number;
-            created_at: Date;
-            last_modified: Date | null;
-            code_employee: string;
-            value: import("generated/prisma/runtime/library").Decimal;
-        };
+        data: any;
         statusCode: HttpStatus;
         message: string;
     }>;
@@ -65,13 +37,7 @@ export declare class SnackService {
         message: string;
         data?: undefined;
     } | {
-        data: {
-            id: number;
-            created_at: Date;
-            last_modified: Date | null;
-            code_employee: string;
-            value: import("generated/prisma/runtime/library").Decimal;
-        };
+        data: any;
         statusCode: HttpStatus;
         message: string;
     }>;
@@ -80,13 +46,7 @@ export declare class SnackService {
         message: string;
         data?: undefined;
     } | {
-        data: {
-            id: number;
-            created_at: Date;
-            last_modified: Date | null;
-            code_employee: string;
-            value: import("generated/prisma/runtime/library").Decimal;
-        };
+        data: any;
         statusCode: HttpStatus;
         message: string;
     }>;

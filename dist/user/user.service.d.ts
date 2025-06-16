@@ -11,26 +11,19 @@ export declare class UserService {
         data?: undefined;
     } | {
         data: {
-            id: number;
-            email: string;
-            role: string;
-            name: string;
+            id: any;
+            email: any;
+            role: any;
+            name: any;
         };
         statusCode: HttpStatus;
         message: string;
     }>;
     findAll(page: any, perPage: any, name: any): Promise<{
-        data: {
-            id: number;
-            name: string;
-            email: string;
-            role: string;
-            createdAt: Date;
-            updatedAt: Date;
-        }[];
+        data: any;
         page: any;
         perPage: any;
-        totalRecords: number;
+        totalRecords: any;
         totalPages: number;
         statusCode: HttpStatus;
         message: string;
@@ -41,10 +34,10 @@ export declare class UserService {
         data?: undefined;
     } | {
         data: {
-            id: number;
-            email: string;
-            role: string;
-            name: string;
+            id: any;
+            email: any;
+            role: any;
+            name: any;
         };
         statusCode: HttpStatus;
         message: string;
@@ -55,10 +48,10 @@ export declare class UserService {
         data?: undefined;
     } | {
         data: {
-            id: number;
-            email: string;
-            role: string;
-            name: string;
+            id: any;
+            email: any;
+            role: any;
+            name: any;
         };
         statusCode: HttpStatus;
         message: string;

@@ -6,36 +6,21 @@ export declare class CompanyService {
     private prisma;
     constructor(prisma: PrismaService);
     create(createCompanyDto: CreateCompanyDto): Promise<{
-        data: {
-            name: string;
-            id: number;
-            created_at: Date;
-            last_modified: Date | null;
-        };
+        data: any;
         statusCode: HttpStatus;
         message: string;
     }>;
     findAll(page?: number, perPage?: number, name?: string): Promise<{
-        data: {
-            name: string;
-            id: number;
-            created_at: Date;
-            last_modified: Date | null;
-        }[];
+        data: any;
         page: number;
         perPage: number;
-        totalRecords: number;
+        totalRecords: any;
         totalPages: number;
         statusCode: HttpStatus;
         message: string;
     }>;
     findAllEmployeeCostByCompany(date?: string): Promise<{
-        data: {
-            nameCompany: string;
-            totalVT: number;
-            totalVR: number;
-            totalFuncionariosAtivos: number;
-        }[];
+        data: any;
         statusCode: HttpStatus;
         message: string;
     }>;
@@ -44,12 +29,7 @@ export declare class CompanyService {
         message: string;
         data?: undefined;
     } | {
-        data: {
-            name: string;
-            id: number;
-            created_at: Date;
-            last_modified: Date | null;
-        };
+        data: any;
         statusCode: HttpStatus;
         message: string;
     }>;
@@ -58,12 +38,7 @@ export declare class CompanyService {
         message: string;
         data?: undefined;
     } | {
-        data: {
-            name: string;
-            id: number;
-            created_at: Date;
-            last_modified: Date | null;
-        };
+        data: any;
         statusCode: HttpStatus;
         message: string;
     }>;

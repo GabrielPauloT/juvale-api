@@ -6,15 +6,7 @@ export declare class AuthService {
     private prisma;
     private jwtService;
     constructor(prisma: PrismaService, jwtService: JwtService);
-    validateUser(username: string, password: string): Promise<{
-        name: string;
-        id: number;
-        created_at: Date;
-        last_modified: Date | null;
-        email: string;
-        password: string;
-        role: string;
-    }>;
+    validateUser(username: string, password: string): Promise<any>;
     login(authDto: authDto): Promise<{
         accessToken: string;
         statusCode: HttpStatus;

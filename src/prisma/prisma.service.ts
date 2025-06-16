@@ -1,5 +1,5 @@
 import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
-import { PrismaClient } from '../../generated/prisma';
+import { PrismaClient } from '../../prisma/generated/prisma';
 import { withOptimize } from '@prisma/extension-optimize';
 import { withAccelerate } from '@prisma/extension-accelerate';
 
