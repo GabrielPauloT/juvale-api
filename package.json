@@ -8,7 +8,7 @@
   "scripts": {
     "push-db": "npx prisma db push",
     "pull-db": "npx prisma db pull",
-    "build": "npx prisma generate && nest build",
+    "build": "nest build && npx prisma generate",
     "prisma:generate": "prisma generate",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "node dist/main.js",
