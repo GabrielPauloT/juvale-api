@@ -69,6 +69,23 @@ export class PdfController {
     res.end(buffer);
   }
 
+  @Get('/report/employees-period')
+  async generateReportByEmployeeByPeriod(
+    @Query('startDate') startDate: string,
+    @Query('endDate') endDate: string,
+    @Res() res: Response,
+  ) {
+    const buffer = await this.pdfService.generateEmployeeCostReportByPeriod(
+      startDate,
+      endDate,
+    );
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': `attachment; filename=relatorio-por-funcionarios-${startDate}_to_${endDate}.pdf`,
+    });
+    res.end(buffer);
+  }
+
   @Get('/report/employees')
   async generateReportByEmployee(
     @Query('date') date: string,
@@ -94,6 +111,24 @@ export class PdfController {
       'Content-Type': 'application/pdf',
       'Content-Disposition':
         'attachment; filename="relatorio_por_funcionarios.pdf"',
+    });
+    res.end(buffer);
+  }
+
+  @Get('/report/employees/absences-period')
+  async generateEmployeeCostReportWithAbsencesByPeriod(
+    @Query('startDate') startDate: string,
+    @Query('endDate') endDate: string,
+    @Res() res: Response,
+  ) {
+    const buffer =
+      await this.pdfService.generateEmployeeCostReportWithAbsencesByPeriod(
+        startDate,
+        endDate,
+      );
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': `attachment; filename=relatorio-por-funcionarios-com-faltas-${startDate}_to_${endDate}.pdf`,
     });
     res.end(buffer);
   }

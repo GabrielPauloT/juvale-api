@@ -123,17 +123,6 @@ let PdfService = class PdfService {
                 where: { code_employee: { in: codigos } },
                 data: { enabled: false },
             }),
-            Promise.all([
-                this.prisma.snack.deleteMany({
-                    where: { code_employee: { in: codigos } },
-                }),
-                this.prisma.ticket.deleteMany({
-                    where: { employee: { code_employee: { in: codigos } } },
-                }),
-                this.prisma.absence.deleteMany({
-                    where: { code_employee: { in: codigos } },
-                }),
-            ]),
         ]);
         return {
             statusCode: common_1.HttpStatus.OK,
@@ -142,6 +131,9 @@ let PdfService = class PdfService {
         };
     }
     async generateCompanyCostReport(date) {
+        const dateSelected = date ? new Date(date) : new Date();
+        const selectedMonth = dateSelected.getMonth();
+        const selectedYear = dateSelected.getFullYear();
         const companies = await this.prisma.company.findMany({
             where: { enabled: true },
             select: {
@@ -157,21 +149,26 @@ let PdfService = class PdfService {
                 },
             },
         });
-        const dateSelected = date ? new Date(date) : new Date();
-        const selectedMonth = dateSelected.getMonth();
-        const selectedYear = dateSelected.getFullYear();
+        const doc = new PDFDocument({ margin: 50 });
+        const buffers = [];
+        const formatCurrency = (value) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        this.insertBackgroundImage(doc);
+        doc.on('data', buffers.push.bind(buffers));
         const diasUteis = Array.from({ length: (0, date_fns_1.getDaysInMonth)(dateSelected) }, (_, i) => {
             const d = new Date(selectedYear, selectedMonth, i + 1);
             return !(0, date_fns_1.isWeekend)(d);
         }).filter(Boolean).length;
-        const doc = new PDFDocument({ margin: 50 });
-        const buffers = [];
-        this.insertBackgroundImage(doc);
-        doc.on('data', buffers.push.bind(buffers));
-        doc.on('end', () => { });
+        const monthYearFormatted = dateSelected.toLocaleDateString('pt-BR', {
+            month: 'long',
+            year: 'numeric',
+        });
         doc
             .fontSize(18)
-            .text('Relatório de Gastos por Empresa', { align: 'center' })
+            .text(`Relatório de Gastos por Empresa`, { align: 'center' })
+            .moveDown(0.5);
+        doc
+            .fontSize(12)
+            .text(`Mês de referência: ${monthYearFormatted}`, { align: 'center' })
             .moveDown(2);
         let totalGeral = 0;
         for (const company of companies) {
@@ -182,25 +179,29 @@ let PdfService = class PdfService {
                     const d = new Date(a.absence_date);
                     return (d.getMonth() === selectedMonth && d.getFullYear() === selectedYear);
                 }).length;
-                const vr = emp.snack.reduce((s, i) => s + Number(i.value), 0);
-                const vt = emp.ticket.reduce((s, i) => s + Number(i.value), 0);
-                totalVR += vr * (diasUteis - faltas);
-                totalVT += vt * (diasUteis - faltas);
+                const vr = emp.snack.reduce((sum, item) => sum + Number(item.value), 0);
+                const vt = emp.ticket.reduce((sum, item) => sum + Number(item.value), 0);
+                const diasTrabalhados = Math.max(diasUteis - faltas, 0);
+                totalVR += vr * diasTrabalhados;
+                totalVT += vt * diasTrabalhados;
             }
-            const total = totalVR + totalVT;
-            totalGeral += total;
-            doc.fontSize(14).text(`Empresa: ${company.name}`).moveDown(0.5);
+            const totalEmpresa = totalVR + totalVT;
+            totalGeral += totalEmpresa;
+            doc
+                .fontSize(14)
+                .text(`Empresa: ${company.name}`, { underline: true })
+                .moveDown(0.5);
             doc.fontSize(12);
-            doc.text(`Total Vale Refeição (VR): R$ ${totalVR.toFixed(2).replace('.', ',')}`);
-            doc.text(`Total Vale Transporte (VT): R$ ${totalVT.toFixed(2).replace('.', ',')}`);
+            doc.text(`Total Vale Refeição (VR): ${formatCurrency(totalVR)}`);
+            doc.text(`Total Vale Transporte (VT): ${formatCurrency(totalVT)}`);
+            doc.text(`Total Geral da Empresa: ${formatCurrency(totalEmpresa)}`);
             doc.moveDown(1);
-            doc.moveDown();
         }
         doc
             .moveDown(1.5)
             .font('Helvetica-Bold')
             .fontSize(12)
-            .text(`Total Geral: R$ ${totalGeral.toFixed(2).replace('.', ',')}`, {
+            .text(`TOTAL GERAL DO MÊS: ${formatCurrency(totalGeral)}`, {
             align: 'right',
         });
         doc.end();
@@ -313,9 +314,7 @@ let PdfService = class PdfService {
     async generateEmployeeCostReport(date) {
         const employees = await this.prisma.employee.findMany({
             where: { enabled: true, company: { enabled: true } },
-            orderBy: {
-                code_company: 'asc',
-            },
+            orderBy: { code_company: 'asc' },
             include: {
                 company: true,
                 snack: { select: { value: true } },
@@ -330,23 +329,24 @@ let PdfService = class PdfService {
             const d = new Date(selectedYear, selectedMonth, i + 1);
             return !(0, date_fns_1.isWeekend)(d);
         }).filter(Boolean).length;
-        const doc = new PDFDocument({ margin: 40 });
+        const doc = new PDFDocument({ margin: 50 });
         const buffers = [];
         this.insertBackgroundImage(doc);
         doc.on('data', buffers.push.bind(buffers));
+        const formatCurrency = (value) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         doc
             .fontSize(18)
             .text('Relatório de Gastos por Funcionário', { align: 'center' })
-            .moveDown(1.5);
-        const tableHeaders = [
-            'Funcionário',
-            'Empresa',
-            'Salário',
-            'VR',
-            'VT',
-            'Total',
-        ];
-        const columnWidths = [150, 100, 70, 70, 70, 70];
+            .moveDown(0.5);
+        doc
+            .fontSize(12)
+            .text(`Mês de referência: ${dateSelected.toLocaleDateString('pt-BR', {
+            month: 'long',
+            year: 'numeric',
+        })}`, { align: 'center' })
+            .moveDown(2);
+        const tableHeaders = ['Funcionário', 'Empresa', 'VR', 'VT', 'Total'];
+        const columnWidths = [150, 100, 80, 80, 80];
         const startX = doc.page.margins.left;
         let y = doc.y;
         function drawRow(y, values, isHeader = false) {
@@ -355,7 +355,7 @@ let PdfService = class PdfService {
             values.forEach((text, i) => {
                 const x = startX + columnWidths.slice(0, i).reduce((a, b) => a + b, 0);
                 doc.rect(x, y, columnWidths[i], rowHeight).stroke();
-                doc.text(text, x + 5, y + 5, {
+                doc.text(text, x + 5, y + 8, {
                     width: columnWidths[i] - 10,
                     align: i < 2 ? 'left' : 'right',
                 });
@@ -364,6 +364,8 @@ let PdfService = class PdfService {
         }
         y = drawRow(y, tableHeaders, true);
         let totalGeral = 0;
+        let totalVR = 0;
+        let totalVT = 0;
         for (const emp of employees) {
             const faltas = emp.absence.filter((a) => {
                 const d = new Date(a.absence_date);
@@ -374,16 +376,17 @@ let PdfService = class PdfService {
             const vt = emp.ticket.reduce((s, i) => s + Number(i.value), 0) *
                 (diasUteis - faltas);
             const total = vr + vt;
+            totalVR += vr;
+            totalVT += vt;
             totalGeral += total;
             const rowData = [
                 emp.name,
                 emp.company.name,
-                `R$ ${emp.salary.toFixed(2).replace('.', ',')}`,
-                `R$ ${vr.toFixed(2).replace('.', ',')}`,
-                `R$ ${vt.toFixed(2).replace('.', ',')}`,
-                `R$ ${total.toFixed(2).replace('.', ',')}`,
+                formatCurrency(vr),
+                formatCurrency(vt),
+                formatCurrency(total),
             ];
-            if (y + 25 > doc.page.height - doc.page.margins.bottom) {
+            if (y + 30 > doc.page.height - doc.page.margins.bottom) {
                 doc.addPage();
                 this.insertBackgroundImage(doc);
                 y = doc.y;
@@ -391,16 +394,144 @@ let PdfService = class PdfService {
             }
             y = drawRow(y, rowData);
         }
+        y += 40;
         doc
-            .moveDown(1.5)
             .font('Helvetica-Bold')
             .fontSize(12)
-            .text(`Total Geral: R$ ${totalGeral.toFixed(2).replace('.', ',')}`, doc.page.margins.left, undefined, {
+            .text(`TOTAL DE VR: ${formatCurrency(totalVR)}`, startX, y, {
             align: 'right',
-            width: doc.page.width -
-                doc.page.margins.left -
-                doc.page.margins.right -
-                20,
+        })
+            .moveDown(0.5)
+            .text(`TOTAL DE VT: ${formatCurrency(totalVT)}`, startX, y + 15, {
+            align: 'right',
+        })
+            .moveDown(0.5)
+            .text(`TOTAL GERAL DO MÊS: ${formatCurrency(totalGeral)}`, startX, y + 30, {
+            align: 'right',
+        });
+        doc.end();
+        return new Promise((resolve) => {
+            doc.on('end', () => {
+                const pdfBuffer = Buffer.concat(buffers);
+                resolve(pdfBuffer);
+            });
+        });
+    }
+    async generateEmployeeCostReportByPeriod(startDate, endDate) {
+        const start = new Date(startDate);
+        start.setDate(start.getDate() + 1);
+        const end = new Date(endDate);
+        end.setDate(end.getDate() + 1);
+        if (start > end) {
+            throw new common_1.BadRequestException('A data inicial não pode ser maior que a data final');
+        }
+        const employees = await this.prisma.employee.findMany({
+            where: { enabled: true, company: { enabled: true } },
+            orderBy: { code_company: 'asc' },
+            include: {
+                company: true,
+                snack: { select: { value: true, created_at: true } },
+                ticket: { select: { value: true, created_at: true } },
+                absence: { select: { absence_date: true } },
+            },
+        });
+        const doc = new PDFDocument({ margin: 50 });
+        const buffers = [];
+        this.insertBackgroundImage(doc);
+        doc.on('data', buffers.push.bind(buffers));
+        const formatCurrency = (value) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        const diasNoPeriodo = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+        const diasUteis = Array.from({ length: diasNoPeriodo }, (_, i) => {
+            const d = new Date(start);
+            d.setDate(start.getDate() + i);
+            return !(0, date_fns_1.isWeekend)(d);
+        }).filter(Boolean).length;
+        const startDateFormatted = (0, date_fns_1.format)(start, 'dd/MM/yyyy');
+        const endDateFormatted = (0, date_fns_1.format)(end, 'dd/MM/yyyy');
+        doc
+            .fontSize(18)
+            .text('Relatório de Gastos por Funcionário', { align: 'center' })
+            .moveDown(0.5);
+        doc
+            .fontSize(12)
+            .text(`Período: ${startDateFormatted} até ${endDateFormatted}`, {
+            align: 'center',
+        })
+            .moveDown(2);
+        const tableHeaders = ['Funcionário', 'Empresa', 'VR', 'VT', 'Total'];
+        const columnWidths = [150, 100, 80, 80, 80];
+        const startX = doc.page.margins.left;
+        let y = doc.y;
+        function drawRow(y, values, isHeader = false) {
+            const rowHeight = 30;
+            doc.font(isHeader ? 'Helvetica-Bold' : 'Helvetica').fontSize(10);
+            values.forEach((text, i) => {
+                const x = startX + columnWidths.slice(0, i).reduce((a, b) => a + b, 0);
+                doc.rect(x, y, columnWidths[i], rowHeight).stroke();
+                doc.text(text, x + 5, y + 8, {
+                    width: columnWidths[i] - 10,
+                    align: i < 2 ? 'left' : 'right',
+                });
+            });
+            return y + rowHeight;
+        }
+        y = drawRow(y, tableHeaders, true);
+        let totalGeral = 0;
+        let totalVR = 0;
+        let totalVT = 0;
+        for (const emp of employees) {
+            const faltas = emp.absence.filter((a) => {
+                const d = new Date(a.absence_date);
+                return d >= start && d <= end;
+            }).length;
+            const vr = emp.snack
+                .filter((s) => {
+                const d = new Date(s.created_at);
+                return d >= start && d <= end;
+            })
+                .reduce((sum, item) => sum + Number(item.value), 0);
+            const vt = emp.ticket
+                .filter((t) => {
+                const d = new Date(t.created_at);
+                return d >= start && d <= end;
+            })
+                .reduce((sum, item) => sum + Number(item.value), 0);
+            const diasTrabalhados = Math.max(diasUteis - faltas, 0);
+            const vrTotal = vr * diasTrabalhados;
+            const vtTotal = vt * diasTrabalhados;
+            const total = vrTotal + vtTotal;
+            totalVR += vrTotal;
+            totalVT += vtTotal;
+            totalGeral += total;
+            const rowData = [
+                emp.name,
+                emp.company.name,
+                formatCurrency(vrTotal),
+                formatCurrency(vtTotal),
+                formatCurrency(total),
+            ];
+            if (y + 30 > doc.page.height - doc.page.margins.bottom) {
+                doc.addPage();
+                this.insertBackgroundImage(doc);
+                y = doc.y;
+                y = drawRow(y, tableHeaders, true);
+            }
+            y = drawRow(y, rowData);
+        }
+        y += 40;
+        doc
+            .font('Helvetica-Bold')
+            .fontSize(12)
+            .text(`TOTAL DE VR: ${formatCurrency(totalVR)}`, startX, y, {
+            align: 'right',
+        })
+            .moveDown(0.5)
+            .text(`TOTAL DE VT: ${formatCurrency(totalVT)}`, startX, y + 15, {
+            align: 'right',
+        })
+            .moveDown(0.5)
+            .text(`TOTAL GERAL DO PERÍODO: ${formatCurrency(totalGeral)}`, startX, y + 30, {
+            align: 'right',
         });
         doc.end();
         return new Promise((resolve) => {
@@ -428,7 +559,8 @@ let PdfService = class PdfService {
             const d = new Date(selectedYear, selectedMonth, i + 1);
             return !(0, date_fns_1.isWeekend)(d);
         }).filter(Boolean).length;
-        const doc = new PDFDocument({ margin: 40 });
+        const formatCurrency = (value) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        const doc = new PDFDocument({ margin: 50 });
         const buffers = [];
         this.insertBackgroundImage(doc);
         doc.on('data', buffers.push.bind(buffers));
@@ -441,13 +573,12 @@ let PdfService = class PdfService {
         const tableHeaders = [
             'Funcionário',
             'Empresa',
-            'Salário',
             'VR',
             'VT',
             'Faltas',
             'Total',
         ];
-        const columnWidths = [120, 90, 70, 70, 70, 70, 50];
+        const columnWidths = [150, 100, 80, 80, 60, 80];
         const startX = doc.page.margins.left;
         let y = doc.y;
         const drawRow = (y, values, isHeader = false) => {
@@ -456,7 +587,7 @@ let PdfService = class PdfService {
             values.forEach((text, i) => {
                 const x = startX + columnWidths.slice(0, i).reduce((a, b) => a + b, 0);
                 doc.rect(x, y, columnWidths[i], rowHeight).stroke();
-                doc.text(text, x + 5, y + 5, {
+                doc.text(text, x + 5, y + 8, {
                     width: columnWidths[i] - 10,
                     align: i < 2 ? 'left' : 'right',
                 });
@@ -464,6 +595,8 @@ let PdfService = class PdfService {
             return y + rowHeight;
         };
         y = drawRow(y, tableHeaders, true);
+        let totalVR = 0;
+        let totalVT = 0;
         let totalGeral = 0;
         for (const emp of employees) {
             const faltas = emp.absence.filter((a) => {
@@ -475,17 +608,18 @@ let PdfService = class PdfService {
             const vt = emp.ticket.reduce((s, i) => s + Number(i.value), 0) *
                 (diasUteis - faltas);
             const total = vr + vt;
+            totalVR += vr;
+            totalVT += vt;
             totalGeral += total;
             const rowData = [
                 emp.name,
                 emp.company.name,
-                `R$ ${emp.salary.toFixed(2).replace('.', ',')}`,
-                `R$ ${vr.toFixed(2).replace('.', ',')}`,
-                `R$ ${vt.toFixed(2).replace('.', ',')}`,
+                formatCurrency(vr),
+                formatCurrency(vt),
                 `${faltas}`,
-                `R$ ${total.toFixed(2).replace('.', ',')}`,
+                formatCurrency(total),
             ];
-            if (y + 25 > doc.page.height - doc.page.margins.bottom) {
+            if (y + 30 > doc.page.height - doc.page.margins.bottom) {
                 doc.addPage();
                 this.insertBackgroundImage(doc);
                 y = doc.y;
@@ -493,16 +627,154 @@ let PdfService = class PdfService {
             }
             y = drawRow(y, rowData);
         }
+        y += 40;
         doc
-            .moveDown(1.5)
             .font('Helvetica-Bold')
             .fontSize(12)
-            .text(`Total Geral: R$ ${totalGeral.toFixed(2).replace('.', ',')}`, doc.page.margins.left, undefined, {
+            .text(`TOTAL DE VR: ${formatCurrency(totalVR)}`, startX, y, {
             align: 'right',
-            width: doc.page.width -
-                doc.page.margins.left -
-                doc.page.margins.right -
-                20,
+        })
+            .moveDown(0.5)
+            .text(`TOTAL DE VT: ${formatCurrency(totalVT)}`, startX, y + 15, {
+            align: 'right',
+        })
+            .moveDown(0.5)
+            .text(`TOTAL GERAL DO MÊS: ${formatCurrency(totalGeral)}`, startX, y + 30, {
+            align: 'right',
+        });
+        doc.end();
+        return new Promise((resolve) => {
+            doc.on('end', () => {
+                const pdfBuffer = Buffer.concat(buffers);
+                resolve(pdfBuffer);
+            });
+        });
+    }
+    async generateEmployeeCostReportWithAbsencesByPeriod(startDate, endDate) {
+        const start = new Date(startDate);
+        start.setDate(start.getDate() + 1);
+        const end = new Date(endDate);
+        end.setDate(end.getDate() + 1);
+        if (start > end) {
+            throw new common_1.BadRequestException('A data inicial não pode ser maior que a data final');
+        }
+        const employees = await this.prisma.employee.findMany({
+            where: { enabled: true, company: { enabled: true } },
+            orderBy: { code_company: 'asc' },
+            include: {
+                company: true,
+                snack: { select: { value: true, created_at: true } },
+                ticket: { select: { value: true, created_at: true } },
+                absence: { select: { absence_date: true } },
+            },
+        });
+        const doc = new PDFDocument({ margin: 50 });
+        const buffers = [];
+        this.insertBackgroundImage(doc);
+        doc.on('data', buffers.push.bind(buffers));
+        const formatCurrency = (value) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        const diasNoPeriodo = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+        const diasUteis = Array.from({ length: diasNoPeriodo }, (_, i) => {
+            const d = new Date(start);
+            d.setDate(start.getDate() + i);
+            return !(0, date_fns_1.isWeekend)(d);
+        }).filter(Boolean).length;
+        const startDateFormatted = (0, date_fns_1.format)(start, 'dd/MM/yyyy');
+        const endDateFormatted = (0, date_fns_1.format)(end, 'dd/MM/yyyy');
+        doc
+            .fontSize(18)
+            .text('Relatório de Gastos por Funcionário (com Faltas)', {
+            align: 'center',
+        })
+            .moveDown(0.5);
+        doc
+            .fontSize(12)
+            .text(`Período: ${startDateFormatted} até ${endDateFormatted}`, {
+            align: 'center',
+        })
+            .moveDown(2);
+        const tableHeaders = [
+            'Funcionário',
+            'Empresa',
+            'VR',
+            'VT',
+            'Faltas',
+            'Total',
+        ];
+        const columnWidths = [130, 90, 80, 80, 50, 80];
+        const startX = doc.page.margins.left;
+        let y = doc.y;
+        const drawRow = (y, values, isHeader = false) => {
+            const rowHeight = 30;
+            doc.font(isHeader ? 'Helvetica-Bold' : 'Helvetica').fontSize(10);
+            values.forEach((text, i) => {
+                const x = startX + columnWidths.slice(0, i).reduce((a, b) => a + b, 0);
+                doc.rect(x, y, columnWidths[i], rowHeight).stroke();
+                doc.text(text, x + 5, y + 8, {
+                    width: columnWidths[i] - 10,
+                    align: i < 2 ? 'left' : 'right',
+                });
+            });
+            return y + rowHeight;
+        };
+        y = drawRow(y, tableHeaders, true);
+        let totalGeral = 0;
+        let totalVR = 0;
+        let totalVT = 0;
+        for (const emp of employees) {
+            const faltas = emp.absence.filter((a) => {
+                const d = new Date(a.absence_date);
+                return d >= start && d <= end;
+            }).length;
+            const vr = emp.snack
+                .filter((s) => {
+                const d = new Date(s.created_at);
+                return d >= start && d <= end;
+            })
+                .reduce((sum, item) => sum + Number(item.value), 0);
+            const vt = emp.ticket
+                .filter((t) => {
+                const d = new Date(t.created_at);
+                return d >= start && d <= end;
+            })
+                .reduce((sum, item) => sum + Number(item.value), 0);
+            const diasTrabalhados = Math.max(diasUteis - faltas, 0);
+            const vrTotal = vr * diasTrabalhados;
+            const vtTotal = vt * diasTrabalhados;
+            const total = vrTotal + vtTotal;
+            totalVR += vrTotal;
+            totalVT += vtTotal;
+            totalGeral += total;
+            const rowData = [
+                emp.name,
+                emp.company.name,
+                formatCurrency(vrTotal),
+                formatCurrency(vtTotal),
+                `${faltas}`,
+                formatCurrency(total),
+            ];
+            if (y + 30 > doc.page.height - doc.page.margins.bottom) {
+                doc.addPage();
+                this.insertBackgroundImage(doc);
+                y = doc.y;
+                y = drawRow(y, tableHeaders, true);
+            }
+            y = drawRow(y, rowData);
+        }
+        y += 40;
+        doc
+            .font('Helvetica-Bold')
+            .fontSize(12)
+            .text(`TOTAL DE VR: ${formatCurrency(totalVR)}`, startX, y, {
+            align: 'right',
+        })
+            .moveDown(0.5)
+            .text(`TOTAL DE VT: ${formatCurrency(totalVT)}`, startX, y + 15, {
+            align: 'right',
+        })
+            .moveDown(0.5)
+            .text(`TOTAL GERAL DO PERÍODO: ${formatCurrency(totalGeral)}`, startX, y + 30, {
+            align: 'right',
         });
         doc.end();
         return new Promise((resolve) => {
